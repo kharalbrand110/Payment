@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JazzCash Payment Portal | Muhammad Saleem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #e91e63;
+            --primary-dark: #c2185b;
+            --secondary: #607d8b;
+            --light: #f5f5f5;
+            --dark: #212121;
+            --success: #4caf50;
+            --error: #f44336;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        header img {
+            height: 60px;
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .account-info {
+            background-color: #f0f8ff;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .account-info p {
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .account-info strong {
+            color: var(--primary);
+        }
+        
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .payment-option {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-option:hover {
+            border-color: var(--primary);
+            box-shadow: 0 3px 10px rgba(233, 30, 99, 0.2);
+        }
+        
+        .payment-option.selected {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        .payment-option .amount {
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .payment-option .label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        input[type="tel"],
+        input[type="number"],
+        input[type="text"] {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: var(--primary-dark);
+        }
+        
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            transform: translateY(-20px);
+            transition: transform 0.3s;
+        }
+        
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .otp-input {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.5rem;
+            text-align: center;
+            letter-spacing: 0.5rem;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+        
+        .status-message {
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            display: none;
+        }
+        
+        .status-message.success {
+            background: #e8f5e9;
+            color: var(--success);
+            display: block;
+        }
+        
+        .status-message.error {
+            background: #ffebee;
+            color: var(--error);
+            display: block;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .payment-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="https://www.jazzcash.com.pk/assets/images/logo.svg" alt="JazzCash Logo">
+            <h1>Payment Portal</h1>
+            <p>Secure payment processing via JazzCash</p>
+        </header>
+        
+        <div class="account-info">
+            <p><strong>Receiving Account:</strong></p>
+            <p>JazzCash: <strong>923292359947</strong></p>
+            <p>Account Holder: <strong>Muhammad Saleem</strong></p>
+        </div>
+        
+        <form id="paymentForm">
+            <div class="form-group">
+                <label for="amount">Payment Amount (PKR)</label>
+                <div class="payment-options">
+                    <div class="payment-option" data-amount="100">
+                        <div class="amount">100</div>
+                        <div class="label">PKR</div>
+                    </div>
+                    <div class="payment-option" data-amount="500">
+                        <div class="amount">500</div>
+                        <div class="label">PKR</div>
+                    </div>
+                    <div class="payment-option" data-amount="1000">
+                        <div class="amount">1000</div>
+                        <div class="label">PKR</div>
+                    </div>
+                    <div class="payment-option" data-amount="2000">
+                        <div class="amount">2000</div>
+                        <div class="label">PKR</div>
+                    </div>
+                    <div class="payment-option" data-amount="3000">
+                        <div class="amount">3000</div>
+                        <div class="label">PKR</div>
+                    </div>
+                    <div class="payment-option" data-amount="5000">
+                        <div class="amount">5000</div>
+                        <div class="label">PKR</div>
+                    </div>
+                    <div class="payment-option" id="random-option">
+                        <div class="amount">Random</div>
+                        <div class="label">100-5000 PKR</div>
+                    </div>
+                </div>
+                <input type="hidden" id="selectedAmount" name="amount" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="mobileNumber">Your Mobile Number</label>
+                <input type="tel" id="mobileNumber" name="mobileNumber" placeholder="03XX-XXXXXXX" required pattern="03[0-9]{9}">
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address (Optional)</label>
+                <input type="text" id="email" name="email" placeholder="your@email.com">
+            </div>
+            
+            <button type="submit" id="submitBtn">
+                <span id="btnText">Proceed to Payment</span>
+            </button>
+        </form>
+    </div>
+    
+    <div class="modal" id="otpModal">
+        <div class="modal-content">
+            <h2>OTP Verification</h2>
+            <p>We've sent a 5-digit verification code to your mobile number.</p>
+            <p>Please check your JazzCash app and enter the code below:</p>
+            
+            <input type="text" id="otpCode" class="otp-input" maxlength="5" placeholder="12345" pattern="[0-9]{5}">
+            
+            <div class="status-message" id="otpStatus"></div>
+            
+            <button id="verifyBtn">Verify Payment</button>
+            <button id="resendBtn" style="margin-top: 10px; background: var(--secondary);">Resend OTP</button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const paymentForm = document.getElementById('paymentForm');
+            const paymentOptions = document.querySelectorAll('.payment-option');
+            const randomOption = document.getElementById('random-option');
+            const selectedAmountInput = document.getElementById('selectedAmount');
+            const mobileNumberInput = document.getElementById('mobileNumber');
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const otpModal = document.getElementById('otpModal');
+            const otpInput = document.getElementById('otpCode');
+            const verifyBtn = document.getElementById('verifyBtn');
+            const resendBtn = document.getElementById('resendBtn');
+            const otpStatus = document.getElementById('otpStatus');
+            
+            // Selected payment amount
+            let selectedAmount = 0;
+            
+            // Select payment amount
+            paymentOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selected class from all options
+                    paymentOptions.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                    
+                    // Set the selected amount
+                    if (this === randomOption) {
+                        // Generate random amount between 100 and 5000
+                        selectedAmount = Math.floor(Math.random() * 4901) + 100;
+                    } else {
+                        selectedAmount = parseInt(this.getAttribute('data-amount'));
+                    }
+                    
+                    selectedAmountInput.value = selectedAmount;
+                });
+            });
+            
+            // Form submission
+            paymentForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Validate form
+                if (!selectedAmount || selectedAmount < 100) {
+                    alert('Please select a payment amount');
+                    return;
+                }
+                
+                const mobileNumber = mobileNumberInput.value.trim();
+                if (!mobileNumber || !/^03[0-9]{9}$/.test(mobileNumber)) {
+                    alert('Please enter a valid mobile number (e.g., 03123456789)');
+                    return;
+                }
+                
+                // Disable submit button
+                submitBtn.disabled = true;
+                btnText.textContent = 'Processing...';
+                
+                try {
+                    // In a real implementation, you would call your backend API here
+                    // For this demo, we'll simulate the API call
+                    const response = await simulateApiCall({
+                        amount: selectedAmount,
+                        mobileNumber: mobileNumber,
+                        email: document.getElementById('email').value.trim()
+                    });
+                    
+                    if (response.success) {
+                        // Show OTP modal
+                        otpModal.classList.add('active');
+                    } else {
+                        alert('Payment initiation failed: ' + (response.message || 'Unknown error'));
+                    }
+                } catch (error) {
+                    alert('An error occurred: ' + error.message);
+                } finally {
+                    submitBtn.disabled = false;
+                    btnText.textContent = 'Proceed to Payment';
+                }
+            });
+            
+            // OTP Verification
+            verifyBtn.addEventListener('click', async function() {
+                const otp = otpInput.value.trim();
+                
+                if (!otp || !/^[0-9]{5}$/.test(otp)) {
+                    otpStatus.textContent = 'Please enter a valid 5-digit OTP';
+                    otpStatus.className = 'status-message error';
+                    return;
+                }
+                
+                verifyBtn.disabled = true;
+                verifyBtn.innerHTML = '<div class="loading"></div> Verifying...';
+                
+                try {
+                    // Simulate OTP verification
+                    const response = await simulateOtpVerification(otp);
+                    
+                    if (response.success) {
+                        otpStatus.textContent = 'Payment successful! Thank you.';
+                        otpStatus.className = 'status-message success';
+                        
+                        // Reset form after 3 seconds
+                        setTimeout(() => {
+                            otpModal.classList.remove('active');
+                            paymentForm.reset();
+                            paymentOptions.forEach(opt => opt.classList.remove('selected'));
+                            selectedAmountInput.value = '';
+                            otpInput.value = '';
+                            otpStatus.textContent = '';
+                            otpStatus.className = 'status-message';
+                        }, 3000);
+                    } else {
+                        otpStatus.textContent = response.message || 'OTP verification failed';
+                        otpStatus.className = 'status-message error';
+                    }
+                } catch (error) {
+                    otpStatus.textContent = 'An error occurred: ' + error.message;
+                    otpStatus.className = 'status-message error';
+                } finally {
+                    verifyBtn.disabled = false;
+                    verifyBtn.innerHTML = 'Verify Payment';
+                }
+            });
+            
+            // Resend OTP
+            resendBtn.addEventListener('click', async function() {
+                resendBtn.disabled = true;
+                resendBtn.innerHTML = '<div class="loading"></div> Sending...';
+                otpStatus.textContent = '';
+                otpStatus.className = 'status-message';
+                
+                try {
+                    // Simulate resend OTP
+                    const response = await simulateResendOtp();
+                    
+                    if (response.success) {
+                        otpStatus.textContent = 'New OTP sent to your mobile';
+                        otpStatus.className = 'status-message success';
+                    } else {
+                        otpStatus.textContent = response.message || 'Failed to resend OTP';
+                        otpStatus.className = 'status-message error';
+                    }
+                } catch (error) {
+                    otpStatus.textContent = 'An error occurred: ' + error.message;
+                    otpStatus.className = 'status-message error';
+                } finally {
+                    setTimeout(() => {
+                        resendBtn.disabled = false;
+                        resendBtn.innerHTML = 'Resend OTP';
+                    }, 2000);
+                }
+            });
+            
+            // Close modal when clicking outside
+            otpModal.addEventListener('click', function(e) {
+                if (e.target === otpModal) {
+                    otpModal.classList.remove('active');
+                }
+            });
+            
+            // Helper functions to simulate API calls
+            function simulateApiCall(data) {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve({
+                            success: true,
+                            message: 'OTP sent to your mobile',
+                            transactionId: 'TXN' + Math.floor(Math.random() * 1000000)
+                        });
+                    }, 1500);
+                });
+            }
+            
+            function simulateOtpVerification(otp) {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        // Simulate 80% success rate
+                        const isSuccess = Math.random() < 0.8;
+                        
+                        if (isSuccess) {
+                            resolve({
+                                success: true,
+                                message: 'Payment processed successfully'
+                            });
+                        } else {
+                            resolve({
+                                success: false,
+                                message: 'Invalid OTP. Please try again.'
+                            });
+                        }
+                    }, 2000);
+                });
+            }
+            
+            function simulateResendOtp() {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve({
+                            success: true,
+                            message: 'OTP resent successfully'
+                        });
+                    }, 1500);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
