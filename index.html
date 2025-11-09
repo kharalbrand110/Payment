@@ -1,528 +1,478 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ur" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NADRA Data Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KHARAL | کھرل ہسٹری</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Global Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            touch-action: pan-y;
         }
-        
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: fixed;
+        }
+
         body {
-            background-color: #1a1a1a;
-            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow: hidden;
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+
+        /* Disable Zooming */
+        input, textarea, select {
+            font-size: 16px !important;
+            transform: scale(1);
         }
-        
+
         /* Splash Screen */
-        .splash-screen {
+        #splash {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #1a1a1a;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d1b0e 50%, #1a1a1a 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 9999;
+            transition: opacity 0.8s ease-in-out;
         }
-        
+
         .splash-logo {
-            width: 200px;
-            height: 200px;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/NADRA_logo.svg/1200px-NADRA_logo.svg.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            margin-bottom: 20px;
-        }
-        
-        .splash-loader {
-            width: 200px;
-            height: 5px;
-            background-color: #333;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        
-        .splash-progress {
-            height: 100%;
-            width: 0%;
-            background-color: #0066cc;
-            animation: load 5s forwards;
-        }
-        
-        @keyframes load {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
-        
-        /* Key Page */
-        .key-page {
-            display: none;
-            text-align: center;
-            padding: 50px 20px;
-        }
-        
-        .key-form {
-            background-color: #2a2a2a;
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 500px;
-            margin: 0 auto;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-        
-        .key-form h2 {
-            margin-bottom: 20px;
-            color: #0066cc;
-        }
-        
-        .key-input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            background-color: #333;
-            border: 1px solid #444;
-            border-radius: 5px;
-            color: white;
-            font-size: 16px;
-        }
-        
-        .submit-btn {
-            background-color: #0066cc;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-        
-        .submit-btn:hover {
-            background-color: #0055aa;
-        }
-        
-        /* Main Portal */
-        .portal {
-            display: none;
-        }
-        
-        .header {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8B4513, #D2691E);
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid #333;
+            margin-bottom: 25px;
+            box-shadow: 0 0 30px rgba(210, 105, 30, 0.4);
+        }
+
+        .splash-logo img {
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .splash-text {
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #D2691E, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(210, 105, 30, 0.5);
+            font-family: 'Arial', sans-serif;
+            letter-spacing: 1px;
             margin-bottom: 30px;
         }
-        
-        .logo {
-            width: 150px;
-            height: 60px;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/NADRA_logo.svg/1200px-NADRA_logo.svg.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: left center;
-        }
-        
-        .nav {
+
+        /* Facebook Style Loading */
+        .fb-loading {
             display: flex;
-            gap: 15px;
+            align-items: center;
+            gap: 8px;
         }
-        
-        .nav-btn {
-            background-color: #333;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
+
+        .loading-dots {
+            display: flex;
+            gap: 4px;
         }
-        
-        .nav-btn:hover {
-            background-color: #444;
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #D2691E;
+            animation: fbLoading 1.4s ease-in-out infinite both;
         }
-        
-        .services {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+        .dot:nth-child(3) { animation-delay: 0s; }
+
+        @keyframes fbLoading {
+            0%, 80%, 100% { 
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% { 
+                transform: scale(1.2);
+                opacity: 1;
+            }
         }
-        
-        .service-card {
-            background-color: #2a2a2a;
-            border-radius: 8px;
-            padding: 20px;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .service-icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-            color: #0066cc;
-        }
-        
-        .service-title {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-        
-        .service-desc {
+
+        .loading-text {
+            color: #ccc;
             font-size: 14px;
-            color: #aaa;
+            font-weight: normal;
         }
-        
-        .footer {
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid #333;
-            text-align: center;
-            color: #777;
-            font-size: 14px;
-        }
-        
-        /* Modal */
-        .modal {
-            display: none;
+
+        /* Notification Bar */
+        .notification-bar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal-content {
-            background-color: #2a2a2a;
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 800px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        
-        .modal-header {
-            display: flex;
+            background: linear-gradient(90deg, #8B4513, #D2691E);
+            color: white;
+            padding: 12px 20px;
+            display: none;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
-        
-        .modal-title {
-            font-size: 24px;
-            color: #0066cc;
+
+        .notification-icon {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        
-        .close-modal {
-            background: none;
+
+        .notification-badge {
+            background: #ff4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            animation: bounce 2s infinite;
+        }
+
+        .developer-btn {
+            background: rgba(255,255,255,0.2);
             border: none;
-            color: #aaa;
-            font-size: 24px;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Main Content */
+        #main-content {
+            display: none;
+            margin-top: 60px;
+            padding: 20px;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .heroes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .hero-card {
+            background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            border: 1px solid #333;
+            transition: all 0.3s ease;
             cursor: pointer;
         }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            color: #ccc;
-        }
-        
-        .form-input {
+
+        .hero-image {
             width: 100%;
-            padding: 10px;
-            background-color: #333;
-            border: 1px solid #444;
-            border-radius: 5px;
-            color: white;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 2px solid #D2691E;
         }
-        
-        .form-submit {
-            background-color: #0066cc;
+
+        .hero-content {
+            padding: 15px;
+        }
+
+        .hero-name {
+            color: #D2691E;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .hero-intro {
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.5;
+            text-align: justify;
+        }
+
+        .copy-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #8B4513, #D2691E);
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 5px;
+            padding: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
+            margin-top: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
         }
-        
-        .form-submit:hover {
-            background-color: #0055aa;
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 12px;
+            margin-top: 40px;
+            border-top: 1px solid #333;
+        }
+
+        /* Animations */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+            60% { transform: translateY(-3px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .splash-logo {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .splash-text {
+                font-size: 24px;
+            }
+            
+            .heroes-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Smooth transitions */
+        .fade-in {
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        /* Disable double tap zoom */
+        * {
+            -webkit-touch-callout: none;
+            -webkit-text-size-adjust: none;
+            -webkit-tap-highlight-color: transparent;
         }
     </style>
 </head>
 <body>
     <!-- Splash Screen -->
-    <div class="splash-screen" id="splashScreen">
-        <div class="splash-logo"></div>
-        <div class="splash-loader">
-            <div class="splash-progress"></div>
+    <div id="splash">
+        <div class="splash-logo">
+            <!-- Replace with your image -->
+            <img src="https://i.postimg.cc/8cZHpZTk/20251102-202513.png/100x100/8B4513/FFFFFF?text=KH" alt="Kharal Logo">
+        </div>
+        <div class="splash-text">KHARAL HISTORY</div>
+        <div class="fb-loading">
+            <div class="loading-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <div class="loading-text">𒊹︎︎︎ 𒊹︎︎︎𒊹︎︎︎ 𒊹︎︎︎𒊹︎︎︎𒊹︎︎︎ 𒊹︎︎︎𒊹︎︎︎𒊹︎︎︎𒊹︎︎︎</div>
         </div>
     </div>
-    
-    <!-- Key Page -->
-    <div class="container key-page" id="keyPage">
-        <div class="key-form">
-            <h2>NADRA Data Portal Access</h2>
-            <p>Enter your secure access key to continue</p>
-            <input type="password" class="key-input" id="accessKey" placeholder="Enter Access Key">
-            <button class="submit-btn" id="submitKey">Submit</button>
+
+    <!-- Notification Bar -->
+    <div class="notification-bar">
+        <div class="notification-icon">
+            <i class="fas fa-bell"></i>
+            <span>KHARAL</span>
+            <div class="notification-badge" id="notificationBadge">1</div>
         </div>
+        <button class="developer-btn" onclick="contactDeveloper()">
+            <i class="fas fa-phone"></i> ڈویلپر
+        </button>
     </div>
-    
-    <!-- Main Portal -->
-    <div class="container portal" id="portal">
-        <div class="header">
-            <div class="logo"></div>
-            <div class="nav">
-                <button class="nav-btn">Home</button>
-                <button class="nav-btn">About</button>
-                <button class="nav-btn">Help</button>
-                <button class="nav-btn" id="logoutBtn">Logout</button>
-            </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <div class="heroes-grid" id="heroes-container">
+            <!-- Heroes will be loaded here from Firebase -->
         </div>
-        
-        <h1>NADRA Data Services</h1>
-        <p>Select a service to continue</p>
-        
-        <div class="services">
-            <!-- Service Cards -->
-            <div class="service-card" data-service="new-cnic">
-                <div class="service-icon">🆔</div>
-                <h3 class="service-title">Create New CNIC</h3>
-                <p class="service-desc">Apply for a new Computerized National Identity Card</p>
-            </div>
-            
-            <div class="service-card" data-service="b-form">
-                <div class="service-icon">👶</div>
-                <h3 class="service-title">Create B-Form</h3>
-                <p class="service-desc">Registration form for children under 18 years</p>
-            </div>
-            
-            <div class="service-card" data-service="birth-certificate">
-                <div class="service-icon">🎂</div>
-                <h3 class="service-title">Create Birth Certificate</h3>
-                <p class="service-desc">Register and obtain a birth certificate</p>
-            </div>
-            
-            <div class="service-card" data-service="death-certificate">
-                <div class="service-icon">⚰️</div>
-                <h3 class="service-title">Create Death Certificate</h3>
-                <p class="service-desc">Register and obtain a death certificate</p>
-            </div>
-            
-            <div class="service-card" data-service="family-tree">
-                <div class="service-icon">👨‍👩‍👧‍👦</div>
-                <h3 class="service-title">Check Family Tree</h3>
-                <p class="service-desc">View your family registration details</p>
-            </div>
-            
-            <div class="service-card" data-service="sim-owner">
-                <div class="service-icon">📱</div>
-                <h3 class="service-title">SIM Owner Info</h3>
-                <p class="service-desc">Check registered owner of a mobile number</p>
-            </div>
-            
-            <div class="service-card" data-service="sim-activation">
-                <div class="service-icon">✅</div>
-                <h3 class="service-title">SIM Activation</h3>
-                <p class="service-desc">Activate a new SIM card with your CNIC</p>
-            </div>
-            
-            <div class="service-card" data-service="sim-blocked">
-                <div class="service-icon">❌</div>
-                <h3 class="service-title">SIM Blocked</h3>
-                <p class="service-desc">Check or report blocked SIM cards</p>
-            </div>
-            
-            <div class="service-card" data-service="cnic-check">
-                <div class="service-icon">🔍</div>
-                <h3 class="service-title">CNIC Verification</h3>
-                <p class="service-desc">Verify the authenticity of a CNIC</p>
-            </div>
-            
-            <div class="service-card" data-service="cnic-color">
-                <div class="service-icon">🖨️</div>
-                <h3 class="service-title">CNIC Color Copy</h3>
-                <p class="service-desc">Request a color copy of your CNIC</p>
-            </div>
-            
-            <div class="service-card" data-service="cnic-original">
-                <div class="service-icon">📄</div>
-                <h3 class="service-title">CNIC Original Copy</h3>
-                <p class="service-desc">Request an original copy of your CNIC</p>
-            </div>
-            
-            <div class="service-card" data-service="benazir-support">
-                <div class="service-icon">💰</div>
-                <h3 class="service-title">Benazir Income Support</h3>
-                <p class="service-desc">Check eligibility and status for BISP</p>
-            </div>
-        </div>
-        
+
         <div class="footer">
-            <p>© 2023 NADRA - National Database and Registration Authority</p>
-            <p>Government of Pakistan</p>
+            <p>© 2024 KHARAL HISTORY | All rights reserved</p>
+            <p>Powered by KHARAL MODS</p>
         </div>
     </div>
-    
-    <!-- Modals for each service -->
-    <div class="modal" id="newCnicModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Create New CNIC</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="newCnicForm">
-                <div class="form-group">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Father's Name</label>
-                    <input type="text" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Date of Birth</label>
-                    <input type="date" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Gender</label>
-                    <select class="form-input" required>
-                        <option value="">Select Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Address</label>
-                    <textarea class="form-input" rows="3" required></textarea>
-                </div>
-                <button type="submit" class="form-submit">Submit Application</button>
-            </form>
-        </div>
-    </div>
-    
-    <div class="modal" id="bFormModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Create B-Form</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="bFormForm">
-                <div class="form-group">
-                    <label class="form-label">Child's Name</label>
-                    <input type="text" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Father's Name</label>
-                    <input type="text" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Mother's Name</label>
-                    <input type="text" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Date of Birth</label>
-                    <input type="date" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Place of Birth</label>
-                    <input type="text" class="form-input" required>
-                </div>
-                <button type="submit" class="form-submit">Submit Application</button>
-            </form>
-        </div>
-    </div>
-    
-    <!-- Add similar modals for other services -->
-    
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
-        // Simulate splash screen loading
-        setTimeout(() => {
-            document.getElementById('splashScreen').style.display = 'none';
-            document.getElementById('keyPage').style.display = 'block';
-        }, 5000);
-        
-        // Key submission
-        document.getElementById('submitKey').addEventListener('click', () => {
-            const key = document.getElementById('accessKey').value;
-            // In a real application, you would validate the key with a server
-            if (key === 'NADRA123') { // Demo key
-                document.getElementById('keyPage').style.display = 'none';
-                document.getElementById('portal').style.display = 'block';
-            } else {
-                alert('Invalid access key. Please try again.');
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBIwUsxyeQmoeT2ctH2LxqRU__dhqp9s94",
+            authDomain: "kharal-b47b6.firebaseapp.com",
+            databaseURL: "https://kharal-b47b6-default-rtdb.firebaseio.com",
+            projectId: "kharal-b47b6",
+            storageBucket: "kharal-b47b6.appspot.com",
+            messagingSenderId: "528214841740",
+            appId: "1:528214841740:web:e394a574ef2ba2c16e9ea9"
+        };
+
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const database = firebase.database();
+
+        // Prevent zooming
+        document.addEventListener('touchstart', function(e) {
+            if (e.touches.length > 1) {
+                e.preventDefault();
             }
         });
-        
-        // Logout button
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            document.getElementById('portal').style.display = 'none';
-            document.getElementById('keyPage').style.display = 'block';
-            document.getElementById('accessKey').value = '';
+
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
         });
-        
-        // Service card click handlers
-        document.querySelectorAll('.service-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const service = card.getAttribute('data-service');
-                // In a real application, you would have different modals for each service
-                if (service === 'new-cnic') {
-                    document.getElementById('newCnicModal').style.display = 'flex';
-                } else if (service === 'b-form') {
-                    document.getElementById('bFormModal').style.display = 'flex';
+
+        document.addEventListener('gesturechange', function(e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('gestureend', function(e) {
+            e.preventDefault();
+        });
+
+        // Splash Screen Timer - 4 seconds
+        setTimeout(function() {
+            document.getElementById('splash').style.opacity = '0';
+            setTimeout(function() {
+                document.getElementById('splash').style.display = 'none';
+                document.querySelector('.notification-bar').style.display = 'flex';
+                document.getElementById('main-content').style.display = 'block';
+                loadHeroes();
+                showNotification();
+            }, 800);
+        }, 4000);
+
+        // Load Heroes from Firebase
+        function loadHeroes() {
+            const heroesRef = database.ref('heroes');
+            heroesRef.on('value', (snapshot) => {
+                const heroes = snapshot.val();
+                const container = document.getElementById('heroes-container');
+                
+                container.innerHTML = '';
+                
+                if (heroes) {
+                    Object.keys(heroes).forEach(key => {
+                        const hero = heroes[key];
+                        
+                        const heroCard = `
+                            <div class="hero-card fade-in">
+                                <img src="${hero.image}" alt="${hero.name}" class="hero-image" 
+                                     onerror="this.src='https://via.placeholder.com/300x200/333333/FFFFFF?text=KHARAL+HERO'">
+                                <div class="hero-content">
+                                    <h3 class="hero-name">${hero.name}</h3>
+                                    <p class="hero-intro">${hero.intro}</p>
+                                    <button class="copy-btn" onclick="copyIntro(this)">
+                                        <i class="fas fa-copy"></i> کاپی کریں
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        container.innerHTML += heroCard;
+                    });
                 } else {
-                    alert(`Service: ${service} would open here in a real application`);
+                    container.innerHTML = `
+                        <div style="grid-column:1/-1; text-align:center; padding:40px; color:#666;">
+                            <i class="fas fa-users" style="font-size:48px; margin-bottom:20px;"></i>
+                            <p>کوئی ہیرو موجود نہیں ہے۔ ایڈمن پینل سے ہیرو شامل کریں۔</p>
+                        </div>
+                    `;
                 }
             });
-        });
-        
-        // Close modal buttons
-        document.querySelectorAll('.close-modal').forEach(btn => {
-            btn.addEventListener('click', () => {
-                btn.closest('.modal').style.display = 'none';
+        }
+
+        // Show Notification
+        function showNotification() {
+            const badge = document.getElementById('notificationBadge');
+            badge.style.display = 'flex';
+            
+            // Simulate new content notification
+            setTimeout(() => {
+                badge.textContent = '2';
+                badge.style.animation = 'bounce 1s';
+            }, 3000);
+        }
+
+        // Contact Developer - WhatsApp
+        function contactDeveloper() {
+            const phoneNumber = "923292359952";
+            const message = "Hello! I'm interested in KHARAL HISTORY app.";
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Copy Intro Text
+        function copyIntro(button) {
+            const introText = button.previousElementSibling.textContent;
+            const heroName = button.parentElement.querySelector('.hero-name').textContent;
+            const fullText = `${heroName}\n\n${introText}`;
+            
+            navigator.clipboard.writeText(fullText).then(function() {
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i> کاپی ہوگیا!';
+                button.style.background = 'green';
+                
+                setTimeout(function() {
+                    button.innerHTML = originalText;
+                    button.style.background = '';
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Copy error: ', err);
+                alert('کاپی کرنے میں مسئلہ ہوا، براہ کرم دوبارہ کوشش کریں۔');
             });
-        });
-        
-        // Close modal when clicking outside
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
+        }
+
+        // Detect new content and show notification
+        database.ref('heroes').on('child_added', function(snapshot) {
+            const badge = document.getElementById('notificationBadge');
+            if (badge) {
+                const currentCount = parseInt(badge.textContent) || 0;
+                badge.textContent = currentCount + 1;
+                badge.style.animation = 'bounce 1s';
+            }
         });
     </script>
 </body>
