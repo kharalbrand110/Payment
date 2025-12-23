@@ -1,1847 +1,479 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KHARAL-MODS | Premium Tool Suite</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        :root {
-            --primary: #0a0a12;
-            --secondary: #151521;
-            --accent: #7e57c2;
-            --accent-dark: #5e35b1;
-            --accent-light: #b39ddb;
-            --text: #e0e0e0;
-            --text-secondary: #a0a0b0;
-            --card-bg: #1c1c2a;
-            --card-hover: #252538;
-            --success: #4caf50;
-            --warning: #ff9800;
-            --danger: #f44336;
-            --glow: 0 0 20px rgba(126, 87, 194, 0.4);
-            --shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        html, body {
-            height: 100%;
-            overflow-x: hidden;
-            touch-action: manipulation;
-        }
-
-        body {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(126, 87, 194, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(94, 53, 177, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(179, 157, 219, 0.05) 0%, transparent 50%);
-            z-index: -1;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Enhanced Splash Screen */
-        #splashScreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.8s ease-out;
-        }
-
-        .splash-content {
-            text-align: center;
-            position: relative;
-        }
-
-        .splash-logo {
-            width: 140px;
-            height: 140px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            border-radius: 28px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto 30px;
-            box-shadow: var(--glow);
-            animation: float 3s ease-in-out infinite;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .splash-logo::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            transform: rotate(45deg);
-            animation: shine 3s infinite;
-        }
-
-        .splash-logo i {
-            font-size: 60px;
-            color: white;
-            z-index: 1;
-        }
-
-        .splash-title {
-            font-size: 3.5rem;
-            font-weight: 800;
-            background: linear-gradient(to right, var(--accent), var(--accent-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-            letter-spacing: -1px;
-        }
-
-        .splash-subtitle {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            margin-bottom: 40px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-
-        .loading-container {
-            width: 300px;
-            margin: 0 auto;
-        }
-
-        .loading-text {
-            text-align: center;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
-            font-weight: 500;
-        }
-
-        .loading-bar {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .loading-progress {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(to right, var(--accent), var(--accent-dark));
-            border-radius: 10px;
-            transition: width 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .loading-progress::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            animation: loadingShine 1.5s infinite;
-        }
-
-        /* Enhanced Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            margin-bottom: 30px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            border-radius: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: var(--glow);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .logo-icon::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            transform: rotate(45deg);
-        }
-
-        .logo-icon i {
-            font-size: 24px;
-            color: white;
-            z-index: 1;
-        }
-
-        .logo-text {
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: linear-gradient(to right, var(--accent), var(--accent-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 25px;
-        }
-
-        .nav-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            position: relative;
-            font-size: 0.95rem;
-            padding: 8px 0;
-        }
-
-        .nav-link:hover {
-            color: var(--text);
-        }
-
-        .nav-link.active {
-            color: var(--accent);
-        }
-
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--accent);
-            border-radius: 2px;
-        }
-
-        .user-actions {
-            display: flex;
-            gap: 15px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-        }
-
-        .btn-primary {
-            background: linear-gradient(to right, var(--accent), var(--accent-dark));
-            color: white;
-            box-shadow: 0 4px 15px rgba(126, 87, 194, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(126, 87, 194, 0.6);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.08);
-            color: var(--text);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.12);
-        }
-
-        /* Enhanced Follow Card */
-        .follow-state {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 30px;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .follow-state::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(to right, var(--accent), var(--accent-dark));
-        }
-
-        .follow-message {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .follow-text {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 25px;
-            color: var(--text);
-            letter-spacing: -0.5px;
-        }
-
-        .follow-actions {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .neon-button {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 14px 28px;
-            border-radius: 12px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .neon-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .neon-button:hover::before {
-            left: 100%;
-        }
-
-        .neon-whatsapp {
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            color: white;
-        }
-
-        .neon-youtube {
-            background: linear-gradient(135deg, #FF0000, #CC0000);
-            color: white;
-        }
-
-        .neon-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .status-badges {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .badge {
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .badge.off {
-            background: rgba(255, 255, 255, 0.08);
-            color: var(--text-secondary);
-        }
-
-        .badge.on {
-            background: var(--success);
-            color: white;
-        }
-
-        .back-button {
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            color: white;
-            border: none;
-            padding: 14px 32px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(126, 87, 194, 0.4);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .back-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(126, 87, 194, 0.6);
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        /* Enhanced Tool State */
-        .tool-state {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .tool-state::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(to right, var(--accent), var(--accent-dark));
-        }
-
-        .section {
-            margin-bottom: 40px;
-        }
-
-        .section-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 30px;
-            color: var(--text);
-            position: relative;
-            padding-bottom: 12px;
-            letter-spacing: -0.5px;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 70px;
-            height: 4px;
-            background: linear-gradient(to right, var(--accent), var(--accent-dark));
-            border-radius: 2px;
-        }
-
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .tool-option {
-            background: var(--secondary);
-            border-radius: 16px;
-            padding: 24px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .tool-option::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(126, 87, 194, 0.05), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .tool-option:hover {
-            transform: translateY(-5px);
-            background: var(--card-hover);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .tool-option:hover::before {
-            opacity: 1;
-        }
-
-        .tool-header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            margin-bottom: 16px;
-        }
-
-        .tool-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            border-radius: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: var(--glow);
-            flex-shrink: 0;
-        }
-
-        .tool-icon i {
-            font-size: 22px;
-            color: white;
-        }
-
-        .tool-badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .tool-badge.popular {
-            background: var(--accent);
-            color: white;
-        }
-
-        .tool-badge.new {
-            background: var(--success);
-            color: white;
-        }
-
-        .tool-badge.pro {
-            background: linear-gradient(135deg, #ff9d4d, #ff6b35);
-            color: white;
-        }
-
-        .tool-badge.hot {
-            background: linear-gradient(135deg, #f44336, #d32f2f);
-            color: white;
-        }
-
-        .tool-name {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--text);
-            line-height: 1.3;
-        }
-
-        .tool-description {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-            line-height: 1.5;
-            flex-grow: 1;
-        }
-
-        .tool-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: auto;
-        }
-
-        .tool-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        .tool-size {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            background: rgba(255, 255, 255, 0.08);
-            padding: 4px 10px;
-            border-radius: 12px;
-        }
-
-        /* Enhanced Funny Popup */
-        .funny-popup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 10, 18, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(5px);
-        }
-
-        .funny-box {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            max-width: 450px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .funny-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(to right, var(--accent), var(--accent-dark));
-        }
-
-        .funny-text {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 25px;
-            color: var(--accent);
-            line-height: 1.3;
-        }
-
-        .funny-btn {
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            color: white;
-            border: none;
-            padding: 14px 32px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(126, 87, 194, 0.4);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .funny-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(126, 87, 194, 0.6);
-        }
-
-        /* Enhanced Footer */
-        footer {
-            margin-top: 60px;
-            padding: 40px 0 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            text-align: center;
-            color: var(--text-secondary);
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-
-        .footer-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color 0.3s;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .footer-link:hover {
-            color: var(--text);
-        }
-
-        .copyright {
-            font-size: 0.85rem;
-            opacity: 0.7;
-        }
-
-        /* Animations */
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        @keyframes shine {
-            0% {
-                transform: translateX(-100%) translateY(-100%) rotate(45deg);
-            }
-            100% {
-                transform: translateX(200%) translateY(200%) rotate(45deg);
-            }
-        }
-
-        @keyframes loadingShine {
-            0% {
-                left: -100%;
-            }
-            100% {
-                left: 100%;
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .tools-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links, .user-actions {
-                display: none;
-            }
-            
-            .tools-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .follow-actions {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .splash-title {
-                font-size: 2.8rem;
-            }
-            
-            .follow-text {
-                font-size: 1.5rem;
-            }
-            
-            .section-title {
-                font-size: 1.7rem;
-            }
-        }
-
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--secondary);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-dark);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KHARAL-MODS OTP</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(90deg, #FFD700, #8E2DE2);
+      --primary-color: #FFD700;
+      --bg-dark: #0b0b0d;
+      --bg-light: #18181b;
+      --bg-lighter: #242427;
+      --border-color: #333;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+
+    .table-container { max-height: 70vh; overflow-y: auto; }
+
+    /* VIP gold shimmer */
+    .vip-title {
+      font-weight: 900;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, #FFD700, #FFAA00, #8E2DE2, #4A00E0, #FFD700);
+      background-size: 400% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 7s linear infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 400% 50%; }
+    }
+
+    .btn-gradient {
+      background: var(--primary-gradient);
+      color: #000;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .btn-gradient:hover { opacity: 0.9; }
+
+    .spinning { animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    .modal-backdrop.show { display: flex; }
+    .modal-content {
+      background: var(--bg-light);
+      border: 1px solid var(--border-color);
+      border-top: 4px solid var(--primary-color);
+      border-radius: 12px;
+      padding: 20px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Poppins','sans-serif'] },
+          colors: {
+            'primary-color': 'var(--primary-color)',
+            'bg-dark': 'var(--bg-dark)',
+            'bg-light': 'var(--bg-light)',
+            'bg-lighter': 'var(--bg-lighter)',
+            'border-color': 'var(--border-color)',
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body>
-    <!-- Enhanced Splash Screen -->
-    <div id="splashScreen">
-        <div class="splash-content">
-            <div class="splash-logo">
-                <i class="fas fa-toolbox"></i>
-            </div>
-            <h1 class="splash-title">KHARAL-MODS</h1>
-            <p class="splash-subtitle">Premium Tool Suite • Professional Grade</p>
-            <div class="loading-container">
-                <div class="loading-text">Initializing secure environment...</div>
-                <div class="loading-bar">
-                    <div class="loading-progress" id="loadingProgress"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+<body class="bg-bg-dark text-gray-100 min-h-screen p-4 font-sans">
+  <div class="max-w-6xl mx-auto space-y-8">
 
-    <!-- Main Content -->
-    <div class="container" id="mainContent" style="display: none;">
-        <header>
-            <div class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-toolbox"></i>
-                </div>
-                <div class="logo-text">KHARAL-MODS</div>
-            </div>
-            <div class="nav-links">
-                <a href="#" class="nav-link active">Home</a>
-                <a href="#" class="nav-link">Tools</a>
-                <a href="#" class="nav-link">Features</a>
-                <a href="#" class="nav-link">Support</a>
-                <a href="#" class="nav-link">About</a>
-            </div>
-            <div class="user-actions">
-                <button class="btn btn-secondary">
-                    <i class="fas fa-user"></i> Login
-                </button>
-                <button class="btn btn-primary">
-                    <i class="fas fa-crown"></i> Get Pro
-                </button>
-            </div>
-        </header>
+    <!-- Header -->
+    <header class="flex flex-col sm:flex-row justify-between items-center py-4 border-b border-border-color gap-4">
+      <h1 class="text-3xl font-extrabold vip-title">
+        💫 KHARAL-MODS OFFICIAL  🖇️
+      </h1>
 
-        <!-- Enhanced Follow Card -->
-        <div class="follow-state" id="followState">
-            <div class="follow-message">
-                <div class="follow-text">
-                    FOLLOW AND JOIN TO UNLOCK THE TOOLS
-                </div>
+      <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto items-center">
+        <!-- Gemini API Key input (needed by JS) -->
+        <input id="geminiKey" type="password" placeholder="Enter Gemini API Key (optional for AI)"
+               class="w-full sm:w-60 bg-bg-light border border-border-color text-gray-200 text-sm rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-primary-color" />
 
-                <div class="follow-actions">
-                    <!-- WhatsApp follow (opens the real channel in new tab) -->
-                    <a id="whatsappFollowBtn" class="neon-button neon-whatsapp" href="https://chat.whatsapp.com/I72sXfi2QbeAIn3bLw7y6Q?mode=wwt" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-whatsapp"></i>
-                        Follow WhatsApp
-                    </a>
+        <select id="countrySelect"
+          class="w-full sm:w-auto bg-bg-light border border-border-color text-gray-200 text-sm rounded-lg focus:ring-primary-color focus:border-primary-color p-1.5">
+          <option value="random">Select Country</option>
+        </select>
 
-                    <!-- YouTube subscribe -->
-                    <a id="youtubeSubscribeBtn" class="neon-button neon-youtube" href="https://chat.whatsapp.com/I72sXfi2QbeAIn3bLw7y6Q?mode=wwtl" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-youtube"></i>
-                        JOIN GROUP
-                    </a>
-                </div>
-
-                <div class="status-badges" aria-hidden="true">
-                    <div id="whBadge" class="badge off"><i class="fas fa-times-circle"></i> WhatsApp: Not Joined</div>
-                    <div id="ytBadge" class="badge off"><i class="fas fa-times-circle"></i> YouTube: Not Joined</div>
-                </div>
-
-                <div style="margin-top:20px;">
-                    <button id="continueButton" class="back-button hidden" onclick="showTool()">
-                        <i class="fas fa-lock-open"></i> UNLOCK TOOLS
-                    </button>
-                </div>
-            </div>
-
-            <div id="followNotice" style="font-size:14px;color:#a0a0b0;margin-top:12px;text-align:center;">
-                (Click both buttons above after following to unlock all tools)
-            </div>
-        </div>
-
-        <!-- Enhanced Tool State - Hidden by default -->
-        <div class="tool-state" id="toolState" style="display: none;">
-            <div class="section">
-                <h2 class="section-title">KHARAL-MODS PREMIUM TOOLS</h2>
-                <div class="tools-grid" id="toolsContainer">
-                    <!-- Tools will be dynamically added here -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Enhanced Funny Popup -->
-        <div id="funnyPopup" class="funny-popup hidden">
-            <div class="funny-box">
-                <h2 class="funny-text">CHAL TARKEY 🤣<br>Parrrrrrr</h2>
-                <button class="funny-btn" onclick="closeFunnyPopup()">
-                    <i class="fas fa-laugh-squint"></i> OKAY 😭
-                </button>
-            </div>
-        </div>
-
-        <footer>
-            <div class="footer-links">
-                <a href="#" class="footer-link">Home</a>
-                <a href="#" class="footer-link">Tools</a>
-                <a href="#" class="footer-link">Privacy Policy</a>
-                <a href="#" class="footer-link">Terms of Service</a>
-                <a href="#" class="footer-link">Contact</a>
-            </div>
-            <div class="copyright">
-                &copy; 2023 KHARAL-MODS. All rights reserved. | Premium Tool Suite
-            </div>
-        </footer>
-    </div>
-
-    <script>
-        // All tools data with icons and descriptions
-        const toolsData = [
-            { name: "QURAN KAREEM", url: "https://tasleemalquran.com/read-quran-online-para-1-to-30/", icon: "book-quran", badge: "popular", description: "Complete Quran with translation and tafsir" },
-            { name: "MAKE GIRLFRIEND METHOD", url: "#", icon: "heart", badge: "new", description: "Advanced techniques for relationship building", funny: true },
-            { name: "GALLERY HACK", url: "https://www.mediafire.com/folder/dalu7a5g9dho6/GALLERY+HACK+BY+DARK+LEGEND+³³³", icon: "images", badge: "", description: "Access and manage gallery contents" },
-            { name: "CONTACTS HACK METHOD", url: "https://t.me/DARK_LEGEND_333/6", icon: "address-book", badge: "", description: "Advanced contact management techniques" },
-            { name: "LOGIN BYPASS", url: "https://www.mediafire.com/file/19p8rl42xc8j2rn/SOCIAL_MEDIA_ACCOUNT_LOGIN_BYPASS.mp4/file", icon: "user-lock", badge: "pro", description: "Advanced authentication bypass methods" },
-            { name: "CALL HISTORY HACK", url: "https://t.me/DARK_LEGEND_333/6", icon: "phone", badge: "", description: "Access and manage call logs" },
-            { name: "ANDROID RAT", url: "https://www.mediafire.com/folder/34gzh4baduo08/ALL+PHONE+DATA+HACK+BY+DARK+LEGEND", icon: "robot", badge: "pro", description: "Remote Administration Tool for Android" },
-            { name: "SCREEN HACK METHOD", url: "https://www.mediafire.com/file/x4vsx31a616ueeb/LIVE_SCREEN_HACK_BY_DARK_LEGEND.zip/file", icon: "desktop", badge: "", description: "Screen sharing and remote viewing" },
-            { name: "OTP HACK METHOD", url: "https://t.me/DARK_LEGEND_333/8", icon: "sms", badge: "hot", description: "Advanced OTP interception techniques" },
-            { name: "NOTIFY HACK METHOD", url: "https://www.mediafire.com/folder/t9wm9lwq71hij/NOTIFICATION+HACK+BY+DARK+LEGEND", icon: "bell", badge: "", description: "Notification access and management" },
-            { name: "ALL PHONE HACK", url: "https://www.mediafire.com/folder/34gzh4baduo08/ALL+PHONE+DATA+HACK+BY+DARK+LEGEND", icon: "mobile-alt", badge: "pro", description: "Complete phone data access solution" },
-            { name: "WHATSAPP BAN APK", url: "https://www.mediafire.com/file/3nlu40d77d91ma8/%25F0%259D%2597%2595%25F0%259D%2597%2594%25F0%259D%2597%25A1_%25F0%259D%2597%25A8%25F0%259D%2597%25A1%25F0%259D%2597%2595%25F0%259D%2597%2594%25F0%259D%2597%25A1_%25F0%259D%2597%2594%25F0%259D%2597%25A3%25F0%259D%2597%259E.apk/file", icon: "ban", badge: "", description: "WhatsApp account management tool" },
-            { name: "BUSSINESS API METHOD", url: "https://www.mediafire.com/file/ziqpkagdlh4hg8p/API-METHOD-POWER-BY-MANI.mp4/file", icon: "code", badge: "pro", description: "Business API integration techniques" },
-            { name: "WHATSAPP UNBAN APK", url: "https://www.mediafire.com/file/3nlu40d77d91ma8/%25F0%259D%2597%2595%25F0%259D%2597%2594%25F0%259D%2597%25A1_%25F0%259D%2597%25A8%25F0%259D%2597%25A1%25F0%259D%2597%2595%25F0%259D%2597%2594%25F0%259D%2597%25A1_%25F0%259D%2597%2594%25F0%259D%2597%25A3%25F0%259D%2597%259E.apk/file", icon: "check-circle", badge: "", description: "WhatsApp unban utility" },
-            { name: "WHATSAPP HACK 1", url: "https://www.mediafire.com/file/egi0mrk7mvsnwdf/WHATSAPP_HACK_BY_DARK_LEGEND.zip/file", icon: "whatsapp", badge: "hot", description: "WhatsApp account access method 1" },
-            { name: "WHATSAPP HACK 2", url: "https://www.mediafire.com/file/t9c17wlzlw5fptc/WHATSAPP_HACK_THROUGH_TERMUX_-__BY_DARK_LEGEND.mp4/file", icon: "whatsapp", badge: "", description: "WhatsApp account access method 2" },
-            { name: "WHATSAPP HACK 3", url: "https://www.mediafire.com/file/5t78ojxf3gfnb88/WHATSAPP_HACK_METHOD_03_BY_DARK_LEGEND.mp4/file", icon: "whatsapp", badge: "", description: "WhatsApp account access method 3" },
-            { name: "WIFI HACKING COURSE", url: "https://mega.nz/folder/ypgg3QJS#GmKAHx44BgENWi-ZBKNnOA", icon: "wifi", badge: "pro", description: "Complete WiFi security course" },
-            { name: "OTP LOCK 01", url: "https://www.mediafire.com/file/8cyvms9oyfn32on/OTP_LOCK_METHOD_BY_DARK_LEGEND.mp4/file", icon: "lock", badge: "", description: "OTP-based locking mechanism" },
-            { name: "OTP LOCK 02", url: "https://youtu.be/q5oBYMcA96o?si=Z0Vw718vN-EqQ8QD", icon: "lock", badge: "", description: "Advanced OTP locking system" },
-            { name: "DEEP WEB COURSE", url: "https://mega.nz/folder/Z5szVLDK#RugBixrFIVJ2H5OE3gbEUQ", icon: "mask", badge: "pro", description: "Deep web exploration guide" },
-            { name: "CAMERA HACK APK", url: "https://www.mediafire.com/file/87a5n94qurl0e3i/CAMERA_HACK_TRHOUGH_APK_BY_DARK_LEGEND.mp4/file", icon: "camera", badge: "hot", description: "Camera access and control utility" },
-            { name: "CAM HACK 02", url: "https://www.mediafire.com/file/1tpnp7fzbgh06fj/CAMERA_HACK_BY_DARK_LEGEND_THROUGH_A_LINK_%255BBDD6BE7%255D.mp4/file", icon: "camera", badge: "", description: "Alternative camera access method" },
-            { name: "TERMUX WORKING APK", url: "https://www.mediafire.com/file/nqm774ajds09xj0/TERMUX_APK_WORKING_%2528DARK_LEGEND%2529.apk/file", icon: "terminal", badge: "", description: "Enhanced Termux application" },
-            { name: "WHATSAPP BOT", url: "https://youtu.be/RJiRjwlZgKI?si=uVZN3hmfNQBMECdG", icon: "robot", badge: "new", description: "Automated WhatsApp bot system" },
-            { name: "SIM DATA 01", url: "https://simsownerdetails.com/", icon: "sim-card", badge: "", description: "SIM card information access" },
-            { name: "SIM DATA 02", url: "https://pak-sim-db-by-dark-legend-333.vercel.app/", icon: "sim-card", badge: "", description: "Alternative SIM data access" },
-            { name: "SIM DATA APK", url: "https://www.mediafire.com/file/nqm774ajds09xj0/TERMUX_APK_WORKING_%2528DARK_LEGEND%2529.apk/file", icon: "sim-card", badge: "", description: "SIM data mobile application" },
-            { name: "+31 FAKE NUMBER", url: "https://www.mediafire.com/file/joaa1oio0zphkf4/FAKE_NUMBERS_TRICK_BY_DARK_LEGEND.mp4/file", icon: "phone-square", badge: "", description: "+31 country code fake numbers" },
-            { name: "+48 FAKE NUMBER", url: "https://youtu.be/N5ZfGcI-gEI?si=ax0Y3QOR9yRPwL5s", icon: "phone-square", badge: "", description: "+48 country code fake numbers" },
-            { name: "BAN CHECKER", url: "https://www.mediafire.com/file/ksknfpulu8av2p3/DARK_LEGEND_BAN_CHACKER.apk/file", icon: "search", badge: "", description: "Account ban status checker" },
-            { name: "FAKE NO. WEBSITES", url: "https://www.mediafire.com/file/qmz5reqkrdyq8de/FAKE_NUMBERS_WEBSITES_BY_DARK_LEGEND.txt/file", icon: "globe", badge: "new", description: "Collection of fake number websites" },
-            { name: "TIKTOK LIVE APK", url: "https://www.mediafire.com/file/4x3h0l3zsm4zfwf/TIKTOK_LIVE_APK_BY_DARK_LEGEND_333.apk/file", icon: "video", badge: "", description: "Enhanced TikTok live features" },
-            { name: "FAKE CHAT WHATSAPP", url: "https://www.mediafire.com/file/3np600u54d84ojn/ALM2_FAKE_CHAT_WHATSAPP_BY_DARK_LEGEND.apk/file", icon: "comment-alt", badge: "", description: "WhatsApp fake chat generator" },
-            { name: "INSHOT PRO APK", url: "https://www.mediafire.com/file/5q6ugwbs6bj2tzx/INSHOT_PRO_NEW_VERSION_BY_DARK_LEGEND.apk/file", icon: "video", badge: "popular", description: "Premium video editing app" },
-            { name: "ALIGHT MOTION PRO", url: "https://www.mediafire.com/file/805h1uzar69ob8f/ALIGHT_MOTION_PRO_BY_DARK_LEGEND.apk/file", icon: "film", badge: "popular", description: "Professional motion graphics tool" },
-            { name: "YOUTUBE PRO APK", url: "https://www.mediafire.com/file/kb0eybadipggm8b/YOUTUBE_PREMIUM_BY_DARK_LEGEND.apk/file", icon: "youtube", badge: "popular", description: "YouTube premium features unlocked" },
-            { name: "CAPCUT PRO APK", url: "https://www.mediafire.com/file/3hjvebbjafgr4mr/CAPCUT_PRO_NEW_VERSION_BY_DARK_LEGEND.apk/file", icon: "cut", badge: "popular", description: "Professional video editing app" },
-            { name: "CAPCUT PRO IPHONE", url: "https://www.mediafire.com/folder/t24kpppgsvacd/CAPCUT+PRO+4+IPHONE+SHARED+BY+DARK+LEGEND", icon: "cut", badge: "popular", description: "CapCut Pro for iOS devices" },
-            { name: "REMINI PRO APK", url: "https://www.mediafire.com/file/v1rarpae2fkh88b/REMINI_PRO_BY_DARK_LEGND.apk/file", icon: "image", badge: "popular", description: "AI photo enhancement tool" },
-            { name: "PICSART PRO APK", url: "https://www.mediafire.com/file/bjgg3kx4s06y3m5/PICSART_PRO_BY_DARK_LEGEND.apk/file", icon: "palette", badge: "popular", description: "Premium photo editing features" },
-            { name: "WINK PRO APK", url: "https://www.mediafire.com/file/m60bpfkco8wsojf/WINK_PRO_APK_BY_DARK_LEGEND.apk/file", icon: "eye", badge: "", description: "Enhanced photo editing app" },
-            { name: "ANDRO RESET APK", url: "https://t.me/DARK_LEGEND_333/16", icon: "redo", badge: "", description: "Android system reset utility" },
-            { name: "ANDRO VIRUS APK", url: "https://t.me/DARK_LEGEND_333/16", icon: "virus", badge: "hot", description: "Android security testing tool" },
-            { name: "WA STATUS SAVER", url: "https://www.mediafire.com/file/ybcdk0jjcqkzxaq/STATUS_SAVER_MOD_BY_DARK_LEGEND.apk/file", icon: "download", badge: "", description: "WhatsApp status downloader" },
-            { name: "VOICE CHANGER APK", url: "https://www.mediafire.com/file/e344g9zheemn02m/VOICE_CHANGER_MOD_BY_DARK_LEGEND.apk/file", icon: "microphone", badge: "new", description: "Real-time voice modulation" },
-            { name: "SHELTER APK CLONER", url: "https://www.mediafire.com/file/pnlcg269eczmpev/SHILTER_APK_CLONER_BY_DARK_LEGEND.apk/file", icon: "copy", badge: "", description: "Application cloning utility" },
-            { name: "UNLI MEMBERS TRICK", url: "https://www.mediafire.com/file/mbnqx51ko4hspu2/UNLIMITED_MEMBERS_TRICK_BY_DARK_LEGEND.mp4/file", icon: "users", badge: "hot", description: "Group member increase method" },
-            { name: "FAKE ID CARD MAKER", url: "https://idcards.pw/tools/card/pakistan-national-id-card", icon: "id-card", badge: "", description: "Digital ID card generator" },
-            { name: "MT MANAGER PRO", url: "https://www.mediafire.com/file/l8rdctw4yj8l8ks/MT_MANAGER_APK_BY_DARK_LEGEND.apk/file", icon: "folder-open", badge: "pro", description: "Advanced file manager" },
-            { name: "JAZCASH FAKE SS", url: "https://www.mediafire.com/file/v7r5898sinlu5sz/JAZCASH_FAKE_SCREENSHOT_BY_DARK_LEGEND.apk/file", icon: "receipt", badge: "", description: "JazzCash screenshot generator" },
-            { name: "EASYPAISA FAKE SS", url: "https://www.mediafire.com/file/m4t9zbtlrlnjpq9/FAKE_EASYPAISA_HISTORY_MODED_BY_DARK_LEGEND.apk/file", icon: "receipt", badge: "", description: "Easypaisa transaction generator" },
-            { name: "TIKTOK VIEWS FREE", url: "https://zefoy.com/", icon: "eye", badge: "new", description: "Free TikTok views generator" },
-            { name: "TEMP MAILS GEN", url: "https://temp-mail.org/en/", icon: "envelope", badge: "", description: "Temporary email address generator" },
-            { name: "UNLIMITED GMAIL METHOD", url: "https://www.mediafire.com/file/d4pafnm9jss4r4a/UNLIMITED_GMAIL_METHOD.txt/file", icon: "envelope-open-text", badge: "hot", description: "Gmail account creation method" },
-            { name: "TERMUX HACKER BANER", url: "https://youtu.be/SGjHhMjKbrg?si=gX6YVfjAOf3InGhu", icon: "terminal", badge: "", description: "Termux customization guide" },
-            { name: "USE TG WITHOUT VPN", url: "https://www.mediafire.com/file/ababtpqr3h4ufa2/USE_TELEGRAM_WITHOUT_VPN_%252B_TRICK_BY_DARK_LEGEND.mp4/file", icon: "paper-plane", badge: "", description: "Telegram access without VPN" },
-            { name: "3D ANIM EMOJI PACK", url: "https://www.mediafire.com/file/wt99s8sxmqeqswa/3D_ANIMATED_EMOJI_PACK.txt/file", icon: "smile", badge: "new", description: "3D animated emoji collection" },
-            { name: "IS YOUR GMAIL HACKED?", url: "https://haveibeenpwned.com/", icon: "shield-alt", badge: "", description: "Gmail security check tool" },
-            { name: "YOUTUBE DESCRIP COPIER", url: "https://www.mediafire.com/file/7lusasx7nsytmph/YT_DESCRIP_COPY.apk/file", icon: "copy", badge: "", description: "YouTube description copier" },
-            { name: "UNLI CALL 01", url: "https://www.mediafire.com/file/y3e5oogy4kykcy6/UNLIMITED_CALL_METHOD_ONE.txt/file", icon: "phone", badge: "", description: "Unlimited calling method 1" },
-            { name: "UNLI CALL 02", url: "https://www.mediafire.com/file/iwhr3vpidrii06w/UNLIMITED_CALL_METHOD_02.txt/file", icon: "phone", badge: "", description: "Unlimited calling method 2" },
-            { name: "SAFEUM UNLI ACCOUNTS", url: "https://t.me/safeum_unlimited_accounts_bot", icon: "user-shield", badge: "", description: "SafeUM account generator" },
-            { name: "SAFEUM WORKING APK", url: "https://www.mediafire.com/file/sgn1kxx638iggyk/SAFEUM_GOLD_BY_DARK_LEGEND.apk/file", icon: "shield-alt", badge: "", description: "SafeUM secure communication app" },
-            { name: "CRACKING COURSE", url: "https://www.mediafire.com/file/i2oiyi74axsrd2d/CRACKING_COURSE.txt/file", icon: "graduation-cap", badge: "pro", description: "Software cracking tutorial" },
-            { name: "IP TRACKER", url: "https://www.ip-tracker.org/", icon: "map-marker-alt", badge: "", description: "IP address tracking tool" },
-            { name: "TEXT REPEATER", url: "https://dark-legend-text-repeater-333.vercel.app/", icon: "text-height", badge: "", description: "Text repetition utility" },
-            { name: "YOUTUBE VIDEO DOWNLOADER", url: "https://dark-legend-333-download-site.vercel.app/", icon: "download", badge: "popular", description: "YouTube video download tool" },
-            { name: "SPOTIFY DOWNLOADER", url: "https://dark-legend-333-download-site.vercel.app/", icon: "music", badge: "popular", description: "Spotify music downloader" },
-            { name: "TIKTOK DOWNLOADER", url: "https://dark-legend-333-download-site.vercel.app/", icon: "video", badge: "popular", description: "TikTok video downloader" },
-            { name: "TWITTER DOWNLOADER", url: "https://dark-legend-333-download-site.vercel.app/", icon: "twitter", badge: "", description: "Twitter content downloader" },
-            { name: "FACEBOOK DOWNLOADER", url: "https://dark-legend-333-download-site.vercel.app/", icon: "facebook", badge: "", description: "Facebook content downloader" },
-            { name: "HTML ENCRIPTER", url: "https://dark-legend-html-encripter-roii.vercel.app/", icon: "code", badge: "pro", description: "HTML code encryption tool" },
-            { name: "YOUTUBE WATCHTIME", url: "https://youtube-watch-time-increase-by-dark.vercel.app/", icon: "clock", badge: "hot", description: "YouTube watch time booster" },
-            { name: "20K COURSES", url: "https://www.mediafire.com/file/knaeb9wgd70gho3/20K_PRIUM_COURSES.txt/file", icon: "book", badge: "pro", description: "20,000 premium courses collection" },
-            { name: "ANDRO COMMON CODES", url: "https://www.mediafire.com/file/w67zdkgj18h27ug/ANDROID_COMMON_CODES.txt/file", icon: "mobile", badge: "", description: "Android common codes reference" },
-            { name: "FREE INTERNET TRICK", url: "https://www.mediafire.com/file/75ox7f7ibcasmu4/FREE_INTERNET_VPN.txt/file", icon: "wifi", badge: "hot", description: "Free internet access methods" },
-            { name: "TELEGRAM PREMIUM", url: "https://www.mediafire.com/file/mh4nu9cd4c4dncc/TELEGRAM_PREMIUM_BY_DARK_LEGEND.apk/file", icon: "paper-plane", badge: "popular", description: "Telegram premium features" },
-            { name: "SNAPCHAT BAN METHOD", url: "https://www.mediafire.com/file/r5dihsx0oka1wkz/SNAPCHAT_BAN_METHOD_.txt/file", icon: "ghost", badge: "", description: "Snapchat account ban method" },
-            { name: "YOUTUBE CHANNEL BAN", url: "https://www.mediafire.com/file/y67p3zyua8d4qr6/YOUTUBE_CHANNEL_BAN_METHOD.txt/file", icon: "youtube", badge: "", description: "YouTube channel ban method" },
-            { name: "YOUTUBE SHORTS VIRAL", url: "https://www.mediafire.com/file/qgtcc9lxvcb8quq/SHORTS_YOUTUBE_VIRAL_METHOD.txt/file", icon: "video", badge: "hot", description: "YouTube Shorts viral method" },
-            { name: "FREE INSTA FOLLOWERS", url: "https://www.mediafire.com/file/scpa872rv1z9ec2/INSTA_FREE_FOLLOWERS_SITES.txt/file", icon: "instagram", badge: "hot", description: "Free Instagram followers sites" },
-            { name: "SMS BOMBER", url: "https://www.mediafire.com/file/p5s2gx14u94a9th/SMS_BOMBER_BY_DARK_LEGEND.apk/file", icon: "envelope", badge: "hot", description: "SMS bombing utility" },
-            { name: "USEFUL TG BOTS", url: "https://www.mediafire.com/file/eicxqmdnqnyzrqw/USEFUL_TELEGRAM_BOTS.txt/file", icon: "robot", badge: "new", description: "Useful Telegram bots collection" },
-            { name: "+358 FAKE NUMBERS", url: "https://www.mediafire.com/file/pv87n6099ic5h71/%252B386_%2528_SLOVENIA_%2529_FAKE_WHATSAPP_NUMBER_METHOD_SHARED_BY_DARK_LEGEND.mp4/file", icon: "phone-square", badge: "", description: "+358 country code fake numbers" },
-            { name: "GIVEAWAY GROUP", url: "https://chat.whatsapp.com/F6u75peOGgQBiNMhaGExQz", icon: "gift", badge: "new", description: "Exclusive giveaway group" },
-            { name: "DARK TOOLKIT V1", url: "https://www.mediafire.com/file/4l1yml9o9pa4686/DARK_TOOLKIT.apk/file", icon: "toolbox", badge: "pro", description: "Comprehensive toolkit application" }
-        ];
-
-        // Splash screen loading simulation
-        document.addEventListener('DOMContentLoaded', function() {
-            let progress = 0;
-            const progressBar = document.getElementById('loadingProgress');
-            const splashScreen = document.getElementById('splashScreen');
-            const mainContent = document.getElementById('mainContent');
-            
-            const loadingInterval = setInterval(() => {
-                progress += Math.random() * 15;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(loadingInterval);
-                    
-                    setTimeout(() => {
-                        splashScreen.style.opacity = '0';
-                        setTimeout(() => {
-                            splashScreen.style.display = 'none';
-                            mainContent.style.display = 'block';
-                        }, 800);
-                    }, 500);
-                }
-                progressBar.style.width = `${progress}%`;
-            }, 200);
-
-            // Populate tools grid
-            const toolsContainer = document.getElementById('toolsContainer');
-            toolsData.forEach(tool => {
-                const toolElement = document.createElement('div');
-                toolElement.className = 'tool-option';
-                toolElement.onclick = () => {
-                    if (tool.funny) {
-                        showFunnyMessage();
-                    } else {
-                        downloadTool(tool.name, tool.url);
-                    }
-                };
-                
-                let badgeHTML = '';
-                if (tool.badge) {
-                    badgeHTML = `<div class="tool-badge ${tool.badge}">${tool.badge}</div>`;
-                }
-                
-                toolElement.innerHTML = `
-                    <div class="tool-header">
-                        <div class="tool-icon">
-                            <i class="fas fa-${tool.icon}"></i>
-                        </div>
-                        ${badgeHTML}
-                    </div>
-                    <div class="tool-name">${tool.name}</div>
-                    <div class="tool-description">${tool.description}</div>
-                    <div class="tool-footer">
-                        <div class="tool-status">
-                            <i class="fas fa-download"></i> CLICK TO DOWNLOAD
-                        </div>
-                        <div class="tool-size">${Math.floor(Math.random() * 50) + 10}MB</div>
-                    </div>
-                `;
-                
-                toolsContainer.appendChild(toolElement);
-            });
-        });
-
-        // Follow state management
-        let whatsappFollowed = false;
-        let youtubeFollowed = false;
-        
-        document.getElementById('whatsappFollowBtn').addEventListener('click', function() {
-            whatsappFollowed = true;
-            document.getElementById('whBadge').innerHTML = '<i class="fas fa-check-circle"></i> WhatsApp: Joined';
-            document.getElementById('whBadge').className = 'badge on';
-            checkFollowStatus();
-        });
-        
-        document.getElementById('youtubeSubscribeBtn').addEventListener('click', function() {
-            youtubeFollowed = true;
-            document.getElementById('ytBadge').innerHTML = '<i class="fas fa-check-circle"></i> YouTube: Joined';
-            document.getElementById('ytBadge').className = 'badge on';
-            checkFollowStatus();
-        });
-        
-        function checkFollowStatus() {
-            if (whatsappFollowed && youtubeFollowed) {
-                document.getElementById('continueButton').classList.remove('hidden');
-            }
-        }
-        
-        function showTool() {
-            document.getElementById('followState').style.display = 'none';
-            document.getElementById('toolState').style.display = 'block';
-        }
-        
-        function downloadTool(toolName, url) {
-            // In a real implementation, this would initiate the download
-            // For demo purposes, we'll just open the URL in a new tab
-            window.open(url, '_blank');
-            
-            // Show a notification
-            alert(`Downloading ${toolName}...`);
-        }
-        
-        function showFunnyMessage() {
-            document.getElementById('funnyPopup').classList.remove('hidden');
-        }
-        
-        function closeFunnyPopup() {
-            document.getElementById('funnyPopup').classList.add('hidden');
-        }
-
-        // Disable zooming
-        document.addEventListener('gesturestart', function (e) {
-            e.preventDefault();
-        });
-        
-        document.addEventListener('touchmove', function (e) {
-            if (e.scale !== 1) { e.preventDefault(); }
-        }, { passive: false });
-    </script>
-</body>
-</html>            font-size: 16px !important;
-            transform: scale(1);
-        }
-
-        /* Splash Screen */
-        #splash {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d1b0e 50%, #1a1a1a 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.8s ease-in-out;
-        }
-
-        .splash-logo {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #8B4513, #D2691E);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 25px;
-            box-shadow: 0 0 30px rgba(210, 105, 30, 0.4);
-        }
-
-        .splash-logo img {
-            width: 80%;
-            height: 80%;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .splash-text {
-            font-size: 28px;
-            font-weight: bold;
-            background: linear-gradient(45deg, #D2691E, #FFA500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 20px rgba(210, 105, 30, 0.5);
-            font-family: 'Arial', sans-serif;
-            letter-spacing: 1px;
-            margin-bottom: 30px;
-        }
-
-        /* Facebook Style Loading */
-        .fb-loading {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .loading-dots {
-            display: flex;
-            gap: 4px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #D2691E;
-            animation: fbLoading 1.4s ease-in-out infinite both;
-        }
-
-        .dot:nth-child(1) { animation-delay: -0.32s; }
-        .dot:nth-child(2) { animation-delay: -0.16s; }
-        .dot:nth-child(3) { animation-delay: 0s; }
-
-        @keyframes fbLoading {
-            0%, 80%, 100% { 
-                transform: scale(0.8);
-                opacity: 0.5;
-            }
-            40% { 
-                transform: scale(1.2);
-                opacity: 1;
-            }
-        }
-
-        .loading-text {
-            color: #ccc;
-            font-size: 14px;
-            font-weight: normal;
-        }
-
-        /* Notification Bar */
-        .notification-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: linear-gradient(90deg, #8B4513, #D2691E);
-            color: white;
-            padding: 12px 20px;
-            display: none;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-
-        .notification-icon {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .notification-badge {
-            background: #ff4444;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            animation: bounce 2s infinite;
-        }
-
-        .developer-btn {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        /* Main Content */
-        #main-content {
-            display: none;
-            margin-top: 60px;
-            padding: 20px;
-            height: calc(100vh - 60px);
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .heroes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .hero-card {
-            background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-            border: 1px solid #333;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .hero-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-bottom: 2px solid #D2691E;
-        }
-
-        .hero-content {
-            padding: 15px;
-        }
-
-        .hero-name {
-            color: #D2691E;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .hero-intro {
-            color: #ccc;
-            font-size: 14px;
-            line-height: 1.5;
-            text-align: justify;
-            margin-bottom: 15px;
-        }
-
-        /* Like and Comment Section */
-        .engagement-section {
-            border-top: 1px solid #333;
-            padding-top: 15px;
-            margin-top: 15px;
-        }
-
-        .likes-count {
-            color: #ccc;
-            font-size: 12px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .engagement-buttons {
-            display: flex;
-            gap: 10px;
-            border-top: 1px solid #333;
-            padding-top: 10px;
-        }
-
-        .engage-btn {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #ccc;
-            padding: 8px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            font-size: 14px;
-        }
-
-        .engage-btn:hover {
-            background: rgba(255,255,255,0.1);
-        }
-
-        .engage-btn.liked {
-            color: #ff4444;
-        }
-
-        .engage-btn.commented {
-            color: #4CAF50;
-        }
-
-        .comment-section {
-            margin-top: 15px;
-            display: none;
-        }
-
-        .comment-input {
-            width: 100%;
-            background: #333;
-            border: 1px solid #555;
-            border-radius: 20px;
-            padding: 10px 15px;
-            color: white;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .comment-input:focus {
-            outline: none;
-            border-color: #D2691E;
-        }
-
-        .comment-btn {
-            background: linear-gradient(135deg, #8B4513, #D2691E);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .comments-list {
-            margin-top: 10px;
-            max-height: 150px;
-            overflow-y: auto;
-        }
-
-        .comment-item {
-            background: #333;
-            padding: 8px 12px;
-            border-radius: 10px;
-            margin-bottom: 8px;
-            font-size: 12px;
-            border-left: 3px solid #D2691E;
-        }
-
-        .comment-user {
-            color: #D2691E;
-            font-weight: bold;
-            margin-bottom: 3px;
-        }
-
-        .copy-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #8B4513, #D2691E);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 10px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            font-size: 12px;
-            margin-top: 40px;
-            border-top: 1px solid #333;
-        }
-
-        /* Animations */
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-5px); }
-            60% { transform: translateY(-3px); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes heartBeat {
-            0% { transform: scale(1); }
-            25% { transform: scale(1.3); }
-            50% { transform: scale(1); }
-            75% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .splash-logo {
-                width: 100px;
-                height: 100px;
-            }
-            
-            .splash-text {
-                font-size: 24px;
-            }
-            
-            .heroes-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Smooth transitions */
-        .fade-in {
-            animation: fadeIn 0.6s ease-in-out;
-        }
-
-        .heart-beat {
-            animation: heartBeat 0.6s ease-in-out;
-        }
-
-        /* Disable double tap zoom */
-        * {
-            -webkit-touch-callout: none;
-            -webkit-text-size-adjust: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-    </style>
-</head>
-<body>
-    <!-- Splash Screen -->
-    <div id="splash">
-        <div class="splash-logo">
-            <!-- Replace with your image -->
-            <img src="https://i.postimg.cc/8cZHpZTk/20251102-202513.png/100x100/8B4513/FFFFFF?text=KH" alt="Kharal Logo">
-        </div>
-        <div class="splash-text">𝗞𝗛𝗔𝗥𝗔𝗟 𝗛𝗜𝗦𝗧𝗢𝗥𝗬</div>
-        <div class="fb-loading">
-            <div class="loading-dots">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
-            <div class="loading-text">𝗟𝗢𝗔𝗗𝗜𝗡𝗚</div>
-        </div>
-    </div>
-
-    <!-- Notification Bar -->
-    <div class="notification-bar">
-        <div class="notification-icon">
-            <i class="fas fa-bell"></i>
-            <span>KHARAL</span>
-            <div class="notification-badge" id="notificationBadge">1</div>
-        </div>
-        <button class="developer-btn" onclick="contactDeveloper()">
-            <i class="fas fa-phone"></i> 𝗢𝗪𝗡𝗘𝗥
+        <button id="generateBtn"
+          class="px-3 py-1.5 bg-bg-light border border-border-color hover:border-primary-color text-white text-sm font-semibold rounded-lg shadow-lg transition duration-200 disabled:opacity-50 disabled:cursor-wait flex items-center justify-center">
+          <i data-feather="gift" class="w-4 h-4 mr-2"></i>
+          <span>Generate Number</span>
         </button>
+
+        <button id="refreshSmsBtn"
+          class="px-4 py-1.5 btn-gradient rounded-lg shadow-lg flex items-center justify-center disabled:opacity-50 disabled:cursor-wait">
+          <i id="refreshSmsIcon" data-feather="refresh-cw" class="w-4 h-4 mr-2"></i>
+          <span>Refresh SMS</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Number Display Card -->
+    <div class="bg-bg-light p-6 rounded-xl shadow-xl border-t-4 border-primary-color">
+      <h2 class="text-xl font-semibold text-gray-300 mb-2 flex items-center">
+        <i data-feather="smartphone" class="w-6 h-6 mr-2 text-primary-color"></i> Selected Number
+      </h2>
+      <div id="randomNumberDisplay" class="py-2 text-center">
+        <p class="text-4xl sm:text-5xl font-mono font-bold text-primary-color">Loading...</p>
+      </div>
+      <p id="numberError" class="text-red-500 text-center hidden"></p>
     </div>
 
-    <!-- Main Content -->
-    <div id="main-content">
-        <div class="heroes-grid" id="heroes-container">
-            <!-- Heroes will be loaded here from Firebase -->
-        </div>
+    <!-- SMS Section -->
+    <section>
+      <h2 class="text-2xl font-bold text-gray-200 mb-4">
+        Recent Incoming OTP Messages (SMS)
+      </h2>
+      <div id="smsStatus" class="text-yellow-500 text-center py-4">Loading SMS data...</div>
 
-        <div class="footer">
-            <p>© 2025 KHARAL HISTORY | All rights reserved</p>
-            <p>Powered by KHARAL MODS</p>
-        </div>
+      <div class="table-container bg-bg-light rounded-xl shadow-xl">
+        <table class="min-w-full divide-y divide-border-color">
+          <thead class="bg-bg-lighter sticky top-0 z-10">
+            <tr>
+              <th class="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider hidden sm:table-cell">Timestamp</th>
+              <th class="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Country / Phone</th>
+              <th class="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider hidden md:table-cell">Service</th>
+              <th class="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Message</th>
+              <th class="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Analyze</th>
+            </tr>
+          </thead>
+          <tbody id="otpTableBody" class="divide-y divide-border-color"></tbody>
+        </table>
+      </div>
+      <p id="smsError" class="text-red-500 text-center pt-4 hidden"></p>
+    </section>
+
+  </div>
+
+  <!-- AI Modal -->
+  <div id="aiModal" class="modal-backdrop" onclick="closeAiModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold gemini-title">AI Analysis</h3>
+        <button onclick="closeAiModal()" class="text-gray-400 hover:text-white">
+          <i data-feather="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div id="aiModalContent" class="text-gray-300 space-y-4"></div>
     </div>
+  </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBIwUsxyeQmoeT2ctH2LxqRU__dhqp9s94",
-            authDomain: "kharal-b47b6.firebaseapp.com",
-            databaseURL: "https://kharal-b47b6-default-rtdb.firebaseio.com",
-            projectId: "kharal-b47b6",
-            storageBucket: "kharal-b47b6.appspot.com",
-            messagingSenderId: "528214841740",
-            appId: "1:528214841740:web:e394a574ef2ba2c16e9ea9"
-        };
+  <!-- JavaScript: APIs and logic (kept same system & endpoints) -->
+  <script>
+    // API Endpoints (unchanged)
+    const CORS_PROXY = "https://corsproxy.io/?";
+    const API_NUMBERS = CORS_PROXY + encodeURIComponent("https://jahangirdatabase.vercel.app/api/otp?type=numbers");
+    const API_SMS = CORS_PROXY + encodeURIComponent("https://jahangirdatabase.vercel.app/api/otp?type=sms&iDisplayLength=10000");
 
-        // Initialize Firebase
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
+    // UI Element IDs
+    const generateBtn = document.getElementById('generateBtn');
+    const refreshSmsBtn = document.getElementById('refreshSmsBtn');
+    const refreshSmsIcon = document.getElementById('refreshSmsIcon');
+    const countrySelect = document.getElementById('countrySelect');
+    const randomNumberDisplay = document.getElementById('randomNumberDisplay');
+    const otpTableBody = document.getElementById('otpTableBody');
+    const smsStatus = document.getElementById('smsStatus');
+    const numberError = document.getElementById('numberError');
+    const smsError = document.getElementById('smsError');
+    const geminiKeyInput = document.getElementById('geminiKey');
+    const aiModal = document.getElementById('aiModal');
+    const aiModalContent = document.getElementById('aiModalContent');
+
+    let allNumbersData = [];
+
+    function extractCountryName(groupString) {
+      if (!groupString || typeof groupString !== 'string') return 'Unknown Country';
+      return groupString.split('-')[0].trim();
+    }
+
+    function maskNumber(numberStr) {
+      if (!numberStr || typeof numberStr !== 'string' || numberStr.length <= 7) {
+        return numberStr || 'N/A';
+      }
+      const firstFour = numberStr.substring(0, 4);
+      const lastThree = numberStr.substring(numberStr.length - 3);
+      const middleLength = numberStr.length - 7;
+      const middleMask = '×'.repeat(middleLength > 0 ? middleLength : 0);
+
+      return `${firstFour}${middleMask}${lastThree}`;
+    }
+
+    function setSmsLoading(isLoading) {
+      refreshSmsBtn.disabled = isLoading;
+      refreshSmsBtn.querySelector('span').textContent = isLoading ? 'Loading SMS...' : 'Refresh SMS';
+      refreshSmsIcon.classList.toggle('spinning', isLoading);
+    }
+
+    async function fetchNumbersList() {
+      generateBtn.disabled = true;
+      randomNumberDisplay.innerHTML = '<p class="text-lg font-mono font-bold text-primary-color">Loading number list...</p>';
+      numberError.classList.add('hidden');
+
+      try {
+        const response = await fetch(API_NUMBERS);
+        if (!response.ok) throw new Error(`Network response was not ok (${response.status})`);
+        const data = await response.json();
+
+        if (data && data.aaData && data.aaData.length > 0) {
+          allNumbersData = data.aaData.filter(row => row.length > 2 && row[2] && row[2].trim().length > 0);
+
+          if (allNumbersData.length === 0) {
+            throw new Error("No valid phone numbers found.");
+          }
+
+          populateCountryFilter(allNumbersData);
+          displayNewNumber();
+        } else {
+          throw new Error("API data is empty or malformed.");
         }
-        const database = firebase.database();
+      } catch (error) {
+        console.error("Error fetching number list:", error);
+        randomNumberDisplay.innerHTML = '<p class="text-xl font-mono font-bold text-red-500">Error loading list</p>';
+        numberError.textContent = `Could not load numbers: ${error.message}.`;
+        numberError.classList.remove('hidden');
+      } finally {
+        generateBtn.disabled = false;
+      }
+    }
 
-        // Prevent zooming
-        document.addEventListener('touchstart', function(e) {
-            if (e.touches.length > 1) {
-                e.preventDefault();
-            }
-        });
+    function populateCountryFilter(validData) {
+      const countries = [...new Set(validData.map(row => extractCountryName(row[0])))].sort();
 
-        document.addEventListener('gesturestart', function(e) {
-            e.preventDefault();
-        });
+      let countryOptions = '<option value="random">Select Country</option>';
+      countries.forEach(country => {
+        countryOptions += `<option value="${country}">${country}</option>`;
+      });
+      countrySelect.innerHTML = countryOptions;
+    }
 
-        // Generate unique user ID for this session
-        const userId = 'user_' + Math.random().toString(36).substr(2, 9);
-        let userLikes = JSON.parse(localStorage.getItem('userLikes')) || {};
-        let userComments = JSON.parse(localStorage.getItem('userComments')) || {};
+    function displayNewNumber() {
+      if (allNumbersData.length === 0) {
+        numberError.textContent = 'Number list is empty. Please refresh.';
+        numberError.classList.remove('hidden');
+        return;
+      }
 
-        // Splash Screen Timer - 4 seconds
-        setTimeout(function() {
-            document.getElementById('splash').style.opacity = '0';
-            setTimeout(function() {
-                document.getElementById('splash').style.display = 'none';
-                document.querySelector('.notification-bar').style.display = 'flex';
-                document.getElementById('main-content').style.display = 'block';
-                loadHeroes();
-                showNotification();
-            }, 800);
-        }, 4000);
+      const selectedCountry = countrySelect.value;
+      let numberPool = allNumbersData;
 
-        // Load Heroes from Firebase
-        function loadHeroes() {
-            const heroesRef = database.ref('heroes');
-            heroesRef.on('value', (snapshot) => {
-                const heroes = snapshot.val();
-                const container = document.getElementById('heroes-container');
-                
-                container.innerHTML = '';
-                
-                if (heroes) {
-                    Object.keys(heroes).forEach(key => {
-                        const hero = heroes[key];
-                        const heroId = key;
-                        
-                        // Load likes and comments for this hero
-                        loadLikesAndComments(heroId, hero);
-                    });
-                } else {
-                    container.innerHTML = `
-                        <div style="grid-column:1/-1; text-align:center; padding:40px; color:#666;">
-                            <i class="fas fa-users" style="font-size:48px; margin-bottom:20px;"></i>
-                            <p>کوئی ہیرو موجود نہیں ہے۔ ایڈمن پینل سے ہیرو شامل کریں۔</p>
-                        </div>
-                    `;
-                }
-            });
-        }
+      if (selectedCountry !== 'random') {
+        numberPool = allNumbersData.filter(row => extractCountryName(row[0]) === selectedCountry);
+      }
 
-        // Load Likes and Comments for each hero
-        function loadLikesAndComments(heroId, hero) {
-            const container = document.getElementById('heroes-container');
-            
-            // Load likes
-            const likesRef = database.ref('likes/' + heroId);
-            likesRef.on('value', (snapshot) => {
-                const likes = snapshot.val() || {};
-                const likeCount = Object.keys(likes).length;
-                const isLiked = userLikes[heroId] || false;
+      if (numberPool.length === 0) {
+        randomNumberDisplay.innerHTML = `<p class="text-xl font-mono font-bold text-red-500">No numbers found</p>`;
+        numberError.textContent = `No numbers available for ${selectedCountry}.`;
+        numberError.classList.remove('hidden');
+        return;
+      }
 
-                // Load comments
-                const commentsRef = database.ref('comments/' + heroId);
-                commentsRef.on('value', (commentsSnapshot) => {
-                    const comments = commentsSnapshot.val() || {};
-                    const commentCount = Object.keys(comments).length;
+      numberError.classList.add('hidden');
+      const randomIndex = Math.floor(Math.random() * numberPool.length);
+      const selectedRow = numberPool[randomIndex];
 
-                    // Create or update hero card
-                    updateHeroCard(heroId, hero, likeCount, isLiked, commentCount, comments);
-                });
-            });
-        }
+      const country = extractCountryName(selectedRow[0]);
+      const phoneNumber = selectedRow[2];
 
-        // Update Hero Card with engagement data
-        function updateHeroCard(heroId, hero, likeCount, isLiked, commentCount, comments) {
-            const container = document.getElementById('heroes-container');
-            const existingCard = document.getElementById(`hero-${heroId}`);
-            
-            if (existingCard) {
-                existingCard.outerHTML = createHeroCardHTML(heroId, hero, likeCount, isLiked, commentCount, comments);
-            } else {
-                container.innerHTML += createHeroCardHTML(heroId, hero, likeCount, isLiked, commentCount, comments);
-            }
-        }
+      randomNumberDisplay.innerHTML = `
+        <span class="text-xl font-semibold text-gray-400 block">${country}</span>
+        <span class="text-4xl sm:text-5xl font-mono font-bold text-primary-color">${phoneNumber}</span>
+      `;
+    }
 
-        // Create Hero Card HTML
-        function createHeroCardHTML(heroId, hero, likeCount, isLiked, commentCount, comments) {
-            const likeIcon = isLiked ? 'fas fa-heart' : 'far fa-heart';
-            const likeClass = isLiked ? 'liked' : '';
-            
-            return `
-                <div class="hero-card fade-in" id="hero-${heroId}">
-                    <img src="${hero.image}" alt="${hero.name}" class="hero-image" 
-                         onerror="this.src='https://via.placeholder.com/300x200/333333/FFFFFF?text=KHARAL+HERO'">
-                    <div class="hero-content">
-                        <h3 class="hero-name">${hero.name}</h3>
-                        <p class="hero-intro">${hero.intro}</p>
-                        
-                        <div class="engagement-section">
-                            <div class="likes-count">
-                                <i class="fas fa-heart" style="color: #ff4444;"></i>
-                                ${likeCount} لوگوں کو یہ پسند ہے
-                            </div>
-                            
-                            <div class="engagement-buttons">
-                                <button class="engage-btn ${likeClass}" onclick="toggleLike('${heroId}')">
-                                    <i class="${likeIcon}"></i> لائک
-                                </button>
-                                <button class="engage-btn" onclick="toggleCommentSection('${heroId}')">
-                                    <i class="far fa-comment"></i> تبصرہ
-                                </button>
-                            </div>
-                            
-                            <div class="comment-section" id="comment-section-${heroId}">
-                                <input type="text" class="comment-input" id="comment-input-${heroId}" 
-                                       placeholder="اپنا تبصرہ لکھیں...">
-                                <button class="comment-btn" onclick="addComment('${heroId}')">
-                                    <i class="fas fa-paper-plane"></i> بھیجیں
-                                </button>
-                                
-                                <div class="comments-list" id="comments-list-${heroId}">
-                                    ${renderComments(comments)}
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <button class="copy-btn" onclick="copyIntro(this)">
-                            <i class="fas fa-copy"></i> کاپی کریں
-                        </button>
-                    </div>
-                </div>
+    async function fetchSMS() {
+      setSmsLoading(true);
+      otpTableBody.innerHTML = '';
+      smsStatus.textContent = 'Loading SMS data...';
+      smsError.classList.add('hidden');
+
+      try {
+        const response = await fetch(API_SMS);
+        if (!response.ok) throw new Error(`Network response was not ok (${response.status})`);
+        const data = await response.json();
+
+        if (data && data.aaData) {
+          const validSMS = data.aaData.filter(row => row.length >= 5 && typeof row[0] === 'string' && row[0].includes('-'));
+
+          if (validSMS.length === 0) {
+            smsStatus.textContent = 'No recent OTP messages found.';
+            return;
+          }
+
+          let html = '';
+          validSMS.forEach(row => {
+            const timestamp = row[0];
+            const countryGroup = row[1];
+            const country = extractCountryName(countryGroup);
+            const phone = row[2];
+            const maskedPhone = maskNumber(phone);
+            const service = row[3];
+            const fullMessage = row[4];
+
+            const formattedMessage = fullMessage.replace(/\n/g, '<br>');
+            const otpMatch = fullMessage.match(/(\b\d{3}-\d{3}\b|\b\d{3} \d{3}\b|\b\d{3,6}\b)/);
+            const otpCode = otpMatch ? `<span class="text-primary-color font-extrabold">${otpMatch[0]}</span>` : 'N/A';
+
+            const safeMessage = fullMessage.replace(/'/g, "\\'").replace(/"/g, "&quot;").replace(/\n/g, " ");
+
+            html += `
+              <tr class="hover:bg-bg-lighter transition duration-150">
+                <td class="px-3 py-3 text-sm text-gray-400 hidden sm:table-cell">${timestamp}</td>
+                <td class="px-3 py-3 text-sm font-mono text-gray-300">
+                  <span class="text-xs font-semibold text-primary-color block">${country}</span>
+                  ${maskedPhone}
+                </td>
+                <td class="px-3 py-3 text-sm text-gray-400 hidden md:table-cell">${service}</td>
+                <td class="px-3 py-3 text-sm text-gray-200">
+                  <div class="space-y-1">
+                    <span class="block">${formattedMessage}</span>
+                    <span class="block pt-1 text-xs text-gray-500">Extracted OTP: ${otpCode}</span>
+                  </div>
+                </td>
+                <td class="px-3 py-3 text-center">
+                  <button onclick="openAiAnalysis('${safeMessage}')" class="p-2 text-primary-color hover:text-white bg-bg-lighter rounded-md">
+                    <i data-feather="cpu" class="w-5 h-5"></i>
+                  </button>
+                </td>
+              </tr>
             `;
+          });
+
+          otpTableBody.innerHTML = html;
+          feather.replace();
+          const totalRecords = data.iTotalDisplayRecords || validSMS.length;
+          smsStatus.textContent = `Displaying ${validSMS.length} of ${totalRecords} total records.`;
+
+        } else {
+          throw new Error("SMS API data is empty or malformed.");
+        }
+      } catch (error) {
+        console.error("Error fetching SMS data:", error);
+        smsStatus.textContent = '';
+        smsError.textContent = `Could not load SMS messages: ${error.message}.`;
+        smsError.classList.remove('hidden');
+      } finally {
+        setSmsLoading(false);
+      }
+    }
+
+    // Gemini AI Functions (unchanged logic)
+    function openAiAnalysis(message) {
+      const apiKey = geminiKeyInput.value;
+      if (!apiKey) {
+        aiModalContent.innerHTML = `
+          <p class="text-red-400">Please enter your Gemini API Key in the input field at the top of the page first.</p>
+        `;
+        aiModal.classList.add('show');
+        return;
+      }
+
+      aiModalContent.innerHTML = `
+        <p class="font-semibold text-gray-400">Original Message:</p>
+        <p class="p-3 bg-bg-dark rounded-lg text-sm">"${message}"</p>
+        <p class="font-semibold text-gray-400 mt-4">AI Analysis:</p>
+        <div class="flex items-center justify-center h-20">
+          <div class="w-8 h-8 border-4 border-primary-color border-t-transparent rounded-full spinning"></div>
+        </div>
+      `;
+      aiModal.classList.add('show');
+      analyzeWithGemini(message, apiKey);
+    }
+
+    function closeAiModal() {
+      aiModal.classList.remove('show');
+    }
+
+    async function analyzeWithGemini(message, apiKey) {
+      const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+      const systemPrompt = "You are an expert message analyzer. Analyze the following SMS message. First, state its purpose (e.g., 'This is a login code', 'This is a marketing alert', 'This is a potential scam'). Second, extract any useful information, like the service name or the OTP code. Be concise and use simple bullet points.";
+      const userQuery = message;
+
+      const payload = {
+        contents: [{ parts: [{ text: userQuery }] }],
+        systemInstruction: {
+          parts: [{ text: systemPrompt }]
+        },
+      };
+
+      try {
+        let response;
+        let delay = 1000;
+        for (let i = 0; i < 3; i++) {
+          response = await fetch(GEMINI_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (response.ok) break;
+          if (response.status === 429 || response.status >= 500) {
+            await new Promise(resolve => setTimeout(resolve, delay));
+            delay *= 2;
+          } else {
+            break;
+          }
         }
 
-        // Render Comments
-        function renderComments(comments) {
-            if (!comments || Object.keys(comments).length === 0) {
-                return '<div style="text-align:center; color:#666; padding:10px;">ابھی تک کوئی تبصرہ نہیں</div>';
-            }
-            
-            let commentsHTML = '';
-            Object.keys(comments).forEach(commentId => {
-                const comment = comments[commentId];
-                commentsHTML += `
-                    <div class="comment-item">
-                        <div class="comment-user">صارف</div>
-                        <div>${comment.text}</div>
-                    </div>
-                `;
-            });
-            return commentsHTML;
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`API Error ${response.status}: ${errorText}`);
         }
 
-        // Toggle Like
-        function toggleLike(heroId) {
-            const likeRef = database.ref('likes/' + heroId + '/' + userId);
-            
-            if (userLikes[heroId]) {
-                // Unlike
-                likeRef.remove();
-                userLikes[heroId] = false;
-            } else {
-                // Like
-                likeRef.set({
-                    timestamp: Date.now()
-                });
-                userLikes[heroId] = true;
-            }
-            
-            // Update localStorage
-            localStorage.setItem('userLikes', JSON.stringify(userLikes));
-            
-            // Add animation to like button
-            const likeBtn = document.querySelector(`#hero-${heroId} .engage-btn`);
-            likeBtn.classList.add('heart-beat');
-            setTimeout(() => {
-                likeBtn.classList.remove('heart-beat');
-            }, 600);
-        }
+        const result = await response.json();
+        const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
 
-        // Toggle Comment Section
-        function toggleCommentSection(heroId) {
-            const commentSection = document.getElementById(`comment-section-${heroId}`);
-            if (commentSection.style.display === 'block') {
-                commentSection.style.display = 'none';
-            } else {
-                commentSection.style.display = 'block';
-                document.getElementById(`comment-input-${heroId}`).focus();
-            }
+        if (text) {
+          const formattedText = text.replace(/\n/g, '<br>');
+          aiModalContent.innerHTML = `
+            <p class="font-semibold text-gray-400">Original Message:</p>
+            <p class="p-3 bg-bg-dark rounded-lg text-sm">"${message}"</p>
+            <p class="font-semibold text-gray-400 mt-4">AI Analysis:</p>
+            <div class="p-3 bg-bg-dark rounded-lg text-sm">${formattedText}</div>
+          `;
+        } else {
+          throw new Error("No text content found in Gemini response.");
         }
+      } catch (error) {
+        console.error("Gemini API Error:", error);
+        aiModalContent.innerHTML = `
+          <p class="font-semibold text-gray-400">Original Message:</p>
+          <p class="p-3 bg-bg-dark rounded-lg text-sm">"${message}"</p>
+          <p class="font-semibold text-red-400 mt-4">Analysis Failed:</p>
+          <p class="p-3 bg-red-900 bg-opacity-30 text-red-300 rounded-lg text-sm">${error.message}</p>
+        `;
+      }
+    }
 
-        // Add Comment
-        function addComment(heroId) {
-            const commentInput = document.getElementById(`comment-input-${heroId}`);
-            const commentText = commentInput.value.trim();
-            
-            if (commentText) {
-                const commentRef = database.ref('comments/' + heroId).push();
-                commentRef.set({
-                    text: commentText,
-                    timestamp: Date.now(),
-                    user: userId
-                });
-                
-                commentInput.value = '';
-                
-                // Add to user comments
-                if (!userComments[heroId]) {
-                    userComments[heroId] = [];
-                }
-                userComments[heroId].push(commentText);
-                localStorage.setItem('userComments', JSON.stringify(userComments));
-            }
-        }
+    // Initial data load
+    document.addEventListener('DOMContentLoaded', () => {
+      feather.replace();
+      fetchNumbersList();
+      fetchSMS();
 
-        // Show Notification
-        function showNotification() {
-            const badge = document.getElementById('notificationBadge');
-            badge.style.display = 'flex';
-            
-            setTimeout(() => {
-                badge.textContent = '2';
-                badge.style.animation = 'bounce 1s';
-            }, 3000);
-        }
-
-        // Contact Developer - WhatsApp
-        function contactDeveloper() {
-            const phoneNumber = "923292359952";
-            const message = "Hello! I'm interested in KHARAL HISTORY app.";
-            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
-        }
-
-        // Copy Intro Text
-        function copyIntro(button) {
-            const introText = button.parentElement.querySelector('.hero-intro').textContent;
-            const heroName = button.parentElement.querySelector('.hero-name').textContent;
-            const fullText = `${heroName}\n\n${introText}`;
-            
-            navigator.clipboard.writeText(fullText).then(function() {
-                const originalText = button.innerHTML;
-                button.innerHTML = '<i class="fas fa-check"></i> کاپی ہوگیا!';
-                button.style.background = 'green';
-                
-                setTimeout(function() {
-                    button.innerHTML = originalText;
-                    button.style.background = '';
-                }, 2000);
-            }).catch(function(err) {
-                console.error('Copy error: ', err);
-                alert('کاپی کرنے میں مسئلہ ہوا، براہ کرم دوبارہ کوشش کریں۔');
-            });
-        }
-
-        // Detect new content and show notification
-        database.ref('heroes').on('child_added', function(snapshot) {
-            const badge = document.getElementById('notificationBadge');
-            if (badge) {
-                const currentCount = parseInt(badge.textContent) || 0;
-                badge.textContent = currentCount + 1;
-                badge.style.animation = 'bounce 1s';
-            }
-        });
-    </script>
+      generateBtn.addEventListener('click', displayNewNumber);
+      refreshSmsBtn.addEventListener('click', fetchSMS);
+    });
+  </script>
 </body>
 </html>
+
