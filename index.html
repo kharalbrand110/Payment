@@ -1,479 +1,588 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KHARAL-MODS OTP</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <title>WebApi-Login</title>
+
+  <!-- Google Font & Icon -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
   <style>
-    :root {
-      --primary-gradient: linear-gradient(90deg, #FFD700, #8E2DE2);
-      --primary-color: #FFD700;
-      --bg-dark: #0b0b0d;
-      --bg-light: #18181b;
-      --bg-lighter: #242427;
-      --border-color: #333;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg-dark); }
-    ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
-
-    .table-container { max-height: 70vh; overflow-y: auto; }
-
-    /* VIP gold shimmer */
-    .vip-title {
-      font-weight: 900;
-      letter-spacing: 1px;
-      background: linear-gradient(90deg, #FFD700, #FFAA00, #8E2DE2, #4A00E0, #FFD700);
-      background-size: 400% 100%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: shimmer 7s linear infinite;
-    }
-    @keyframes shimmer {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 400% 50%; }
+    body {
+      background: black;
+      font-family: 'Poppins', sans-serif;
+      color: #b19cd9;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
     }
 
-    .btn-gradient {
-      background: var(--primary-gradient);
-      color: #000;
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-    .btn-gradient:hover { opacity: 0.9; }
-
-    .spinning { animation: spin 1s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .modal-backdrop {
+    #particles {
       position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(5px);
-      display: none;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0;
+    }
+
+    header {
+      position: relative;
+      z-index: 2;
+      padding: 20px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.7);
+      border-bottom: 1px solid rgba(138, 43, 226, 0.2);
+    }
+
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .logo {
+      width: 80px;
+      filter: drop-shadow(0 0 10px #8a2be2);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 15px;
+    }
+
+    .nav-link {
+      color: #b88aff;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px 15px;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+      background: rgba(138, 43, 226, 0.2);
+      text-shadow: 0 0 10px #b88aff;
+    }
+
+    main {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+
+    .section {
+      background: rgba(138, 43, 226, 0.05);
+      border: 1px solid rgba(138, 43, 226, 0.2);
+      backdrop-filter: blur(8px);
+      padding: 30px;
+      border-radius: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 0 25px rgba(138, 43, 226, 0.3);
+    }
+
+    .section-title {
+      font-size: 28px;
+      color: #b88aff;
+      text-shadow: 0 0 10px #b88aff;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .hero-title {
+      font-size: 36px;
+      color: #b88aff;
+      text-shadow: 0 0 10px #b88aff;
+      margin-bottom: 10px;
+    }
+
+    .hero-subtitle {
+      font-size: 16px;
+      color: #d6b3ff;
+      margin-bottom: 25px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .plans-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .plan-card {
+      background: rgba(35, 0, 60, 0.3);
+      border: 1px solid rgba(138, 43, 226, 0.3);
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(138, 43, 226, 0.3);
+    }
+
+    .plan-card.featured {
+      background: rgba(70, 0, 120, 0.3);
+      border: 2px solid rgba(138, 43, 226, 0.5);
+    }
+
+    .plan-name {
+      font-size: 22px;
+      color: #b88aff;
+      margin-bottom: 15px;
+    }
+
+    .plan-price {
+      font-size: 28px;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    .plan-price span {
+      font-size: 16px;
+      color: #d6b3ff;
+    }
+
+    .plan-features {
+      list-style: none;
+      margin-bottom: 25px;
+      text-align: left;
+    }
+
+    .plan-features li {
+  position: relative;
+  padding-left: 40px; /* Jarak teks lebih jauh */
+  margin-bottom: 12px;
+  line-height: 1.6; /* Biar tinggi teks enak */
+  list-style: none;
+}
+
+.plan-features li i {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%); /* Biar selalu sejajar tengah */
+  color: #b88aff;
+  font-size: 18px;
+}
+
+    .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #8a2be2, #4b0082);
+      color: white;
+      padding: 12px 25px;
+      border-radius: 10px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 0 12px rgba(138, 43, 226, 0.3);
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn:hover {
+      background: #9932cc;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(138, 43, 226, 0.4);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #8a2be2;
+      color: #b88aff;
+    }
+
+    .btn-outline:hover {
+      background: rgba(138, 43, 226, 0.1);
+    }
+
+    .about-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .about-text {
+      line-height: 1.6;
+    }
+
+    .about-features {
+  list-style: none;
+}
+
+.about-features li {
+  margin: 15px 0;
+  padding-left: 42px; /* Tambah padding kiri biar ada ruang antara icon dan teks */
+  position: relative;
+}
+
+.about-features li i {
+  color: #b88aff;
+  position: absolute;
+  left: 0;
+  top: 2px;
+  font-size: 15px;
+}
+
+    .contact-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .contact-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(138, 43, 226, 0.2);
+      border-radius: 50%;
+      display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 100;
+      color: #b88aff;
+      font-size: 18px;
     }
-    .modal-backdrop.show { display: flex; }
-    .modal-content {
-      background: var(--bg-light);
-      border: 1px solid var(--border-color);
-      border-top: 4px solid var(--primary-color);
-      border-radius: 12px;
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      text-align: left;
+    }
+
+    .form-group label {
+      font-size: 14px;
+      color: #d6b3ff;
+    }
+
+    .form-control {
+      background: rgba(138, 43, 226, 0.1);
+      border: 1px solid rgba(138, 43, 226, 0.3);
+      border-radius: 8px;
+      padding: 12px 15px;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #8a2be2;
+      box-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
+    }
+
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    footer {
+      position: relative;
+      z-index: 2;
+      text-align: center;
       padding: 20px;
-      width: 90%;
-      max-width: 500px;
-      max-height: 80vh;
-      overflow-y: auto;
+      background: rgba(0, 0, 0, 0.7);
+      border-top: 1px solid rgba(138, 43, 226, 0.2);
+      margin-top: 50px;
+    }
+
+    .footer-text {
+      font-size: 14px;
+      color: #8a2be2;
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: 8px;
+      background: rgba(70, 0, 120, 0.9);
+      border: 1px solid #8a2be2;
+      color: white;
+      z-index: 1000;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transform: translateX(100vw);
+      transition: transform 0.3s ease;
+    }
+    
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    /* Fix untuk ikon FontAwesome */
+    .fas, .fab, .far {
+      display: inline-block;
+      font-style: normal;
+      font-variant: normal;
+      text-rendering: auto;
+      line-height: 1;
+    }
+
+    /* Memastikan ikon terlihat dengan baik */
+    .feature-icon {
+      font-size: 1.2em;
+      margin-right: 8px;
+      color: #b88aff;
+      width: 24px;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 28px;
+      }
+      
+      .section {
+        padding: 20px;
+      }
+      
+      .nav-container {
+        flex-wrap: wrap;
+      }
+      
+      .about-content, .contact-container {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ['Poppins','sans-serif'] },
-          colors: {
-            'primary-color': 'var(--primary-color)',
-            'bg-dark': 'var(--bg-dark)',
-            'bg-light': 'var(--bg-light)',
-            'bg-lighter': 'var(--bg-lighter)',
-            'border-color': 'var(--border-color)',
-          }
-        }
-      }
-    }
-  </script>
 </head>
-<body class="bg-bg-dark text-gray-100 min-h-screen p-4 font-sans">
-  <div class="max-w-6xl mx-auto space-y-8">
+<body>
+  <div id="particles"></div>
+  
+  <div id="notification" class="notification">
+    <i class="fas fa-check-circle"></i> Pesan Anda telah terkirim! Kami akan membalas secepatnya.
+  </div>
 
-    <!-- Header -->
-    <header class="flex flex-col sm:flex-row justify-between items-center py-4 border-b border-border-color gap-4">
-      <h1 class="text-3xl font-extrabold vip-title">
-        💫 KHARAL-MODS OFFICIAL  🖇️
-      </h1>
-
-      <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto items-center">
-        <!-- Gemini API Key input (needed by JS) -->
-        <input id="geminiKey" type="password" placeholder="Enter Gemini API Key (optional for AI)"
-               class="w-full sm:w-60 bg-bg-light border border-border-color text-gray-200 text-sm rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-primary-color" />
-
-        <select id="countrySelect"
-          class="w-full sm:w-auto bg-bg-light border border-border-color text-gray-200 text-sm rounded-lg focus:ring-primary-color focus:border-primary-color p-1.5">
-          <option value="random">Select Country</option>
-        </select>
-
-        <button id="generateBtn"
-          class="px-3 py-1.5 bg-bg-light border border-border-color hover:border-primary-color text-white text-sm font-semibold rounded-lg shadow-lg transition duration-200 disabled:opacity-50 disabled:cursor-wait flex items-center justify-center">
-          <i data-feather="gift" class="w-4 h-4 mr-2"></i>
-          <span>Generate Number</span>
-        </button>
-
-        <button id="refreshSmsBtn"
-          class="px-4 py-1.5 btn-gradient rounded-lg shadow-lg flex items-center justify-center disabled:opacity-50 disabled:cursor-wait">
-          <i id="refreshSmsIcon" data-feather="refresh-cw" class="w-4 h-4 mr-2"></i>
-          <span>Refresh SMS</span>
-        </button>
-      </div>
-    </header>
-
-    <!-- Number Display Card -->
-    <div class="bg-bg-light p-6 rounded-xl shadow-xl border-t-4 border-primary-color">
-      <h2 class="text-xl font-semibold text-gray-300 mb-2 flex items-center">
-        <i data-feather="smartphone" class="w-6 h-6 mr-2 text-primary-color"></i> Selected Number
-      </h2>
-      <div id="randomNumberDisplay" class="py-2 text-center">
-        <p class="text-4xl sm:text-5xl font-mono font-bold text-primary-color">Loading...</p>
-      </div>
-      <p id="numberError" class="text-red-500 text-center hidden"></p>
+  <header>
+    <div class="logo-container">
+      <img src="https://i.postimg.cc/B6f69Sbq/20250828-234723.png" alt="Logo" class="logo">
     </div>
+    <h1 class="hero-title">X- HUNTET</h1>
+    <div class="nav-container">
+      <a href="#plans" class="nav-link">Plans</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#contact" class="nav-link">Contact</a>
+      <a href="/login" class="nav-link">Login</a>
+    </div>
+  </header>
 
-    <!-- SMS Section -->
-    <section>
-      <h2 class="text-2xl font-bold text-gray-200 mb-4">
-        Recent Incoming OTP Messages (SMS)
-      </h2>
-      <div id="smsStatus" class="text-yellow-500 text-center py-4">Loading SMS data...</div>
-
-      <div class="table-container bg-bg-light rounded-xl shadow-xl">
-        <table class="min-w-full divide-y divide-border-color">
-          <thead class="bg-bg-lighter sticky top-0 z-10">
-            <tr>
-              <th class="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider hidden sm:table-cell">Timestamp</th>
-              <th class="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Country / Phone</th>
-              <th class="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider hidden md:table-cell">Service</th>
-              <th class="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Message</th>
-              <th class="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Analyze</th>
-            </tr>
-          </thead>
-          <tbody id="otpTableBody" class="divide-y divide-border-color"></tbody>
-        </table>
-      </div>
-      <p id="smsError" class="text-red-500 text-center pt-4 hidden"></p>
+  <main>
+    <section class="section hero">
+      <div class="hero-subtitle">Welcome to X- HUNTER — Advanced System API Bug.</div>
+      <a href="#plans" class="btn">
+        <i class="fas fa-crown"></i> View Membership Plans
+      </a>
     </section>
 
-  </div>
-
-  <!-- AI Modal -->
-  <div id="aiModal" class="modal-backdrop" onclick="closeAiModal()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-xl font-bold gemini-title">AI Analysis</h3>
-        <button onclick="closeAiModal()" class="text-gray-400 hover:text-white">
-          <i data-feather="x" class="w-6 h-6"></i>
-        </button>
-      </div>
-      <div id="aiModalContent" class="text-gray-300 space-y-4"></div>
-    </div>
-  </div>
-
-  <!-- JavaScript: APIs and logic (kept same system & endpoints) -->
-  <script>
-    // API Endpoints (unchanged)
-    const CORS_PROXY = "https://corsproxy.io/?";
-    const API_NUMBERS = CORS_PROXY + encodeURIComponent("https://jahangirdatabase.vercel.app/api/otp?type=numbers");
-    const API_SMS = CORS_PROXY + encodeURIComponent("https://jahangirdatabase.vercel.app/api/otp?type=sms&iDisplayLength=10000");
-
-    // UI Element IDs
-    const generateBtn = document.getElementById('generateBtn');
-    const refreshSmsBtn = document.getElementById('refreshSmsBtn');
-    const refreshSmsIcon = document.getElementById('refreshSmsIcon');
-    const countrySelect = document.getElementById('countrySelect');
-    const randomNumberDisplay = document.getElementById('randomNumberDisplay');
-    const otpTableBody = document.getElementById('otpTableBody');
-    const smsStatus = document.getElementById('smsStatus');
-    const numberError = document.getElementById('numberError');
-    const smsError = document.getElementById('smsError');
-    const geminiKeyInput = document.getElementById('geminiKey');
-    const aiModal = document.getElementById('aiModal');
-    const aiModalContent = document.getElementById('aiModalContent');
-
-    let allNumbersData = [];
-
-    function extractCountryName(groupString) {
-      if (!groupString || typeof groupString !== 'string') return 'Unknown Country';
-      return groupString.split('-')[0].trim();
-    }
-
-    function maskNumber(numberStr) {
-      if (!numberStr || typeof numberStr !== 'string' || numberStr.length <= 7) {
-        return numberStr || 'N/A';
-      }
-      const firstFour = numberStr.substring(0, 4);
-      const lastThree = numberStr.substring(numberStr.length - 3);
-      const middleLength = numberStr.length - 7;
-      const middleMask = '×'.repeat(middleLength > 0 ? middleLength : 0);
-
-      return `${firstFour}${middleMask}${lastThree}`;
-    }
-
-    function setSmsLoading(isLoading) {
-      refreshSmsBtn.disabled = isLoading;
-      refreshSmsBtn.querySelector('span').textContent = isLoading ? 'Loading SMS...' : 'Refresh SMS';
-      refreshSmsIcon.classList.toggle('spinning', isLoading);
-    }
-
-    async function fetchNumbersList() {
-      generateBtn.disabled = true;
-      randomNumberDisplay.innerHTML = '<p class="text-lg font-mono font-bold text-primary-color">Loading number list...</p>';
-      numberError.classList.add('hidden');
-
-      try {
-        const response = await fetch(API_NUMBERS);
-        if (!response.ok) throw new Error(`Network response was not ok (${response.status})`);
-        const data = await response.json();
-
-        if (data && data.aaData && data.aaData.length > 0) {
-          allNumbersData = data.aaData.filter(row => row.length > 2 && row[2] && row[2].trim().length > 0);
-
-          if (allNumbersData.length === 0) {
-            throw new Error("No valid phone numbers found.");
-          }
-
-          populateCountryFilter(allNumbersData);
-          displayNewNumber();
-        } else {
-          throw new Error("API data is empty or malformed.");
-        }
-      } catch (error) {
-        console.error("Error fetching number list:", error);
-        randomNumberDisplay.innerHTML = '<p class="text-xl font-mono font-bold text-red-500">Error loading list</p>';
-        numberError.textContent = `Could not load numbers: ${error.message}.`;
-        numberError.classList.remove('hidden');
-      } finally {
-        generateBtn.disabled = false;
-      }
-    }
-
-    function populateCountryFilter(validData) {
-      const countries = [...new Set(validData.map(row => extractCountryName(row[0])))].sort();
-
-      let countryOptions = '<option value="random">Select Country</option>';
-      countries.forEach(country => {
-        countryOptions += `<option value="${country}">${country}</option>`;
-      });
-      countrySelect.innerHTML = countryOptions;
-    }
-
-    function displayNewNumber() {
-      if (allNumbersData.length === 0) {
-        numberError.textContent = 'Number list is empty. Please refresh.';
-        numberError.classList.remove('hidden');
-        return;
-      }
-
-      const selectedCountry = countrySelect.value;
-      let numberPool = allNumbersData;
-
-      if (selectedCountry !== 'random') {
-        numberPool = allNumbersData.filter(row => extractCountryName(row[0]) === selectedCountry);
-      }
-
-      if (numberPool.length === 0) {
-        randomNumberDisplay.innerHTML = `<p class="text-xl font-mono font-bold text-red-500">No numbers found</p>`;
-        numberError.textContent = `No numbers available for ${selectedCountry}.`;
-        numberError.classList.remove('hidden');
-        return;
-      }
-
-      numberError.classList.add('hidden');
-      const randomIndex = Math.floor(Math.random() * numberPool.length);
-      const selectedRow = numberPool[randomIndex];
-
-      const country = extractCountryName(selectedRow[0]);
-      const phoneNumber = selectedRow[2];
-
-      randomNumberDisplay.innerHTML = `
-        <span class="text-xl font-semibold text-gray-400 block">${country}</span>
-        <span class="text-4xl sm:text-5xl font-mono font-bold text-primary-color">${phoneNumber}</span>
-      `;
-    }
-
-    async function fetchSMS() {
-      setSmsLoading(true);
-      otpTableBody.innerHTML = '';
-      smsStatus.textContent = 'Loading SMS data...';
-      smsError.classList.add('hidden');
-
-      try {
-        const response = await fetch(API_SMS);
-        if (!response.ok) throw new Error(`Network response was not ok (${response.status})`);
-        const data = await response.json();
-
-        if (data && data.aaData) {
-          const validSMS = data.aaData.filter(row => row.length >= 5 && typeof row[0] === 'string' && row[0].includes('-'));
-
-          if (validSMS.length === 0) {
-            smsStatus.textContent = 'No recent OTP messages found.';
-            return;
-          }
-
-          let html = '';
-          validSMS.forEach(row => {
-            const timestamp = row[0];
-            const countryGroup = row[1];
-            const country = extractCountryName(countryGroup);
-            const phone = row[2];
-            const maskedPhone = maskNumber(phone);
-            const service = row[3];
-            const fullMessage = row[4];
-
-            const formattedMessage = fullMessage.replace(/\n/g, '<br>');
-            const otpMatch = fullMessage.match(/(\b\d{3}-\d{3}\b|\b\d{3} \d{3}\b|\b\d{3,6}\b)/);
-            const otpCode = otpMatch ? `<span class="text-primary-color font-extrabold">${otpMatch[0]}</span>` : 'N/A';
-
-            const safeMessage = fullMessage.replace(/'/g, "\\'").replace(/"/g, "&quot;").replace(/\n/g, " ");
-
-            html += `
-              <tr class="hover:bg-bg-lighter transition duration-150">
-                <td class="px-3 py-3 text-sm text-gray-400 hidden sm:table-cell">${timestamp}</td>
-                <td class="px-3 py-3 text-sm font-mono text-gray-300">
-                  <span class="text-xs font-semibold text-primary-color block">${country}</span>
-                  ${maskedPhone}
-                </td>
-                <td class="px-3 py-3 text-sm text-gray-400 hidden md:table-cell">${service}</td>
-                <td class="px-3 py-3 text-sm text-gray-200">
-                  <div class="space-y-1">
-                    <span class="block">${formattedMessage}</span>
-                    <span class="block pt-1 text-xs text-gray-500">Extracted OTP: ${otpCode}</span>
-                  </div>
-                </td>
-                <td class="px-3 py-3 text-center">
-                  <button onclick="openAiAnalysis('${safeMessage}')" class="p-2 text-primary-color hover:text-white bg-bg-lighter rounded-md">
-                    <i data-feather="cpu" class="w-5 h-5"></i>
-                  </button>
-                </td>
-              </tr>
-            `;
-          });
-
-          otpTableBody.innerHTML = html;
-          feather.replace();
-          const totalRecords = data.iTotalDisplayRecords || validSMS.length;
-          smsStatus.textContent = `Displaying ${validSMS.length} of ${totalRecords} total records.`;
-
-        } else {
-          throw new Error("SMS API data is empty or malformed.");
-        }
-      } catch (error) {
-        console.error("Error fetching SMS data:", error);
-        smsStatus.textContent = '';
-        smsError.textContent = `Could not load SMS messages: ${error.message}.`;
-        smsError.classList.remove('hidden');
-      } finally {
-        setSmsLoading(false);
-      }
-    }
-
-    // Gemini AI Functions (unchanged logic)
-    function openAiAnalysis(message) {
-      const apiKey = geminiKeyInput.value;
-      if (!apiKey) {
-        aiModalContent.innerHTML = `
-          <p class="text-red-400">Please enter your Gemini API Key in the input field at the top of the page first.</p>
-        `;
-        aiModal.classList.add('show');
-        return;
-      }
-
-      aiModalContent.innerHTML = `
-        <p class="font-semibold text-gray-400">Original Message:</p>
-        <p class="p-3 bg-bg-dark rounded-lg text-sm">"${message}"</p>
-        <p class="font-semibold text-gray-400 mt-4">AI Analysis:</p>
-        <div class="flex items-center justify-center h-20">
-          <div class="w-8 h-8 border-4 border-primary-color border-t-transparent rounded-full spinning"></div>
+    <section id="plans" class="section">
+      <h2 class="section-title">Membership Plans</h2>
+      <div class="plans-container">
+        <div class="plan-card">
+          <h3 class="plan-name">Basic User</h3>
+          <div class="plan-price">Rp 50.000 <span>/Lifetime</span></div>
+          <ul class="plan-features">
+            <li><i class="fas fa-check feature-icon"></i> Limited Requests Day</li>
+            <li><i class="fas fa-check feature-icon"></i> Standard Support</li>
+            <li><i class="fas fa-check feature-icon"></i> Web Panel Access</li>
+          </ul>
+          <a href="https://t.me/AlwaysAzxz?text=Mas%20Mau%20Buy%20Basic%20User" class="btn btn-outline">Select Plan</a>
         </div>
-      `;
-      aiModal.classList.add('show');
-      analyzeWithGemini(message, apiKey);
-    }
 
-    function closeAiModal() {
-      aiModal.classList.remove('show');
-    }
+        <div class="plan-card">
+          <h3 class="plan-name">Reseller User</h3>
+          <div class="plan-price">Rp 100.000 <span>/Lifetime</span></div>
+          <ul class="plan-features">
+            <li><i class="fas fa-check feature-icon"></i> Increased Request Limits</li>
+            <li><i class="fas fa-check feature-icon"></i> Priority Support</li>
+            <li><i class="fas fa-check feature-icon"></i> Web Panel Access</li>
+            <li><i class="fas fa-check feature-icon"></i> Create Basic User</li>
+          </ul>
+          <a href="https://t.me/AlwaysAzxz?text=Mas%20Mau%20Buy%20Reseller%20User" class="btn btn-outline">Select Plan</a>
+        </div>
 
-    async function analyzeWithGemini(message, apiKey) {
-      const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+        <div class="plan-card">
+          <h3 class="plan-name">Admin User</h3>
+          <div class="plan-price">Rp 150.000 <span>/Lifetime</span></div>
+          <ul class="plan-features">
+            <li><i class="fas fa-check feature-icon"></i> Unlimited Request Limits</li>
+            <li><i class="fas fa-check feature-icon"></i> 24/7 Priority Support</li>
+            <li><i class="fas fa-check feature-icon"></i> Web Panel Access</li>
+            <li><i class="fas fa-check feature-icon"></i> Role Management System</li>
+          </ul>
+          <a href="https://t.me/AlwaysAzxz?text=Mas%20Buy%20Admin%20User" class="btn btn-outline">Select Plan</a>
+        </div>
+      </div>
+    </section>
 
-      const systemPrompt = "You are an expert message analyzer. Analyze the following SMS message. First, state its purpose (e.g., 'This is a login code', 'This is a marketing alert', 'This is a potential scam'). Second, extract any useful information, like the service name or the OTP code. Be concise and use simple bullet points.";
-      const userQuery = message;
+    <section id="about" class="section">
+      <h2 class="section-title">About X- HUNTER</h2>
+      <div class="about-content">
+        <div class="about-text">
+          <p>X- HUNTER is a sophisticated website for managing and exploring bugs in API systems. Built with the latest technology.</p>
+          <p>Our website is designed for users of Exploit to WhatsApp Application.</p>
+        </div>
+        <div>
+          <ul class="about-features">
+            <li><i class="fas fa-bug"></i> Advanced Bug Detection Algorithms</li>
+            <li><i class="fas fa-shield-alt"></i> Real-time Vulnerability Scanning</li>
+            <li><i class="fas fa-bolt"></i> High-performance API</li>
+            <li><i class="fas fa-code"></i> Support for Multiple Programming Languages</li>
+            <li><i class="fas fa-mobile-alt"></i> Responsive Design for all Devices</li>
+            <li><i class="fas fa-cloud"></i> Cloud-based Infrastructure</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-      const payload = {
-        contents: [{ parts: [{ text: userQuery }] }],
-        systemInstruction: {
-          parts: [{ text: systemPrompt }]
-        },
-      };
+    <section id="contact" class="section">
+      <h2 class="section-title">Contact Owner</h2>
+      <div class="contact-container">
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fab fa-telegram"></i>
+            </div>
+            <div>
+              <h3>Telegram</h3>
+              <p>@Whatitsdhes</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div>
+              <h3>Email</h3>
+              <p>support@xhunter.web.id</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div>
+              <h3>Response Time</h3>
+              <p>Within 24 hours</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Form dengan action Formspark -->
+<form class="contact-form" action="https://submit-form.com/L1CukDuye">
 
-      try {
-        let response;
-        let delay = 1000;
-        for (let i = 0; i < 3; i++) {
-          response = await fetch(GEMINI_API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+  <div class="form-group">
+    <label for="name">Your Name</label>
+    <input type="text" id="name" name="name" class="form-control" placeholder="Enter your name" required>
+  </div>
+  <div class="form-group">
+    <label for="email">Email Address</label>
+    <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+  </div>
+  <div class="form-group">
+    <label for="message">Message</label>
+    <textarea id="message" name="message" class="form-control" placeholder="Type your message here" required></textarea>
+  </div>
+  
+  <button type="submit" class="btn">Send Message</button>
+</form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p class="footer-text">© 2025 X- HUNTER. All rights reserved.</p>
+  </footer>
+
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/gh/jnicol/particleground/jquery.particleground.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      particleground(document.getElementById('particles'), {
+        dotColor: '#b19cd9',
+        lineColor: '#8a2be2',
+        minSpeedX: 0.1,
+        maxSpeedX: 0.3,
+        minSpeedY: 0.1,
+        maxSpeedY: 0.3,
+        density: 10000,
+        particleRadius: 3,
+      });
+      
+      // Smooth scrolling untuk navigasi
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
           });
+        });
+      });
+      
+      // Notifikasi form (simulasi)
+      const form = document.querySelector('.contact-form');
+      const notification = document.getElementById('notification');
+      
+      if (form) {
+        form.addEventListener('submit', function () {
+        e.preventDefault
+        
+        const formData = new FormData(form);
+        const actionUrl = form.getAttribute('action');
+        
+        fetch(actionUrl, {
+          method: 'POST',
+          body: formData
+        })
+        
+  // Tampilkan notifikasi seketika
+  notification.classList.add('show');
 
-          if (response.ok) break;
-          if (response.status === 429 || response.status >= 500) {
-            await new Promise(resolve => setTimeout(resolve, delay));
-            delay *= 2;
-          } else {
-            break;
-          }
-        }
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(`API Error ${response.status}: ${errorText}`);
-        }
-
-        const result = await response.json();
-        const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-
-        if (text) {
-          const formattedText = text.replace(/\n/g, '<br>');
-          aiModalContent.innerHTML = `
-            <p class="font-semibold text-gray-400">Original Message:</p>
-            <p class="p-3 bg-bg-dark rounded-lg text-sm">"${message}"</p>
-            <p class="font-semibold text-gray-400 mt-4">AI Analysis:</p>
-            <div class="p-3 bg-bg-dark rounded-lg text-sm">${formattedText}</div>
-          `;
-        } else {
-          throw new Error("No text content found in Gemini response.");
-        }
-      } catch (error) {
-        console.error("Gemini API Error:", error);
-        aiModalContent.innerHTML = `
-          <p class="font-semibold text-gray-400">Original Message:</p>
-          <p class="p-3 bg-bg-dark rounded-lg text-sm">"${message}"</p>
-          <p class="font-semibold text-red-400 mt-4">Analysis Failed:</p>
-          <p class="p-3 bg-red-900 bg-opacity-30 text-red-300 rounded-lg text-sm">${error.message}</p>
-        `;
+  // Sembunyikan setelah 5 detik
+  setTimeout(function () {
+    notification.classList.remove('show');
+  }, 5000);
+});
       }
-    }
-
-    // Initial data load
-    document.addEventListener('DOMContentLoaded', () => {
-      feather.replace();
-      fetchNumbersList();
-      fetchSMS();
-
-      generateBtn.addEventListener('click', displayNewNumber);
-      refreshSmsBtn.addEventListener('click', fetchSMS);
-    });
+    }, false);
   </script>
 </body>
 </html>
-
