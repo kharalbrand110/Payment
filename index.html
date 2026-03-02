@@ -1,10 +1,10 @@
-<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, shrink-to-fit=no" />
-    <title>ROMI OAD RAJPUT- | Clean DB</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Israeli Website</title>
     <style>
-        /* --- CLEAN WHITE MODE -- BLACK TEXT, SCAN LINE RETAINED --- */
         * {
             margin: 0;
             padding: 0;
@@ -12,758 +12,236 @@
         }
 
         body {
-            background-color: #ffffff;
-            color: #000000;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow-x: hidden;
-            line-height: 1.4;
-            width: 100%;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            direction: ltr;
         }
 
-        .scan-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 5;
-            opacity: 0.25;
-        }
-
-        .scan-line {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #888, #000, #888, transparent);
-            box-shadow: 0 0 15px rgba(0,0,0,0.3);
-            animation: scanMove 5s linear infinite;
-        }
-
-        @keyframes scanMove {
-            0% { top: 0%; opacity: 0.3; }
-            50% { top: 100%; opacity: 0.8; }
-            100% { top: 0%; opacity: 0.3; }
-        }
-
-        .app-container {
-            max-width: 420px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 1rem 0.9rem;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            z-index: 20;
-            background-color: transparent;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 0;
-            margin-bottom: 1rem;
-            border-bottom: 1px solid #ccc;
-            flex-wrap: nowrap;
-            gap: 8px;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            flex-shrink: 0;
-            color: #000;
-        }
-
-        .brand svg {
-            width: 22px;
-            height: 22px;
-            stroke: #000;
-            flex-shrink: 0;
-        }
-
-        .brand span {
-            color: #000;
-            font-size: 1.2rem;
-            white-space: nowrap;
-            letter-spacing: -0.3px;
-            font-weight: 800;
-        }
-        .brand span::after {
-            display: none;
-        }
-
-        .hero {
-            text-align: center;
-            margin-bottom: 1.2rem;
-        }
-
-        .avatar-circle {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 3px solid #000;
-            margin: 0 auto 0.8rem;
-            overflow: hidden;
-            background: #f0f0f0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .avatar-circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        h1 {
-            font-size: 1.6rem;
-            font-weight: 800;
-            margin-bottom: 0.1rem;
-            color: #000;
-            letter-spacing: 0px;
-            line-height: 1.3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-
-        h1 .arrows {
-            color: #444;
-            font-size: 1rem;
-        }
-
-        .subtitle {
-            color: #222;
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.2rem;
-        }
-
-        .search-panel {
-            background: #ffffff;
-            border: 1px solid #ccc;
-            border-radius: 14px;
-            padding: 1.2rem 1rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
-        }
-
-        .field-container {
-            position: relative;
-            margin-bottom: 0.9rem;
-        }
-
-        .field-label {
-            position: absolute;
-            top: -9px;
-            left: 12px;
-            background: #ffffff;
-            padding: 0 6px;
-            font-size: 0.6rem;
-            color: #333;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            border-left: 1px solid #aaa;
-            border-right: 1px solid #aaa;
-            z-index: 5;
-            text-transform: uppercase;
-        }
-
-        input {
-            width: 100%;
-            background: #ffffff;
-            border: 1.5px solid #aaa;
-            color: #000;
-            padding: 0.8rem 0.9rem;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            font-family: 'SF Mono', 'JetBrains Mono', monospace;
-            transition: 0.1s;
-        }
-
-        input:focus {
-            border-color: #000;
-            box-shadow: none;
-            outline: none;
-            background: #fff;
-        }
-
-        .btn-search {
-            width: 100%;
-            padding: 0.8rem;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            background: #000;
+        /* Israeli header style */
+        .header {
+            background: linear-gradient(135deg, #0038b8 0%, #0038b8 33%, #ffffff 33%, #ffffff 66%, #0038b8 66%, #0038b8 100%);
             color: white;
-            border: 2px solid #000;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.1s;
-            box-shadow: none;
+            padding: 15px 0;
+            text-align: center;
+            border-bottom: 3px solid #0038b8;
+            position: relative;
         }
 
-        .btn-search:hover {
-            background: #333;
-            border-color: #333;
-            letter-spacing: 2px;
+        .header h1 {
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.5);
+            display: inline-block;
+            padding: 10px 30px;
+            border-radius: 50px;
         }
 
-        .btn-search:active {
-            transform: translateY(2px);
+        /* Hacked overlay */
+        .hacked-overlay {
+            background-color: black;
+            color: red;
+            text-align: center;
+            padding: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            border-top: 3px solid red;
+            border-bottom: 3px solid red;
+            animation: blink 1s infinite;
         }
 
-        .results-grid {
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; background-color: darkred; }
+            100% { opacity: 1; }
+        }
+
+        .hackers-names {
+            background: black;
+            color: limegreen;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.5rem;
+            border-bottom: 2px solid red;
+        }
+
+        /* Main content */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .nav {
+            background: #0038b8;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            display: inline-block;
+        }
+
+        .nav a:hover {
+            background: #002a8a;
+            border-radius: 5px;
+        }
+
+        .content {
             display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-            width: 100%;
+            gap: 20px;
+            margin-top: 20px;
         }
 
-        .record-card {
-            background: #ffffff;
-            border: 1px solid #000;
-            border-radius: 12px;
-            overflow: hidden;
-            width: 100%;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        .main-content {
+            flex: 2;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
         }
 
-        .card-header {
-            background: #f2f2f2;
-            padding: 0.6rem 0.9rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #000;
+        .sidebar {
+            flex: 1;
+            background: #e9e9e9;
+            padding: 20px;
+            border-radius: 5px;
         }
 
-        .badge-verified {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            background: #eaeaea;
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 0.6rem;
-            color: #000;
-            font-weight: 700;
-            border: 1px solid #000;
-        }
-
-        .card-body {
-            padding: 0.7rem 0.9rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            background: #fff;
-        }
-
-        .data-row {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 8px;
-            padding-bottom: 0.3rem;
-            border-bottom: 1px dashed #ccc;
-        }
-
-        .data-row:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .label {
+        .hebrew-text {
+            font-size: 1.2rem;
             color: #333;
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-            min-width: 52px;
-            max-width: 52px;
-            flex-shrink: 0;
-        }
-
-        .value-group {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            gap: 6px;
-        }
-
-        .value {
-            font-family: 'SF Mono', 'JetBrains Mono', monospace;
-            color: #000;
-            font-size: 0.75rem;
-            font-weight: 500;
-            word-break: break-word;
-            line-height: 1.3;
-            width: 100%;
-            text-align: right;
-        }
-
-        .copy-btn {
-            background: transparent;
-            border: 1px solid #888;
-            color: #000;
-            cursor: pointer;
-            padding: 3px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            width: 22px;
-            height: 22px;
-        }
-
-        .copy-btn svg {
-            width: 12px;
-            height: 12px;
-            stroke: #000;
-        }
-
-        .copy-btn:hover {
+            margin: 10px 0;
+            padding: 10px;
             background: #f0f0f0;
+            border-right: 3px solid #0038b8;
         }
 
-        .loader-container {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            padding: 1.2rem;
-            background: #fff;
-            border: 1px solid #aaa;
-            border-radius: 14px;
-            margin: 0.5rem 0;
-        }
-
-        .spinner {
-            width: 30px;
-            height: 30px;
-            border: 2px solid #ccc;
-            border-top-color: #000;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .status-box {
-            display: none;
+        .footer {
+            background: #333;
+            color: white;
             text-align: center;
-            padding: 1.2rem;
-            background: #fff;
-            border: 1px solid #aaa;
-            border-radius: 14px;
-            margin: 0.5rem 0;
+            padding: 15px;
+            margin-top: 20px;
         }
 
-        .status-box h3 {
-            color: #000;
-            margin: 8px 0 4px;
-            font-size: 0.85rem;
-        }
-
-        .status-box p {
-            color: #333;
-            font-size: 0.7rem;
-        }
-
-        .status-box svg {
-            stroke: #000;
-            width: 28px;
-            height: 28px;
-        }
-
-        .btn-dl-all {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            background: #fff;
-            border: 2px solid #000;
-            border-radius: 12px;
-            color: #000;
-            font-size: 0.75rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            padding: 0.8rem;
-            cursor: pointer;
-            transition: 0.1s;
-            text-transform: uppercase;
-        }
-
-        .btn-dl-all:hover {
-            background: #000;
-            color: #fff;
-        }
-
-        .dl-btn {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background: #fff;
-            border: 1.5px solid #000;
-            border-radius: 6px;
-            color: #000;
-            font-size: 0.6rem;
-            font-weight: 700;
-            padding: 4px 10px;
-            cursor: pointer;
-        }
-
-        .dl-btn:hover {
-            background: #000;
-            color: #fff;
-        }
-        .dl-btn:hover svg {
-            stroke: #fff;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            transform: translateY(100px);
-            background: #000;
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 40px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 10000;
-            opacity: 0;
-            transition: 0.2s;
-            max-width: 300px;
-            margin: 0 auto;
-            font-size: 0.8rem;
-            font-weight: 600;
-            border: 1px solid #fff;
-        }
-
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        footer {
-            margin-top: 1.8rem;
-            padding-top: 1rem;
+        /* Pakistani flag colors in footer hack */
+        .pakistani-note {
+            background: linear-gradient(135deg, #01411C 33%, white 33%, white 66%, #01411C 66%);
+            color: white;
+            padding: 20px;
             text-align: center;
-            color: #333;
-            font-size: 0.65rem;
-            border-top: 1px solid #ccc;
-            letter-spacing: 1px;
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+
+        .pakistani-note span {
+            background: rgba(0,0,0,0.7);
+            padding: 10px 20px;
+            display: inline-block;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="scan-animation">
-        <div class="scan-line"></div>
+    <!-- Israeli Header -->
+    <div class="header">
+        <h1>ישראל</h1>
+        <p style="background: rgba(0,0,0,0.5); color: white; margin-top: 5px;">מדינת ישראל</p>
     </div>
 
-    <main class="app-container">
-        <nav>
-            <div class="brand">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                    <rect x="2" y="2" width="20" height="20" rx="4"/>
-                    <line x1="8" y1="2" x2="8" y2="22"/>
-                    <line x1="16" y1="2" x2="16" y2="22"/>
-                </svg>
-                <span>ROMI OAD RAJPUT-</span>
-            </div>
-        </nav>
-
-        <section class="hero">
-            <div class="avatar-circle">
-                <!-- UPDATED PHOTO URL -->
-                <img src="https://i.ibb.co/5gLVhJDw/IMG-20260227-WA0063.jpg" alt="ROMI OAD RAJPUT-" />
-            </div>
-            <h1><span class="arrows">〈</span> ROMI OAD RAJPUT- DB <span class="arrows">〉</span></h1>
-            <p class="subtitle">clean · simple · scan</p>
-        </section>
-
-        <section class="search-panel">
-            <div class="field-container">
-                <span class="field-label">NUMBER</span>
-                <input type="tel" id="phoneInput" placeholder="03XXXXXXXXX" maxlength="11" autocomplete="off" inputmode="numeric" />
-            </div>
-            <button class="btn-search" id="searchBtn">SCAN DATABASE</button>
-        </section>
-
-        <div id="loader" class="loader-container">
-            <div class="spinner"></div>
-            <p style="margin-top: 10px; color: #000; font-size: 0.75rem;">scanning ...</p>
-        </div>
-
-        <div id="errorState" class="status-box">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="15" y1="9" x2="9" y2="15"/>
-                <line x1="9" y1="9" x2="15" y2="15"/>
-            </svg>
-            <h3>CONNECTION FAILED</h3>
-            <p>Unable to retrieve data</p>
-        </div>
-
-        <div id="emptyState" class="status-box">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <circle cx="11" cy="11" r="8"/>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-            </svg>
-            <h3>NO RECORDS FOUND</h3>
-            <p>Number not in database</p>
-        </div>
-
-        <div id="resultsGrid" class="results-grid"></div>
-
-        <div id="downloadAllWrap" style="display:none; margin: 0.7rem 0 0.3rem;">
-            <button class="btn-dl-all" onclick="downloadAllCards()">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="15" height="15">
-                    <path d="M12 3v12M8 11l4 4 4-4"/>
-                    <rect x="3" y="17" width="18" height="4" rx="1"/>
-                </svg>
-                DOWNLOAD ALL (PNG)
-            </button>
-        </div>
-
-        <footer>
-            ROMI OAD RAJPUT- · 
-        </footer>
-    </main>
-
-    <div id="toast" class="toast">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-            <polyline points="20 6 9 17 4 12"/>
-        </svg>
-        <span>Copied!</span>
+    <!-- Hacked Message -->
+    <div class="hacked-overlay">
+        🔴 HACKED 🔴
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script>
-        const phoneInput = document.getElementById('phoneInput');
-        const searchBtn = document.getElementById('searchBtn');
-        const resultsGrid = document.getElementById('resultsGrid');
-        const loader = document.getElementById('loader');
-        const errorState = document.getElementById('errorState');
-        const emptyState = document.getElementById('emptyState');
-        const toast = document.getElementById('toast');
+    <!-- Hackers Info -->
+    <div class="hackers-names">
+        <span>🇵🇰 Hacked by: Pakistani Hackers - Usman & Kharal Mods 🇵🇰</span>
+        <br>
+        <small style="color: yellow;">~ We are watching you ~</small>
+    </div>
 
-        searchBtn.addEventListener('click', executeSearch);
-        phoneInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') executeSearch(); });
-        phoneInput.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            e.target.value = value.slice(0, 11);
-        });
+    <!-- Navigation -->
+    <div class="nav">
+        <a href="#">בית</a>
+        <a href="#">חדשות</a>
+        <a href="#">ממשלה</a>
+        <a href="#">צבא</a>
+        <a href="#">טכנולוגיה</a>
+        <a href="#">תרבות</a>
+    </div>
 
-        const API_ENDPOINT = "https://howler-database-api.vercel.app/api/lookup?phone=";
+    <!-- Main Content -->
+    <div class="container">
+        <div class="content">
+            <div class="main-content">
+                <h2 style="color: #0038b8;">ברוכים הבאים</h2>
+                <div class="hebrew-text">
+                    <p>זהו אתר ישראלי לדוגמה</p>
+                    <p style="color: red; font-weight: bold;">*** האתר נפרץ על ידי האקרים פקיסטנים ***</p>
+                </div>
+                
+                <h3>חדשות אחרונות</h3>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>כתבה ראשית: מצב ביטחוני</li>
+                    <li>כלכלה: עדכונים אחרונים</li>
+                    <li>ספורט: משחקי השבוע</li>
+                </ul>
 
-        async function executeSearch() {
-            const query = phoneInput.value.trim();
-            
-            if (!query || query.length < 10) {
-                showToast("Valid number required", true);
-                return;
-            }
+                <div style="margin-top: 20px; padding: 15px; background: #fff3f3; border-left: 4px solid red;">
+                    <h4 style="color: red;">⚠️ הודעה מהאקרים</h4>
+                    <p style="font-family: monospace;">"פקיסטן זינדאבאד! ישראל יונדה בא!"</p>
+                    <p style="font-family: monospace;">- Usman X Kharal Mods</p>
+                </div>
+            </div>
 
-            resetUI();
-            loader.style.display = 'flex';
-            searchBtn.disabled = true;
+            <div class="sidebar">
+                <h3>עדכונים</h3>
+                <p>חדשות חמות</p>
+                <hr>
+                <p>מזג אוויר</p>
+                <hr>
+                <p>תחבורה</p>
+                <hr>
+                <div style="margin-top: 20px; padding: 10px; background: #000; color: lime;">
+                    <p style="text-align: center;">💻 HACKED BY</p>
+                    <p style="text-align: center; font-weight: bold;">USMAN & KHARAL MODS</p>
+                    <p style="text-align: center; font-size: 12px;">Team Pakistani Hackers</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            try {
-                const response = await fetch(`${API_ENDPOINT}${query}`);
-                if (!response.ok) throw new Error("API Error");
-                const data = await response.json();
+    <!-- Footer with Pakistani Touch -->
+    <div class="footer">
+        <p>כל הזכויות שמורות לממשלת ישראל © 2025</p>
+        <p style="color: #ff9999; font-size: 14px; margin-top: 5px;">(This site has been compromised by Pakistani Hackers)</p>
+    </div>
 
-                if (data.success === true && data.result && data.result.length > 0) {
-                    renderRecords(data.result);
-                } else {
-                    emptyState.style.display = 'block';
-                }
+    <!-- Pakistani Flag Message -->
+    <div class="pakistani-note">
+        <span>🇵🇰 This website is hacked for educational/demonstration purposes by Usman & Kharal Mods - Pakistan Zindabad 🇵🇰</span>
+    </div>
 
-            } catch (error) {
-                errorState.style.display = 'block';
-            } finally {
-                loader.style.display = 'none';
-                searchBtn.disabled = false;
-            }
-        }
+    <!-- Hacked Signature -->
+    <div style="background: black; color: red; text-align: center; padding: 10px; font-family: 'Courier New'; border-top: 2px solid red;">
+        <p>#PAKISTAN #HACKED #USMAN #KHARAL #MODS #CYBERATTACK #DEMO</p>
+        <p style="color: lime;">> System breached by Pakistani Cyber Force <</p>
+        <p style="color: yellow;">> Don't mess with Pakistan <</p>
+    </div>
 
-        function resetUI() {
-            resultsGrid.innerHTML = '';
-            errorState.style.display = 'none';
-            emptyState.style.display = 'none';
-            document.getElementById('downloadAllWrap').style.display = 'none';
-        }
-
-        function renderRecords(records) {
-            records.forEach((record, index) => {
-                const card = document.createElement('div');
-                card.className = 'record-card';
-
-                const fields = [
-                    { label: "NAME", value: record.name || "N/A" },
-                    { label: "MOBILE", value: record.mobile || "N/A" },
-                    { label: "CNIC", value: record.cnic || "N/A" },
-                    { label: "ADDRESS", value: record.address || "N/A" },
-                    { label: "COUNTRY", value: record.country || "N/A" }
-                ];
-
-                let rowsHTML = fields.map(field => {
-                    let displayValue = field.value;
-                    if (field.label === "MOBILE" && displayValue.startsWith("0")) {
-                        displayValue = displayValue.substring(1);
-                    }
-                    
-                    return `
-                    <div class="data-row">
-                        <span class="label">${field.label}</span>
-                        <div class="value-group">
-                            <span class="value">${displayValue}</span>
-                            <button class="copy-btn" onclick="copyText('${displayValue.replace(/'/g, "\\'")}')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                `}).join('');
-
-                card.innerHTML = `
-                    <div class="card-header">
-                        <div style="display:flex; align-items:center; gap:6px;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2">
-                                <rect x="2" y="2" width="20" height="20" rx="2"></rect>
-                                <line x1="7" y1="2" x2="7" y2="22"></line>
-                            </svg>
-                            <span style="color:#000; font-weight:700; font-size:0.75rem;">RECORD #${index + 1}</span>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:6px;">
-                            <span class="badge-verified">✔ VERIFIED</span>
-                            <button class="dl-btn" onclick="downloadCard(this)" title="Download as PNG">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13">
-                                    <path d="M12 3v12M8 11l4 4 4-4"/><rect x="3" y="17" width="18" height="4" rx="1"/>
-                                </svg>
-                                PNG
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        ${rowsHTML}
-                    </div>
-                `;
-
-                resultsGrid.appendChild(card);
-            });
-            document.getElementById('downloadAllWrap').style.display = 'block';
-        }
-
-        window.downloadAllCards = async function() {
-            const cards = document.querySelectorAll('.record-card');
-            if (!cards.length) return;
-            showToast('Generating PNG...');
-            const allBtns = document.querySelectorAll('.copy-btn, .dl-btn');
-            allBtns.forEach(b => b.style.visibility = 'hidden');
-            try {
-                const wrapper = document.createElement('div');
-                wrapper.style.cssText = `
-                    position: fixed;
-                    left: -9999px;
-                    top: 0;
-                    width: ${cards[0].offsetWidth}px;
-                    background: #ffffff;
-                    padding: 12px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
-                    border-radius: 12px;
-                `;
-                cards.forEach(card => {
-                    const clone = card.cloneNode(true);
-                    clone.querySelectorAll('.copy-btn, .dl-btn').forEach(b => b.style.display = 'none');
-                    wrapper.appendChild(clone);
-                });
-                document.body.appendChild(wrapper);
-                const canvas = await html2canvas(wrapper, {
-                    backgroundColor: '#ffffff',
-                    scale: 2.8,
-                    useCORS: true,
-                    logging: false
-                });
-                document.body.removeChild(wrapper);
-                const link = document.createElement('a');
-                link.download = 'ROMI OAD RAJPUT-_Records.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-                showToast('All PNG Downloaded!');
-            } catch(e) {
-                showToast('Download failed!', true);
-            } finally {
-                allBtns.forEach(b => b.style.visibility = 'visible');
-            }
-        };
-
-        window.downloadCard = function(btn) {
-            const card = btn.closest('.record-card');
-            const hideBtns = card.querySelectorAll('.copy-btn, .dl-btn');
-            hideBtns.forEach(b => b.style.visibility = 'hidden');
-            html2canvas(card, {
-                backgroundColor: '#ffffff',
-                scale: 3,
-                useCORS: true,
-                logging: false
-            }).then(canvas => {
-                hideBtns.forEach(b => b.style.visibility = 'visible');
-                const link = document.createElement('a');
-                link.download = 'ROMI OAD RAJPUT-_Record.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-                showToast('PNG Downloaded!');
-            }).catch(() => {
-                hideBtns.forEach(b => b.style.visibility = 'visible');
-                showToast('Download failed!', true);
-            });
-        };
-
-        window.copyText = function(text) {
-            if (!text || text === "N/A") return;
-            navigator.clipboard.writeText(text).then(() => {
-                showToast("Copied!");
-            });
-        };
-
-        let toastTimeout;
-        function showToast(msg, isError = false) {
-            const span = toast.querySelector('span');
-            span.textContent = msg;
-            toast.classList.add('show');
-            clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => {
-                toast.classList.remove('show');
-            }, 1500);
-        }
-    </script>
+    <!-- ASCII Art (optional) -->
+    <pre style="background: black; color: lime; text-align: center; padding: 10px; margin: 0; font-size: 10px;">
+    ╔══╗ ♪┏ ♪┏ ♪┏ ♪┏ ♪┏ 
+    ╚╗╔╝ ♫┛ ♫┛ ♫┛ ♫┛ ♫┛ 
+    ♪║║♪ ♪┏ ♪┏ ♪┏ ♪┏ ♪┏ 
+    ♫╚╝♫ ♫┛ ♫┛ ♫┛ ♫┛ ♫┛ 
+    </pre>
 </body>
 </html>
