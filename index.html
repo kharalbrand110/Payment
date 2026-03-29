@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Israeli Website</title>
+    <title>TikTok User Info Viewer</title>
     <style>
         * {
             margin: 0;
@@ -12,236 +12,326 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            direction: ltr;
-        }
-
-        /* Israeli header style */
-        .header {
-            background: linear-gradient(135deg, #0038b8 0%, #0038b8 33%, #ffffff 33%, #ffffff 66%, #0038b8 66%, #0038b8 100%);
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-            border-bottom: 3px solid #0038b8;
-            position: relative;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            background: rgba(0,0,0,0.5);
-            display: inline-block;
-            padding: 10px 30px;
-            border-radius: 50px;
-        }
-
-        /* Hacked overlay */
-        .hacked-overlay {
-            background-color: black;
-            color: red;
-            text-align: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #000 0%, #1a1a2e 100%);
+            min-height: 100vh;
             padding: 20px;
-            font-size: 2rem;
-            font-weight: bold;
-            font-family: 'Courier New', monospace;
-            border-top: 3px solid red;
-            border-bottom: 3px solid red;
-            animation: blink 1s infinite;
         }
 
-        @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; background-color: darkred; }
-            100% { opacity: 1; }
-        }
-
-        .hackers-names {
-            background: black;
-            color: limegreen;
-            padding: 15px;
-            text-align: center;
-            font-size: 1.5rem;
-            border-bottom: 2px solid red;
-        }
-
-        /* Main content */
         .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background: white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 900px;
+            margin: 0 auto;
         }
 
-        .nav {
-            background: #0038b8;
-            padding: 10px;
+        .card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 40px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        h1 {
             text-align: center;
-        }
-
-        .nav a {
             color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            margin: 0 5px;
-            display: inline-block;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
         }
 
-        .nav a:hover {
-            background: #002a8a;
-            border-radius: 5px;
+        h1 span {
+            color: #ff004f;
         }
 
-        .content {
+        .sub {
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 40px;
+        }
+
+        .input-group {
             display: flex;
-            gap: 20px;
-            margin-top: 20px;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
-        .main-content {
-            flex: 2;
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 5px;
-        }
-
-        .sidebar {
+        input {
             flex: 1;
-            background: #e9e9e9;
-            padding: 20px;
-            border-radius: 5px;
+            padding: 18px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255,255,255,0.95);
+            outline: none;
         }
 
-        .hebrew-text {
-            font-size: 1.2rem;
-            color: #333;
-            margin: 10px 0;
-            padding: 10px;
-            background: #f0f0f0;
-            border-right: 3px solid #0038b8;
-        }
-
-        .footer {
-            background: #333;
+        button {
+            padding: 18px 40px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(45deg, #ff004f, #ff6b6b);
             color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(255,0,79,0.3);
+        }
+
+        .loader {
+            display: none;
             text-align: center;
+            margin: 40px 0;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top: 4px solid #ff004f;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .user-info {
+            display: none;
+            background: rgba(255,255,255,0.1);
+            border-radius: 25px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .profile-header {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ff004f;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .stat {
+            background: rgba(0,0,0,0.3);
             padding: 15px;
-            margin-top: 20px;
-        }
-
-        /* Pakistani flag colors in footer hack */
-        .pakistani-note {
-            background: linear-gradient(135deg, #01411C 33%, white 33%, white 66%, #01411C 66%);
-            color: white;
-            padding: 20px;
+            border-radius: 15px;
             text-align: center;
-            font-size: 1.2rem;
-            margin-top: 20px;
         }
 
-        .pakistani-note span {
-            background: rgba(0,0,0,0.7);
-            padding: 10px 20px;
-            display: inline-block;
-            border-radius: 5px;
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff004f;
+        }
+
+        .stat-label {
+            color: rgba(255,255,255,0.7);
+            margin-top: 5px;
+        }
+
+        .info-row {
+            margin: 15px 0;
+            padding: 12px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            word-break: break-all;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #ff004f;
+        }
+
+        .error {
+            background: rgba(255,0,0,0.2);
+            border: 1px solid #ff004f;
+            padding: 15px;
+            border-radius: 12px;
+            color: #ff6b6b;
+            margin-top: 20px;
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .card { padding: 20px; }
+            .profile-header { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
 <body>
-    <!-- Israeli Header -->
-    <div class="header">
-        <h1>ישראל</h1>
-        <p style="background: rgba(0,0,0,0.5); color: white; margin-top: 5px;">מדינת ישראל</p>
-    </div>
-
-    <!-- Hacked Message -->
-    <div class="hacked-overlay">
-        🔴 HACKED 🔴
-    </div>
-
-    <!-- Hackers Info -->
-    <div class="hackers-names">
-        <span>🇵🇰 Hacked by: Pakistani Hackers - Usman & Kharal Mods 🇵🇰</span>
-        <br>
-        <small style="color: yellow;">~ We are watching you ~</small>
-    </div>
-
-    <!-- Navigation -->
-    <div class="nav">
-        <a href="#">בית</a>
-        <a href="#">חדשות</a>
-        <a href="#">ממשלה</a>
-        <a href="#">צבא</a>
-        <a href="#">טכנולוגיה</a>
-        <a href="#">תרבות</a>
-    </div>
-
-    <!-- Main Content -->
     <div class="container">
-        <div class="content">
-            <div class="main-content">
-                <h2 style="color: #0038b8;">ברוכים הבאים</h2>
-                <div class="hebrew-text">
-                    <p>זהו אתר ישראלי לדוגמה</p>
-                    <p style="color: red; font-weight: bold;">*** האתר נפרץ על ידי האקרים פקיסטנים ***</p>
-                </div>
-                
-                <h3>חדשות אחרונות</h3>
-                <ul style="margin-left: 20px; margin-top: 10px;">
-                    <li>כתבה ראשית: מצב ביטחוני</li>
-                    <li>כלכלה: עדכונים אחרונים</li>
-                    <li>ספורט: משחקי השבוע</li>
-                </ul>
+        <div class="card">
+            <h1>TikTok <span>User Info</span> Viewer</h1>
+            <p class="sub">Get user profile information, location, and more</p>
 
-                <div style="margin-top: 20px; padding: 15px; background: #fff3f3; border-left: 4px solid red;">
-                    <h4 style="color: red;">⚠️ הודעה מהאקרים</h4>
-                    <p style="font-family: monospace;">"פקיסטן זינדאבאד! ישראל יונדה בא!"</p>
-                    <p style="font-family: monospace;">- Usman X Kharal Mods</p>
-                </div>
+            <div class="input-group">
+                <input type="text" id="username" placeholder="Enter TikTok username (e.g., tiktok)">
+                <button onclick="getUserInfo()">🔍 Search</button>
             </div>
 
-            <div class="sidebar">
-                <h3>עדכונים</h3>
-                <p>חדשות חמות</p>
-                <hr>
-                <p>מזג אוויר</p>
-                <hr>
-                <p>תחבורה</p>
-                <hr>
-                <div style="margin-top: 20px; padding: 10px; background: #000; color: lime;">
-                    <p style="text-align: center;">💻 HACKED BY</p>
-                    <p style="text-align: center; font-weight: bold;">USMAN & KHARAL MODS</p>
-                    <p style="text-align: center; font-size: 12px;">Team Pakistani Hackers</p>
+            <div class="loader" id="loader">
+                <div class="spinner"></div>
+                <p style="color:white; margin-top:15px;">Fetching data...</p>
+            </div>
+
+            <div class="error" id="error"></div>
+
+            <div class="user-info" id="userInfo">
+                <div class="profile-header">
+                    <img class="avatar" id="avatar" src="" alt="Avatar">
+                    <div>
+                        <h2 style="color:white" id="displayName"></h2>
+                        <p style="color:rgba(255,255,255,0.7)">@<span id="uniqueId"></span></p>
+                        <p id="bio" style="color:rgba(255,255,255,0.8); margin-top:8px;"></p>
+                    </div>
+                </div>
+
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value" id="followers">0</div>
+                        <div class="stat-label">Followers</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="following">0</div>
+                        <div class="stat-label">Following</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="likes">0</div>
+                        <div class="stat-label">Total Likes</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="videos">0</div>
+                        <div class="stat-label">Videos</div>
+                    </div>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">📍 Location:</span>
+                    <span id="location" style="color:white">Not available</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">📧 Email (if public):</span>
+                    <span id="email" style="color:white">Not available</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">🔗 Profile Link:</span>
+                    <a id="profileLink" href="#" target="_blank" style="color:#ff004f; text-decoration:none;">View on TikTok →</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer with Pakistani Touch -->
-    <div class="footer">
-        <p>כל הזכויות שמורות לממשלת ישראל © 2025</p>
-        <p style="color: #ff9999; font-size: 14px; margin-top: 5px;">(This site has been compromised by Pakistani Hackers)</p>
-    </div>
+    <script>
+        // IMPORTANT: Replace with your Vercel backend URL after deployment
+        const API_URL = window.location.origin + '/api/tiktok';
 
-    <!-- Pakistani Flag Message -->
-    <div class="pakistani-note">
-        <span>🇵🇰 This website is hacked for educational/demonstration purposes by Usman & Kharal Mods - Pakistan Zindabad 🇵🇰</span>
-    </div>
+        async function getUserInfo() {
+            const username = document.getElementById('username').value.trim();
+            
+            if (!username) {
+                showError('Please enter a username');
+                return;
+            }
 
-    <!-- Hacked Signature -->
-    <div style="background: black; color: red; text-align: center; padding: 10px; font-family: 'Courier New'; border-top: 2px solid red;">
-        <p>#PAKISTAN #HACKED #USMAN #KHARAL #MODS #CYBERATTACK #DEMO</p>
-        <p style="color: lime;">> System breached by Pakistani Cyber Force <</p>
-        <p style="color: yellow;">> Don't mess with Pakistan <</p>
-    </div>
+            // Hide previous results
+            document.getElementById('userInfo').style.display = 'none';
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('loader').style.display = 'block';
 
-    <!-- ASCII Art (optional) -->
-    <pre style="background: black; color: lime; text-align: center; padding: 10px; margin: 0; font-size: 10px;">
-    ╔══╗ ♪┏ ♪┏ ♪┏ ♪┏ ♪┏ 
-    ╚╗╔╝ ♫┛ ♫┛ ♫┛ ♫┛ ♫┛ 
-    ♪║║♪ ♪┏ ♪┏ ♪┏ ♪┏ ♪┏ 
-    ♫╚╝♫ ♫┛ ♫┛ ♫┛ ♫┛ ♫┛ 
-    </pre>
+            try {
+                const response = await fetch(`${API_URL}?username=${username}`);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to fetch user data');
+                }
+
+                displayUserInfo(data);
+            } catch (err) {
+                // Demo mode - show sample data if API fails
+                showDemoData(username);
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
+        }
+
+        function displayUserInfo(data) {
+            document.getElementById('avatar').src = data.avatar || 'https://via.placeholder.com/100';
+            document.getElementById('displayName').innerText = data.displayName || data.username;
+            document.getElementById('uniqueId').innerText = data.username;
+            document.getElementById('bio').innerText = data.bio || 'No bio available';
+            document.getElementById('followers').innerText = data.followers?.toLocaleString() || '0';
+            document.getElementById('following').innerText = data.following?.toLocaleString() || '0';
+            document.getElementById('likes').innerText = data.likes?.toLocaleString() || '0';
+            document.getElementById('videos').innerText = data.videos || '0';
+            document.getElementById('location').innerText = data.location || 'Not available';
+            document.getElementById('email').innerText = data.email || 'Not available';
+            document.getElementById('profileLink').href = `https://tiktok.com/@${data.username}`;
+            
+            document.getElementById('userInfo').style.display = 'block';
+        }
+
+        function showDemoData(username) {
+            // Demo data for presentation (TikTok API needs backend)
+            const demoData = {
+                username: username,
+                displayName: username.charAt(0).toUpperCase() + username.slice(1),
+                avatar: 'https://picsum.photos/100/100',
+                bio: '🎵 Content creator | 🎥 Daily videos | ✨ 1M+ views',
+                followers: Math.floor(Math.random() * 1000000) + 1000,
+                following: Math.floor(Math.random() * 5000) + 100,
+                likes: Math.floor(Math.random() * 5000000) + 10000,
+                videos: Math.floor(Math.random() * 500) + 10,
+                location: 'United States',
+                email: `${username}@example.com`
+            };
+            displayUserInfo(demoData);
+            showError('Demo mode: For real TikTok data, deploy backend with valid API keys', true);
+        }
+
+        function showError(msg, isWarning = false) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.innerText = msg;
+            errorDiv.style.display = 'block';
+            if (isWarning) {
+                errorDiv.style.background = 'rgba(255,165,0,0.2)';
+                errorDiv.style.borderColor = '#ffa500';
+                errorDiv.style.color = '#ffa500';
+            } else {
+                errorDiv.style.background = 'rgba(255,0,0,0.2)';
+                errorDiv.style.borderColor = '#ff004f';
+                errorDiv.style.color = '#ff6b6b';
+            }
+            setTimeout(() => {
+                if (!isWarning) errorDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
 </body>
 </html>
