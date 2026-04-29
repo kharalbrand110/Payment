@@ -19,8 +19,11 @@
         .login-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); padding: 40px; border-radius: 24px; width: 100%; max-width: 420px; border: 1px solid rgba(255,255,255,0.1); }
         .login-card h2 { background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; color: transparent; text-align: center; margin-bottom: 30px; }
         .login-card input { width: 100%; padding: 14px; margin-bottom: 15px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: white; font-size: 14px; }
+        .login-card input:focus { outline: none; border-color: #667eea; }
         .login-card button { width: 100%; padding: 14px; background: linear-gradient(135deg, #667eea, #764ba2); border: none; border-radius: 12px; color: white; font-size: 16px; font-weight: 600; cursor: pointer; }
         .error-msg { background: rgba(231,76,60,0.2); color: #e74c3c; padding: 10px; border-radius: 10px; text-align: center; margin-top: 15px; display: none; font-size: 13px; }
+        .success-msg { background: rgba(46,204,113,0.2); color: #2ed573; padding: 10px; border-radius: 10px; text-align: center; margin-top: 15px; display: none; font-size: 13px; }
+        .info-msg { background: rgba(52,152,219,0.2); color: #3498db; padding: 10px; border-radius: 10px; text-align: center; margin-top: 15px; display: none; font-size: 13px; }
         .auto-card { background: rgba(46,204,113,0.1); border: 1px solid #2ed573; border-radius: 12px; padding: 15px; margin-bottom: 20px; text-align: center; }
 
         .admin-container { display: none; }
@@ -84,14 +87,22 @@
 <div id="loginPage" class="login-container">
     <div class="login-card">
         <h2><i class="fas fa-store"></i> KHALAL STORE ADMIN</h2>
+        
         <div id="autoCreateBox" class="auto-card" style="display:none;">
-            <p><i class="fas fa-info-circle"></i> No admin account found! Click "Create Admin" first.</p>
-            <button onclick="autoCreateAdmin()" style="background:#2ed573; width:100%;">Create Admin Account</button>
+            <p><i class="fas fa-info-circle"></i> No admin account found! Click below to create:</p>
+            <button onclick="autoCreateAdmin()" style="background:#2ed573; width:100%;"><i class="fas fa-user-plus"></i> Create Admin Account</button>
         </div>
+        
+        <div id="loadingBox" class="auto-card" style="display:none; border-color:#3498db;">
+            <p><i class="fas fa-spinner fa-spin"></i> Checking admin status...</p>
+        </div>
+        
         <input type="email" id="adminEmail" placeholder="Admin Email" value="admin@khalalstore.com">
         <input type="password" id="adminPassword" placeholder="Password" value="Admin@123">
         <button onclick="adminLogin()">LOGIN</button>
         <div id="loginError" class="error-msg"></div>
+        <div id="loginSuccess" class="success-msg"></div>
+        <div id="loginInfo" class="info-msg"></div>
     </div>
 </div>
 
@@ -125,7 +136,7 @@
 
         <div id="productsSection" class="section">
             <button onclick="openProductModal()" style="margin-bottom:20px;">+ Add New Product</button>
-            <div style="overflow-x:auto;"><table><thead><tr><th>Name</th><th>Price</th><th>Category</th><th>Sold</th><th>Actions</th></tr></thead><tbody id="productsList"></tbody></table></div>
+            <div style="overflow-x:auto;"><tr><thead><tr><th>Name</th><th>Price</th><th>Category</th><th>Sold</th><th>Actions</th></tr></thead><tbody id="productsList"></tbody></table></div>
         </div>
 
         <div id="depositsSection" class="section">
@@ -203,34 +214,147 @@
     
     function closeImageModal() { document.getElementById('imageModal').style.display = 'none'; }
     
+    // Auto Create Admin Function
     async function autoCreateAdmin() {
         const email = "admin@khalalstore.com";
         const password = "Admin@123";
+        const infoDiv = document.getElementById('loginInfo');
+        const errorDiv = document.getElementById('loginError');
+        const successDiv = document.getElementById('loginSuccess');
+        
+        infoDiv.style.display = 'block';
+        infoDiv.innerHTML = "⏳ Creating admin account...";
+        errorDiv.style.display = 'none';
+        successDiv.style.display = 'none';
+        
         try {
-            const user = await auth.createUserWithEmailAndPassword(email, password);
-            await db.ref('admins/' + user.user.uid).set({ email: email, role: 'super_admin' });
-            showToast("Admin created! Now login.");
+            // Try to create user
+            const userCred = await auth.createUserWithEmailAndPassword(email, password);
+            await db.ref('admins/' + userCred.user.uid).set({
+                email: email,
+                role: 'super_admin',
+                createdAt: new Date().toLocaleString()
+            });
+            infoDiv.style.display = 'none';
+            successDiv.style.display = 'block';
+            successDiv.innerHTML = "✅ Admin account created successfully! Now click LOGIN.";
             document.getElementById('autoCreateBox').style.display = 'none';
-        } catch(err) { showToast(err.message); }
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+            }, 3000);
+        } catch (err) {
+            infoDiv.style.display = 'none';
+            if (err.code === 'auth/email-already-in-use') {
+                successDiv.style.display = 'block';
+                successDiv.innerHTML = "⚠️ Admin account already exists! Just click LOGIN.";
+                document.getElementById('autoCreateBox').style.display = 'none';
+                setTimeout(() => {
+                    successDiv.style.display = 'none';
+                }, 3000);
+            } else if (err.code === 'auth/operation-not-allowed') {
+                errorDiv.style.display = 'block';
+                errorDiv.innerHTML = "❌ Email/Password authentication is disabled! Please enable it in Firebase Console → Authentication → Sign-in methods → Enable Email/Password";
+            } else {
+                errorDiv.style.display = 'block';
+                errorDiv.innerHTML = "❌ Error: " + err.message;
+            }
+        }
     }
     
+    // Check if admin exists on page load
+    async function checkAndSetupAdmin() {
+        const loadingBox = document.getElementById('loadingBox');
+        const autoBox = document.getElementById('autoCreateBox');
+        
+        loadingBox.style.display = 'block';
+        
+        try {
+            const adminsSnap = await db.ref('admins').once('value');
+            if (!adminsSnap.exists()) {
+                // No admin found, try to auto-create
+                loadingBox.style.display = 'none';
+                autoBox.style.display = 'block';
+            } else {
+                loadingBox.style.display = 'none';
+                autoBox.style.display = 'none';
+            }
+        } catch (err) {
+            console.log("Check error:", err);
+            loadingBox.style.display = 'none';
+            autoBox.style.display = 'block';
+        }
+    }
+    
+    // Admin Login
     async function adminLogin() {
         const email = document.getElementById('adminEmail').value;
         const password = document.getElementById('adminPassword').value;
         const errorDiv = document.getElementById('loginError');
+        const successDiv = document.getElementById('loginSuccess');
+        const infoDiv = document.getElementById('loginInfo');
+        
+        errorDiv.style.display = 'none';
+        successDiv.style.display = 'none';
+        infoDiv.style.display = 'none';
+        
+        if (!email || !password) {
+            errorDiv.style.display = 'block';
+            errorDiv.innerHTML = "Enter email and password";
+            return;
+        }
+        
+        infoDiv.style.display = 'block';
+        infoDiv.innerHTML = "⏳ Logging in...";
+        
         try {
-            const user = await auth.signInWithEmailAndPassword(email, password);
-            currentAdmin = user.user;
+            const userCred = await auth.signInWithEmailAndPassword(email, password);
+            currentAdmin = userCred.user;
+            
+            // Add to admins if not exists
+            const adminCheck = await db.ref('admins/' + currentAdmin.uid).once('value');
+            if (!adminCheck.exists()) {
+                await db.ref('admins/' + currentAdmin.uid).set({
+                    email: email,
+                    role: 'admin',
+                    createdAt: new Date().toLocaleString()
+                });
+            }
+            
+            infoDiv.style.display = 'none';
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
-            loadDashboard(); loadUsers(); loadProducts(); loadDeposits(); loadOrders();
-        } catch(err) { errorDiv.style.display = 'block'; errorDiv.innerHTML = err.message; }
+            loadDashboard();
+            loadUsers();
+            loadProducts();
+            loadDeposits();
+            loadOrders();
+            showToast("Welcome Admin!");
+            
+        } catch (err) {
+            infoDiv.style.display = 'none';
+            if (err.code === 'auth/user-not-found') {
+                errorDiv.style.display = 'block';
+                errorDiv.innerHTML = "❌ Admin account not found! Click 'Create Admin Account' button first.";
+                checkAndSetupAdmin();
+            } else if (err.code === 'auth/wrong-password') {
+                errorDiv.style.display = 'block';
+                errorDiv.innerHTML = "❌ Wrong password! Use: Admin@123";
+            } else if (err.code === 'auth/too-many-requests') {
+                errorDiv.style.display = 'block';
+                errorDiv.innerHTML = "⚠️ Too many failed attempts. Please wait 5 minutes.";
+            } else {
+                errorDiv.style.display = 'block';
+                errorDiv.innerHTML = "❌ Error: " + err.message;
+            }
+        }
     }
     
     function adminLogout() {
         auth.signOut();
+        currentAdmin = null;
         document.getElementById('loginPage').style.display = 'flex';
         document.getElementById('adminPanel').style.display = 'none';
+        checkAndSetupAdmin();
     }
     
     function showSection(section) {
@@ -380,7 +504,7 @@
         tbody.innerHTML = '';
         for(const [did, d] of Object.entries(deposits)) {
             const screenshotHtml = d.screenshot ? `<img src="${d.screenshot}" class="screenshot-img" onclick="showFullImage('${d.screenshot}')">` : 'No image';
-            tbody.innerHTML += `<tr><td>${d.username}</td><td>Rs ${d.amount}</td><td>${d.tid}</td><td>${screenshotHtml}</td><td>${d.date}</td><td><span style="color:${d.status === 'pending' ? '#f59e0b' : '#2ed573'}">${d.status}</span></td><td>${d.status === 'pending' ? `<button class="btn-approve" onclick="approveDeposit('${did}', ${d.amount}, '${d.uid}')">Approve</button><button class="btn-reject" onclick="rejectDeposit('${did}')">Reject</button>` : 'Done'}</td></tr>`;
+            tbody.innerHTML += `<tr><td>${d.username}</td><td>Rs ${d.amount}</td><td>${d.tid}</td><td>${screenshotHtml}</td><td>${d.date}</td><td><span style="color:${d.status === 'pending' ? '#f59e0b' : '#2ed573'}">${d.status}</span></td><td>${d.status === 'pending' ? `<button class="btn-approve" onclick="approveDeposit('${did}', ${d.amount}, '${d.uid}')">Approve</button><button class="btn-reject" onclick="rejectDeposit('${did}')">Reject</button>` : 'Done'}<tr></tr>`;
         }
     }
     
@@ -397,15 +521,21 @@
     async function rejectDeposit(did) { if(confirm("Reject deposit?")) { await db.ref('deposits/' + did).update({ status: 'rejected' }); loadDeposits(); showToast("Deposit rejected!"); } }
     
     async function loadOrders() {
-        const ordersSnap = await db.ref('orders').once('value');
-        const orders = ordersSnap.val() || {};
+        const orders = (await db.ref('orders').once('value')).val() || {};
         const tbody = document.getElementById('ordersList');
         tbody.innerHTML = '';
-        for(const [oid, o] of Object.entries(orders)) {
-            const user = (await db.ref('users/' + oid?.split('/')[0]).once('value')).val();
-            tbody.innerHTML += `<tr><td>${user?.username || 'User'}</td><td>${o.productName}</td><td>Rs ${o.amount}</td><td>${o.date}</td><td><span style="color:#2ed573">Completed</span></td></tr>`;
+        for(const [uid, ordersList] of Object.entries(orders)) {
+            const user = (await db.ref('users/' + uid).once('value')).val();
+            if(ordersList) {
+                for(const [oid, order] of Object.entries(ordersList)) {
+                    tbody.innerHTML += `<tr><td>${user?.username || 'User'}</td><td>${order.productName}</td><td>Rs ${order.amount}</td><td>${order.date}</td><td><span style="color:#2ed573">Completed</span></td></tr>`;
+                }
+            }
         }
     }
+    
+    // Initialize - check for existing admin
+    checkAndSetupAdmin();
 </script>
 </body>
 </html>
