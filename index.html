@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>KHARAL STORE - Admin Panel</title>
     
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
@@ -18,14 +15,11 @@
         /* Login Page */
         .login-container { min-height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #0a0c15, #1a1a2e); padding: 20px; }
         .login-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); padding: 40px; border-radius: 24px; width: 100%; max-width: 420px; border: 1px solid rgba(255,255,255,0.1); }
-        .login-card h2 { background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; color: transparent; text-align: center; margin-bottom: 10px; }
-        .login-card .subtitle { text-align: center; color: #8b92a8; font-size: 13px; margin-bottom: 25px; }
+        .login-card h2 { background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; color: transparent; text-align: center; margin-bottom: 30px; }
         .login-card input { width: 100%; padding: 14px; margin-bottom: 15px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: white; font-size: 14px; }
         .login-card input:focus { outline: none; border-color: #667eea; }
-        .login-card button { width: 100%; padding: 14px; background: linear-gradient(135deg, #667eea, #764ba2); border: none; border-radius: 12px; color: white; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
-        .login-card button:hover { transform: translateY(-2px); }
-        .error-msg { background: rgba(231,76,60,0.2); color: #e74c3c; padding: 10px; border-radius: 10px; text-align: center; margin-top: 15px; font-size: 13px; display: none; }
-        .success-msg { background: rgba(46,204,113,0.2); color: #2ed573; padding: 10px; border-radius: 10px; text-align: center; margin-top: 15px; font-size: 13px; display: none; }
+        .login-card button { width: 100%; padding: 14px; background: linear-gradient(135deg, #667eea, #764ba2); border: none; border-radius: 12px; color: white; font-size: 16px; font-weight: 600; cursor: pointer; }
+        .error-msg { background: rgba(231,76,60,0.2); color: #e74c3c; padding: 10px; border-radius: 10px; text-align: center; margin-top: 15px; display: none; font-size: 13px; }
         .auto-card { background: rgba(46,204,113,0.1); border: 1px solid #2ed573; border-radius: 12px; padding: 15px; margin-bottom: 20px; text-align: center; }
         .auto-card p { color: #2ed573; font-size: 13px; margin-bottom: 10px; }
 
@@ -92,18 +86,17 @@
 <div id="loginPage" class="login-container">
     <div class="login-card">
         <h2><i class="fas fa-store"></i> KHARAL STORE ADMIN</h2>
-        <div class="subtitle">Login to manage your store</div>
         
         <div id="autoCreateBox" class="auto-card" style="display:none;">
             <p><i class="fas fa-info-circle"></i> No admin account found! Create one automatically:</p>
-            <button onclick="autoCreateAdmin()" style="background:#2ed573; width:100%;"><i class="fas fa-user-plus"></i> Create Admin Account</button>
+            <button onclick="autoCreateAdmin()" style="background:#2ed573; width:100%;">Create Admin Account</button>
         </div>
         
         <input type="email" id="adminEmail" placeholder="Admin Email" value="admin@kharalstore.com">
         <input type="password" id="adminPassword" placeholder="Password" value="Admin@123">
         <button onclick="adminLogin()">LOGIN</button>
         <div id="loginError" class="error-msg"></div>
-        <div id="loginSuccess" class="success-msg"></div>
+        <div id="loginSuccess" class="error-msg" style="background:rgba(46,204,113,0.2); color:#2ed573;"></div>
     </div>
 </div>
 
@@ -141,7 +134,7 @@
         <!-- Products -->
         <div id="productsSection" class="section">
             <button onclick="openProductModal()" style="margin-bottom:20px;">+ Add New Product</button>
-            <div style="overflow-x:auto;"><table><thead><tr><th>Name</th><th>Price</th><th>Category</th><th>Sold</th><th>Actions</th></tr></thead><tbody id="productsList"></tbody></table></div>
+            <div style="overflow-x:auto;"></table><thead><tr><th>Name</th><th>Price</th><th>Category</th><th>Sold</th><th>Actions</th></tr></thead><tbody id="productsList"></tbody></table></div>
         </div>
 
         <!-- Deposits -->
@@ -151,7 +144,7 @@
 
         <!-- Orders -->
         <div id="ordersSection" class="section">
-            <div style="overflow-x:auto;"></table><thead><tr><th>User</th><th>Product</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead><tbody id="ordersList"></tbody></table></div>
+            <div style="overflow-x:auto;"><table><thead><tr><th>User</th><th>Product</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead><tbody id="ordersList"></tbody></table></div>
         </div>
     </div>
 </div>
@@ -163,7 +156,7 @@
         <div id="userDetails"></div>
         <div style="display:flex; gap:10px; margin-bottom:15px;">
             <select id="actionType"><option value="add">Add (+)</option><option value="remove">Remove (-)</option></select>
-            <input type="number" id="balanceAmount" placeholder="Amount">
+            <input type="number" id="balanceAmount" placeholder="Amount (Rs)">
         </div>
         <button onclick="updateUserBalance()">Update Balance</button>
         <div class="modal-buttons"><button id="toggleStatusBtn" onclick="toggleUserStatus()">Block</button><button onclick="resetUserPassword()">Reset Password</button><button onclick="deleteUser()">Delete</button></div>
@@ -188,26 +181,57 @@
 </div>
 
 <script>
-    // Firebase Config
-    const firebaseConfig = {
-        apiKey: "AIzaSyB9Y2_hnmgQsFute7DDAcKjmuoAnggQZJY",
-        authDomain: "long-d1bcb.firebaseapp.com",
-        databaseURL: "https://long-d1bcb-default-rtdb.firebaseio.com",
-        projectId: "long-d1bcb",
-        storageBucket: "long-d1bcb.firebasestorage.app",
-        messagingSenderId: "515546162619",
-        appId: "1:515546162619:web:5ab1efa7f6e81f8c7e509e"
-    };
-    
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    
-    const auth = firebase.auth();
-    const db = firebase.database();
-    
+    // No Firebase needed - using localStorage
     let currentAdmin = null;
     let selectedUserId = null;
     let selectedUserData = null;
     let editingProductId = null;
+    
+    // Default admin credentials
+    const ADMIN_EMAIL = "admin@kharalstore.com";
+    const ADMIN_PASSWORD = "Admin@123";
+    
+    // Data storage keys
+    const STORAGE_KEYS = {
+        USERS: 'khral_users',
+        PRODUCTS: 'khral_products',
+        DEPOSITS: 'khral_deposits',
+        ORDERS: 'khral_orders'
+    };
+    
+    // Default products
+    const defaultProducts = [
+        { id: 1, name: "CAPCUT GOLDEN 2026", price: 700, oldPrice: 1999, discount: "65%", category: "APKs", downloadLink: "https://www.mediafire.com/file/ql7gquddwnjfomo/CapCut_Golden_16.0.0.apk/file", icon: "fa-crown", iconColor: "#FFD700", sold: 1247 },
+        { id: 2, name: "CAPCUT PRO MODDED", price: 250, oldPrice: 999, discount: "75%", category: "APKs", downloadLink: "https://www.mediafire.com/file/6xaakpfbw90kuae/CapCut_15.5.0.apk/file", icon: "fa-scissors", iconColor: "#FF6B6B", sold: 892 },
+        { id: 3, name: "CAPCUT PRO APK", price: 450, oldPrice: 1499, discount: "70%", category: "APKs", downloadLink: "https://www.mediafire.com/file/3hjvebbjafgr4mr/CAPCUT_PRO_NEW_VERSION_BY_DARK_LEGEND.apk/file", icon: "fa-video", iconColor: "#4ECDC4", sold: 2156 },
+        { id: 4, name: "CAPCUT PRO IPHONE", price: 560, oldPrice: 1599, discount: "65%", category: "APKs", downloadLink: "https://www.mediafire.com/folder/t24kpppgsvacd/CAPCUT+PRO+4+IPHONE+SHARED+BY+DARK+LEGEND", icon: "fa-apple", iconColor: "#000000", sold: 543 },
+        { id: 5, name: "KWAI CUT PRO", price: 250, oldPrice: 799, discount: "69%", category: "APKs", downloadLink: "https://www.mediafire.com/file/gmqwz5hjduo5z1j/KwaiCut_7.5.0.710138.apk/file", icon: "fa-cut", iconColor: "#45B7D1", sold: 678 }
+    ];
+    
+    // Initialize data
+    function initData() {
+        if (!localStorage.getItem(STORAGE_KEYS.PRODUCTS)) {
+            localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(defaultProducts));
+        }
+        if (!localStorage.getItem(STORAGE_KEYS.USERS)) {
+            localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify([]));
+        }
+        if (!localStorage.getItem(STORAGE_KEYS.DEPOSITS)) {
+            localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify([]));
+        }
+        if (!localStorage.getItem(STORAGE_KEYS.ORDERS)) {
+            localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify([]));
+        }
+    }
+    
+    function getUsers() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS) || '[]'); }
+    function saveUsers(users) { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users)); }
+    function getProducts() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.PRODUCTS) || '[]'); }
+    function saveProducts(products) { localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products)); }
+    function getDeposits() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.DEPOSITS) || '[]'); }
+    function saveDeposits(deposits) { localStorage.setItem(STORAGE_KEYS.DEPOSITS, JSON.stringify(deposits)); }
+    function getOrders() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.ORDERS) || '[]'); }
+    function saveOrders(orders) { localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders)); }
     
     function showToast(msg) {
         const toast = document.createElement('div');
@@ -224,121 +248,42 @@
     
     function closeImageModal() { document.getElementById('imageModal').style.display = 'none'; }
     
-    // Auto Create Admin Account
-    async function autoCreateAdmin() {
-        const email = "admin@kharalstore.com";
-        const password = "Admin@123";
-        const errorDiv = document.getElementById('loginError');
-        const successDiv = document.getElementById('loginSuccess');
-        
-        errorDiv.style.display = 'none';
-        successDiv.style.display = 'block';
-        successDiv.innerHTML = "Creating admin account...";
-        
-        try {
-            // First check if user already exists
-            const userCred = await auth.createUserWithEmailAndPassword(email, password);
-            await db.ref('admins/' + userCred.user.uid).set({
-                email: email,
-                role: 'super_admin',
-                createdAt: new Date().toLocaleString()
-            });
-            successDiv.innerHTML = "✅ Admin account created successfully! Now click LOGIN.";
-            document.getElementById('autoCreateBox').style.display = 'none';
-            setTimeout(() => {
-                successDiv.style.display = 'none';
-            }, 3000);
-        } catch (err) {
-            if (err.code === 'auth/email-already-in-use') {
-                successDiv.innerHTML = "⚠️ Admin account already exists! Just click LOGIN.";
-                document.getElementById('autoCreateBox').style.display = 'none';
-            } else if (err.code === 'auth/operation-not-allowed') {
-                errorDiv.style.display = 'block';
-                errorDiv.innerHTML = "❌ Email/Password authentication is disabled! Please enable it in Firebase Console → Authentication → Sign-in methods → Enable Email/Password";
-            } else {
-                errorDiv.style.display = 'block';
-                errorDiv.innerHTML = "❌ Error: " + err.message;
-            }
-        }
+    function autoCreateAdmin() {
+        // No need for Firebase - just show message
+        document.getElementById('autoCreateBox').style.display = 'none';
+        document.getElementById('loginSuccess').style.display = 'block';
+        document.getElementById('loginSuccess').innerHTML = "✅ Admin account ready! Use: admin@kharalstore.com / Admin@123";
+        setTimeout(() => {
+            document.getElementById('loginSuccess').style.display = 'none';
+        }, 3000);
     }
     
-    // Check if admin exists on page load
-    async function checkAdminExists() {
-        try {
-            const adminsSnap = await db.ref('admins').once('value');
-            if (!adminsSnap.exists()) {
-                document.getElementById('autoCreateBox').style.display = 'block';
-            } else {
-                document.getElementById('autoCreateBox').style.display = 'none';
-            }
-        } catch (err) {
-            console.log("Check error:", err);
-        }
-    }
-    
-    // Admin Login
-    async function adminLogin() {
+    function adminLogin() {
         const email = document.getElementById('adminEmail').value;
         const password = document.getElementById('adminPassword').value;
         const errorDiv = document.getElementById('loginError');
-        const successDiv = document.getElementById('loginSuccess');
         
-        errorDiv.style.display = 'none';
-        successDiv.style.display = 'none';
-        
-        if (!email || !password) {
-            errorDiv.style.display = 'block';
-            errorDiv.innerHTML = "Enter email and password";
-            return;
-        }
-        
-        try {
-            const userCred = await auth.signInWithEmailAndPassword(email, password);
-            currentAdmin = userCred.user;
-            
-            // Add to admins if not exists
-            const adminCheck = await db.ref('admins/' + currentAdmin.uid).once('value');
-            if (!adminCheck.exists()) {
-                await db.ref('admins/' + currentAdmin.uid).set({
-                    email: email,
-                    role: 'admin',
-                    createdAt: new Date().toLocaleString()
-                });
-            }
-            
+        if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+            currentAdmin = { email: email };
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
+            initData();
             loadDashboard();
             loadUsers();
             loadProducts();
             loadDeposits();
             loadOrders();
             showToast("Welcome Admin!");
-            
-        } catch (err) {
-            if (err.code === 'auth/user-not-found') {
-                errorDiv.style.display = 'block';
-                errorDiv.innerHTML = "❌ Admin account not found! Click 'Create Admin Account' button first.";
-                checkAdminExists();
-            } else if (err.code === 'auth/wrong-password') {
-                errorDiv.style.display = 'block';
-                errorDiv.innerHTML = "❌ Wrong password! Use: Admin@123";
-            } else if (err.code === 'auth/too-many-requests') {
-                errorDiv.style.display = 'block';
-                errorDiv.innerHTML = "⚠️ Too many failed attempts. Please wait 5 minutes and try again.";
-            } else {
-                errorDiv.style.display = 'block';
-                errorDiv.innerHTML = "❌ Error: " + err.message;
-            }
+        } else {
+            errorDiv.style.display = 'block';
+            errorDiv.innerHTML = "❌ Invalid credentials! Use: admin@kharalstore.com / Admin@123";
         }
     }
     
     function adminLogout() {
-        auth.signOut();
         currentAdmin = null;
         document.getElementById('loginPage').style.display = 'flex';
         document.getElementById('adminPanel').style.display = 'none';
-        checkAdminExists();
     }
     
     function showSection(section) {
@@ -354,54 +299,68 @@
         if(section === 'orders') loadOrders();
     }
     
-    async function loadDashboard() {
-        const users = (await db.ref('users').once('value')).val() || {};
-        document.getElementById('totalUsers').innerText = Object.keys(users).length;
-        let totalSales = 0, totalOrders = 0;
-        for(const [uid, u] of Object.entries(users)) {
-            if(u.purchases) {
-                Object.values(u.purchases).forEach(p => { totalSales += p.price; totalOrders++; });
-            }
-        }
+    function loadDashboard() {
+        const users = getUsers();
+        const products = getProducts();
+        const deposits = getDeposits();
+        const orders = getOrders();
+        
+        document.getElementById('totalUsers').innerText = users.length;
+        document.getElementById('totalProducts').innerText = products.length;
+        document.getElementById('totalOrders').innerText = orders.length;
+        
+        let pendingDeposits = deposits.filter(d => d.status === 'pending').length;
+        document.getElementById('pendingDeposits').innerText = pendingDeposits;
+        
+        let totalSales = orders.reduce((sum, o) => sum + o.amount, 0);
         document.getElementById('totalSales').innerText = `Rs ${totalSales}`;
-        document.getElementById('totalOrders').innerText = totalOrders;
-        const products = (await db.ref('products').once('value')).val() || {};
-        document.getElementById('totalProducts').innerText = Object.keys(products).length;
-        const deposits = (await db.ref('deposits').once('value')).val() || {};
-        let pending = 0;
-        Object.values(deposits).forEach(d => { if(d.status === 'pending') pending++; });
-        document.getElementById('pendingDeposits').innerText = pending;
     }
     
-    async function loadUsers() {
-        const users = (await db.ref('users').once('value')).val() || {};
+    function loadUsers() {
+        const users = getUsers();
         const tbody = document.getElementById('usersList');
         tbody.innerHTML = '';
-        for(const [uid, u] of Object.entries(users)) {
-            if(uid === currentAdmin?.uid) continue;
-            tbody.innerHTML += `<tr><td>${u.username || 'N/A'}</td><td>${u.email || 'N/A'}</td><td>Rs ${u.balance || 0}</td><td><span style="color:${u.status === 'blocked' ? '#e74c3c' : '#2ed573'}">${u.status || 'active'}</span></td><td><button class="btn-edit" onclick="openUserModal('${uid}')">Manage</button></td></tr>`;
+        users.forEach((user, index) => {
+            tbody.innerHTML += `
+                <tr>
+                    <td>${user.name || 'N/A'}</td>
+                    <td>${user.email || 'N/A'}</td>
+                    <td>Rs ${user.balance || 0}</td>
+                    <td><span style="color:${user.status === 'blocked' ? '#e74c3c' : '#2ed573'}">${user.status || 'active'}</span></td>
+                    <td><button class="btn-edit" onclick="openUserModal(${index})">Manage</button></td>
+                </tr>
+            `;
+        });
+        if (tbody.innerHTML === '') {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No users yet</td><tr>';
         }
     }
     
     function searchUsers() {
         const term = document.getElementById('searchUser').value.toLowerCase();
-        db.ref('users').once('value', snap => {
-            const users = snap.val() || {};
-            const tbody = document.getElementById('usersList');
-            tbody.innerHTML = '';
-            for(const [uid, u] of Object.entries(users)) {
-                if(uid === currentAdmin?.uid) continue;
-                if(u.username?.toLowerCase().includes(term) || u.email?.toLowerCase().includes(term)) {
-                    tbody.innerHTML += `<tr><td>${u.username || 'N/A'}</td><td>${u.email || 'N/A'}</td><td>Rs ${u.balance || 0}</td><td><span style="color:${u.status === 'blocked' ? '#e74c3c' : '#2ed573'}">${u.status || 'active'}</span></td><td><button class="btn-edit" onclick="openUserModal('${uid}')">Manage</button></td></tr>`;
-                }
+        const users = getUsers();
+        const tbody = document.getElementById('usersList');
+        tbody.innerHTML = '';
+        users.forEach((user, index) => {
+            if (user.name?.toLowerCase().includes(term) || user.email?.toLowerCase().includes(term)) {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${user.name || 'N/A'}</td>
+                        <td>${user.email || 'N/A'}</td>
+                        <td>Rs ${user.balance || 0}</td>
+                        <td><span style="color:${user.status === 'blocked' ? '#e74c3c' : '#2ed573'}">${user.status || 'active'}</span></td>
+                        <td><button class="btn-edit" onclick="openUserModal(${index})">Manage</button></td>
+                    </tr>
+                `;
             }
         });
     }
     
-    async function openUserModal(uid) {
-        selectedUserId = uid;
-        selectedUserData = (await db.ref('users/' + uid).once('value')).val();
-        document.getElementById('userDetails').innerHTML = `<p><strong>Name:</strong> ${selectedUserData.username}</p><p><strong>Email:</strong> ${selectedUserData.email}</p><p><strong>Balance:</strong> Rs ${selectedUserData.balance || 0}</p><p><strong>Joined:</strong> ${selectedUserData.joinedDate}</p>`;
+    function openUserModal(index) {
+        selectedUserId = index;
+        const users = getUsers();
+        selectedUserData = users[index];
+        document.getElementById('userDetails').innerHTML = `<p><strong>Name:</strong> ${selectedUserData.name}</p><p><strong>Email:</strong> ${selectedUserData.email}</p><p><strong>Balance:</strong> Rs ${selectedUserData.balance || 0}</p><p><strong>Joined:</strong> ${selectedUserData.joinedDate || new Date().toLocaleDateString()}</p>`;
         const btn = document.getElementById('toggleStatusBtn');
         if(selectedUserData.status === 'blocked') { btn.innerHTML = 'Unblock'; btn.style.background = '#2ed573'; }
         else { btn.innerHTML = 'Block'; btn.style.background = '#e74c3c'; }
@@ -410,55 +369,80 @@
     
     function closeUserModal() { document.getElementById('userModal').style.display = 'none'; }
     
-    async function updateUserBalance() {
+    function updateUserBalance() {
         const action = document.getElementById('actionType').value;
         const amount = parseFloat(document.getElementById('balanceAmount').value);
         if(isNaN(amount) || amount <= 0) { showToast("Enter valid amount"); return; }
+        const users = getUsers();
         let newBalance = selectedUserData.balance || 0;
         newBalance = action === 'add' ? newBalance + amount : newBalance - amount;
         if(newBalance < 0) newBalance = 0;
-        await db.ref('users/' + selectedUserId).update({ balance: newBalance });
+        users[selectedUserId].balance = newBalance;
+        saveUsers(users);
         showToast(`Balance updated! New: Rs ${newBalance}`);
         closeUserModal(); loadUsers(); loadDashboard();
     }
     
-    async function toggleUserStatus() {
+    function toggleUserStatus() {
+        const users = getUsers();
         const newStatus = selectedUserData.status === 'blocked' ? 'active' : 'blocked';
-        await db.ref('users/' + selectedUserId).update({ status: newStatus });
+        users[selectedUserId].status = newStatus;
+        saveUsers(users);
         showToast(`User ${newStatus === 'blocked' ? 'blocked' : 'unblocked'}`);
         closeUserModal(); loadUsers();
     }
     
-    async function resetUserPassword() {
-        if(confirm(`Send reset email to ${selectedUserData.email}?`)) {
-            await auth.sendPasswordResetEmail(selectedUserData.email);
-            showToast("Reset email sent!");
-        }
+    function resetUserPassword() {
+        showToast(`Password reset link would be sent to ${selectedUserData.email}`);
     }
     
-    async function deleteUser() {
-        if(confirm(`Delete ${selectedUserData.username} permanently?`)) {
-            await db.ref('users/' + selectedUserId).remove();
+    function deleteUser() {
+        if(confirm(`Delete ${selectedUserData.name} permanently?`)) {
+            const users = getUsers();
+            users.splice(selectedUserId, 1);
+            saveUsers(users);
             showToast("User deleted!");
             closeUserModal(); loadUsers(); loadDashboard();
         }
     }
     
-    async function loadProducts() {
-        const products = (await db.ref('products').once('value')).val() || {};
+    function loadProducts() {
+        const products = getProducts();
         const tbody = document.getElementById('productsList');
         tbody.innerHTML = '';
-        for(const [pid, p] of Object.entries(products)) {
-            tbody.innerHTML += `<tr><td>${p.name}</td><td>Rs ${p.price}</td><td>${p.category}</td><td>${p.sold || 0}</td><td><button class="btn-edit" onclick="editProduct('${pid}')">Edit</button><button class="btn-delete" onclick="deleteProduct('${pid}')">Delete</button></td></tr>`;
-        }
+        products.forEach((product, index) => {
+            tbody.innerHTML += `
+                <tr>
+                    <td>${product.name}</td>
+                    <td>Rs ${product.price}</td>
+                    <td>${product.category}</td>
+                    <td>${product.sold || 0}</td>
+                    <td><button class="btn-edit" onclick="editProduct(${index})">Edit</button><button class="btn-delete" onclick="deleteProduct(${index})">Delete</button></td>
+                </tr>
+            `;
+        });
     }
     
-    function openProductModal() { editingProductId = null; document.getElementById('productModalTitle').innerText = "Add Product"; document.getElementById('productName').value = ''; document.getElementById('productPrice').value = ''; document.getElementById('productCategory').value = ''; document.getElementById('productIcon').value = 'fa-box'; document.getElementById('productIconColor').value = '#667eea'; document.getElementById('productOldPrice').value = ''; document.getElementById('productDiscount').value = ''; document.getElementById('productDownloadLink').value = ''; document.getElementById('productModal').style.display = 'flex'; }
+    function openProductModal() { 
+        editingProductId = null; 
+        document.getElementById('productModalTitle').innerText = "Add Product";
+        document.getElementById('productName').value = '';
+        document.getElementById('productPrice').value = '';
+        document.getElementById('productCategory').value = '';
+        document.getElementById('productIcon').value = 'fa-box';
+        document.getElementById('productIconColor').value = '#667eea';
+        document.getElementById('productOldPrice').value = '';
+        document.getElementById('productDiscount').value = '';
+        document.getElementById('productDownloadLink').value = '';
+        document.getElementById('productModal').style.display = 'flex'; 
+    }
+    
     function closeProductModal() { document.getElementById('productModal').style.display = 'none'; }
     
-    async function editProduct(pid) {
-        const p = (await db.ref('products/' + pid).once('value')).val();
-        editingProductId = pid;
+    function editProduct(index) {
+        const products = getProducts();
+        const p = products[index];
+        editingProductId = index;
         document.getElementById('productModalTitle').innerText = "Edit Product";
         document.getElementById('productName').value = p.name;
         document.getElementById('productPrice').value = p.price;
@@ -471,7 +455,7 @@
         document.getElementById('productModal').style.display = 'flex';
     }
     
-    async function saveProduct() {
+    function saveProduct() {
         const name = document.getElementById('productName').value;
         const price = parseFloat(document.getElementById('productPrice').value);
         const category = document.getElementById('productCategory').value;
@@ -480,48 +464,108 @@
         const oldPrice = document.getElementById('productOldPrice').value;
         const discount = document.getElementById('productDiscount').value;
         const downloadLink = document.getElementById('productDownloadLink').value;
+        
         if(!name || !price || !category) { showToast("Fill required fields"); return; }
-        const productData = { name, price, category, icon, iconColor, oldPrice, discount, downloadLink, sold: 0, rating: 4.5 };
-        if(editingProductId) { await db.ref('products/' + editingProductId).update(productData); showToast("Product updated!"); }
-        else { await db.ref('products').push(productData); showToast("Product added!"); }
+        
+        const products = getProducts();
+        const productData = { 
+            id: Date.now(), name, price, category, icon, iconColor, oldPrice, discount, 
+            downloadLink, sold: 0, rating: 4.5 
+        };
+        
+        if(editingProductId !== null) {
+            products[editingProductId] = { ...products[editingProductId], ...productData, id: products[editingProductId].id };
+            saveProducts(products);
+            showToast("Product updated!");
+        } else {
+            products.push(productData);
+            saveProducts(products);
+            showToast("Product added!");
+        }
         closeProductModal(); loadProducts(); loadDashboard();
     }
     
-    async function deleteProduct(pid) { if(confirm("Delete product?")) { await db.ref('products/' + pid).remove(); loadProducts(); showToast("Product deleted!"); } }
-    
-    async function loadDeposits() {
-        const deposits = (await db.ref('deposits').once('value')).val() || {};
-        const tbody = document.getElementById('depositsList');
-        tbody.innerHTML = '';
-        for(const [did, d] of Object.entries(deposits)) {
-            const screenshotHtml = d.screenshot ? `<img src="${d.screenshot}" class="screenshot-img" onclick="showFullImage('${d.screenshot}')">` : 'No image';
-            tbody.innerHTML += `<tr><td>${d.username}</td><td>Rs ${d.amount}</td><td>${d.tid}</td><td>${screenshotHtml}</td><td>${d.date}</td><td><span style="color:${d.status === 'pending' ? '#f59e0b' : '#2ed573'}">${d.status}</span></td><td>${d.status === 'pending' ? `<button class="btn-approve" onclick="approveDeposit('${did}', ${d.amount}, '${d.uid}')">Approve</button><button class="btn-reject" onclick="rejectDeposit('${did}')">Reject</button>` : 'Done'}</td></tr>`;
+    function deleteProduct(index) {
+        if(confirm("Delete product?")) {
+            const products = getProducts();
+            products.splice(index, 1);
+            saveProducts(products);
+            loadProducts();
+            showToast("Product deleted!");
         }
     }
     
-    async function approveDeposit(did, amount, uid) {
+    function loadDeposits() {
+        const deposits = getDeposits();
+        const tbody = document.getElementById('depositsList');
+        tbody.innerHTML = '';
+        deposits.forEach((deposit, index) => {
+            const screenshotHtml = deposit.screenshot ? `<img src="${deposit.screenshot}" class="screenshot-img" onclick="showFullImage('${deposit.screenshot}')">` : 'No image';
+            tbody.innerHTML += `
+                <tr>
+                    <td>${deposit.username || 'User'}</td>
+                    <td>Rs ${deposit.amount}</td>
+                    <td>${deposit.tid || 'N/A'}</td>
+                    <td>${screenshotHtml}</td>
+                    <td>${deposit.date}</td>
+                    <td><span style="color:${deposit.status === 'pending' ? '#f59e0b' : '#2ed573'}">${deposit.status}</span></td>
+                    <td>${deposit.status === 'pending' ? `<button class="btn-approve" onclick="approveDeposit(${index}, ${deposit.amount})">Approve</button><button class="btn-reject" onclick="rejectDeposit(${index})">Reject</button>` : 'Done'}</td>
+                </tr>
+            `;
+        });
+    }
+    
+    function approveDeposit(index, amount) {
         if(confirm(`Approve Rs ${amount} deposit?`)) {
-            await db.ref('deposits/' + did).update({ status: 'approved' });
-            const user = (await db.ref('users/' + uid).once('value')).val();
-            await db.ref('users/' + uid).update({ balance: (user.balance || 0) + amount });
+            const deposits = getDeposits();
+            deposits[index].status = 'approved';
+            saveDeposits(deposits);
+            
+            // Add balance to user
+            const users = getUsers();
+            const deposit = deposits[index];
+            const userIndex = users.findIndex(u => u.email === deposit.userEmail);
+            if(userIndex !== -1) {
+                users[userIndex].balance = (users[userIndex].balance || 0) + amount;
+                saveUsers(users);
+            }
             showToast("Deposit approved!");
             loadDeposits(); loadDashboard();
         }
     }
     
-    async function rejectDeposit(did) { if(confirm("Reject deposit?")) { await db.ref('deposits/' + did).update({ status: 'rejected' }); loadDeposits(); showToast("Deposit rejected!"); } }
-    
-    async function loadOrders() {
-        const orders = (await db.ref('orders').once('value')).val() || {};
-        const tbody = document.getElementById('ordersList');
-        tbody.innerHTML = '';
-        for(const [oid, o] of Object.entries(orders)) {
-            tbody.innerHTML += `<tr><td>${o.username || 'User'}</td><td>${o.productName}</td><td>Rs ${o.price}</td><td>${o.date}</td><td><span style="color:#2ed573">Completed</span></td></tr>`;
+    function rejectDeposit(index) {
+        if(confirm("Reject deposit?")) {
+            const deposits = getDeposits();
+            deposits[index].status = 'rejected';
+            saveDeposits(deposits);
+            showToast("Deposit rejected!");
+            loadDeposits();
         }
     }
     
-    // Check for existing admin on page load
-    checkAdminExists();
+    function loadOrders() {
+        const orders = getOrders();
+        const tbody = document.getElementById('ordersList');
+        tbody.innerHTML = '';
+        orders.forEach(order => {
+            tbody.innerHTML += `
+                <tr>
+                    <td>${order.username || 'User'}</td>
+                    <td>${order.productName}</td>
+                    <td>Rs ${order.amount}</td>
+                    <td>${order.date}</td>
+                    <td><span style="color:#2ed573">Completed</span></td>
+                </tr>
+            `;
+        });
+        if (tbody.innerHTML === '') {
+            tbody.innerHTML = '<td><td colspan="5" style="text-align:center;">No orders yet</td></tr>';
+        }
+    }
+    
+    // Check for existing admin
+    initData();
 </script>
 </body>
 </html>
