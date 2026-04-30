@@ -69,9 +69,7 @@
 </head>
 <body>
 
-<div id="imageModal" class="image-modal" onclick="closeImageModal()">
-    <img id="fullImage" src="">
-</div>
+<div id="imageModal" class="image-modal" onclick="closeImageModal()"><img id="fullImage" src=""></div>
 
 <div class="admin-container">
     <div class="sidebar">
@@ -84,12 +82,8 @@
     </div>
 
     <div class="main-content">
-        <div class="top-bar">
-            <h2 id="sectionTitle">Dashboard</h2>
-            <button class="refresh-btn" onclick="refreshAll()"><i class="fas fa-sync-alt"></i> Refresh</button>
-        </div>
+        <div class="top-bar"><h2 id="sectionTitle">Dashboard</h2><button class="refresh-btn" onclick="refreshAll()"><i class="fas fa-sync-alt"></i> Refresh</button></div>
 
-        <!-- Dashboard -->
         <div id="dashboardSection" class="section active">
             <div class="stats-grid">
                 <div class="stat-card"><h4>Total Users</h4><div class="value" id="totalUsers">0</div></div>
@@ -100,84 +94,41 @@
             </div>
         </div>
 
-        <!-- Users -->
         <div id="usersSection" class="section">
-            <div class="search-box">
-                <input type="text" id="searchUser" placeholder="Search by name or email...">
-                <button onclick="searchUsers()">Search</button>
-                <button onclick="loadUsers()">Refresh</button>
-            </div>
-            <div style="overflow-x:auto;">
-                <table>
-                    <thead><tr><th>Name</th><th>Email</th><th>Balance</th><th>Status</th><th>Actions</th><tr></thead>
-                    <tbody id="usersList"></tbody>
-                </table>
-            </div>
+            <div class="search-box"><input type="text" id="searchUser" placeholder="Search..."><button onclick="searchUsers()">Search</button><button onclick="loadUsers()">Refresh</button></div>
+            <div style="overflow-x:auto;"><table><thead><tr><th>Name</th><th>Email</th><th>Balance</th><th>Status</th><th>Actions</th></tr></thead><tbody id="usersList"></tbody></table></div>
         </div>
 
-        <!-- Products -->
         <div id="productsSection" class="section">
             <button onclick="openProductModal()" style="margin-bottom:20px;">+ Add New Product</button>
-            <div style="overflow-x:auto;">
-                <table>
-                    <thead><tr><th>Name</th><th>Price</th><th>Category</th><th>Sold</th><th>Actions</th></tr></thead>
-                    <tbody id="productsList"></tbody>
-                </table>
-            </div>
+            <div style="overflow-x:auto;"><table><thead><tr><th>Name</th><th>Price</th><th>Category</th><th>Sold</th><th>Actions</th></tr></thead><tbody id="productsList"></tbody></table></div>
         </div>
 
-        <!-- Deposits -->
         <div id="depositsSection" class="section">
-            <div style="overflow-x:auto;">
-                </table>
-                    <thead><tr><th>User</th><th>Amount</th><th>Txn ID</th><th>Screenshot</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
-                    <tbody id="depositsList"></tbody>
-                </table>
-            </div>
+            <div style="overflow-x:auto;"><table><thead><tr><th>User</th><th>Amount</th><th>Txn ID</th><th>Screenshot</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody id="depositsList"></tbody></table></div>
         </div>
 
-        <!-- Orders -->
         <div id="ordersSection" class="section">
-            <div style="overflow-x:auto;">
-                <table>
-                    <thead><tr><th>User</th><th>Product</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead>
-                    <tbody id="ordersList"></tbody>
-                </table>
-            </div>
+            <div style="overflow-x:auto;"><tr><thead><tr><th>User</th><th>Product</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead><tbody id="ordersList"></tbody></table></div>
         </div>
     </div>
 </div>
 
-<!-- User Modal -->
 <div id="userModal" class="modal">
     <div class="modal-content">
         <h3>Manage User</h3>
         <div id="userDetails"></div>
-        <div style="display:flex; gap:10px; margin-bottom:15px;">
-            <select id="actionType"><option value="add">Add (+)</option><option value="remove">Remove (-)</option></select>
-            <input type="number" id="balanceAmount" placeholder="Amount (Rs)">
-        </div>
+        <div style="display:flex; gap:10px; margin-bottom:15px;"><select id="actionType"><option value="add">Add (+)</option><option value="remove">Remove (-)</option></select><input type="number" id="balanceAmount" placeholder="Amount (Rs)"></div>
         <button onclick="updateUserBalance()">Update Balance</button>
-        <div class="modal-buttons">
-            <button id="toggleStatusBtn" onclick="toggleUserStatus()">Block</button>
-            <button onclick="deleteUser()">Delete</button>
-        </div>
+        <div class="modal-buttons"><button id="toggleStatusBtn" onclick="toggleUserStatus()">Block</button><button onclick="deleteUser()">Delete</button></div>
         <div class="modal-buttons"><button onclick="closeUserModal()">Close</button></div>
     </div>
 </div>
 
-<!-- Product Modal -->
 <div id="productModal" class="modal">
     <div class="modal-content">
         <h3 id="productModalTitle">Add Product</h3>
-        <input type="text" id="productName" placeholder="Product Name">
-        <input type="number" id="productPrice" placeholder="Price (Rs)">
-        <input type="text" id="productCategory" placeholder="Category (APKs/Tools/Courses)">
-        <input type="text" id="productIcon" placeholder="Icon (e.g., fa-crown)" value="fa-box">
-        <input type="text" id="productIconColor" placeholder="Icon Color (#FFD700)" value="#667eea">
-        <input type="text" id="productOldPrice" placeholder="Old Price (Rs)">
-        <input type="text" id="productDiscount" placeholder="Discount (e.g., 50%)">
-        <input type="text" id="productDownloadLink" placeholder="Download Link">
+        <input type="text" id="productName" placeholder="Product Name"><input type="number" id="productPrice" placeholder="Price (Rs)"><input type="text" id="productCategory" placeholder="Category"><input type="text" id="productIcon" placeholder="Icon" value="fa-box"><input type="text" id="productIconColor" placeholder="Icon Color" value="#667eea"><input type="text" id="productOldPrice" placeholder="Old Price"><input type="text" id="productDiscount" placeholder="Discount"><input type="text" id="productDownloadLink" placeholder="Download Link">
         <div class="modal-buttons"><button onclick="saveProduct()">Save</button><button onclick="closeProductModal()">Cancel</button></div>
     </div>
 </div>
@@ -215,14 +166,7 @@
     
     function closeImageModal() { document.getElementById('imageModal').style.display = 'none'; }
     
-    function refreshAll() {
-        loadDashboard();
-        loadUsers();
-        loadProducts();
-        loadDeposits();
-        loadOrders();
-        showToast("Refreshed!");
-    }
+    function refreshAll() { loadDashboard(); loadUsers(); loadProducts(); loadDeposits(); loadOrders(); showToast("Refreshed!"); }
     
     function showSection(section) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -240,19 +184,14 @@
     async function loadDashboard() {
         const users = (await db.ref('users').once('value')).val() || {};
         document.getElementById('totalUsers').innerText = Object.keys(users).length;
-        
         let totalSales = 0, totalOrders = 0;
         for(const [uid, u] of Object.entries(users)) {
-            if(u.purchases) {
-                Object.values(u.purchases).forEach(p => { totalSales += p.price; totalOrders++; });
-            }
+            if(u.purchases) { Object.values(u.purchases).forEach(p => { totalSales += p.price; totalOrders++; }); }
         }
         document.getElementById('totalSales').innerText = `Rs ${totalSales}`;
         document.getElementById('totalOrders').innerText = totalOrders;
-        
         const products = (await db.ref('products').once('value')).val() || {};
         document.getElementById('totalProducts').innerText = Object.keys(products).length;
-        
         const deposits = (await db.ref('deposits').once('value')).val() || {};
         let pending = 0;
         Object.values(deposits).forEach(d => { if(d.status === 'pending') pending++; });
@@ -264,15 +203,7 @@
         const tbody = document.getElementById('usersList');
         tbody.innerHTML = '';
         for(const [uid, u] of Object.entries(users)) {
-            tbody.innerHTML += `
-                <tr>
-                    <td>${u.username || 'N/A'}</td>
-                    <td>${u.email || 'N/A'}</td>
-                    <td>Rs ${u.balance || 0}</td>
-                    <td><span style="color:${u.status === 'blocked' ? '#e74c3c' : '#2ed573'}">${u.status || 'active'}</span></td>
-                    <td><button class="btn-edit" onclick="openUserModal('${uid}')">Manage</button></td>
-                </tr>
-            `;
+            tbody.innerHTML += `<tr><td>${u.username || 'N/A'}</td><td>${u.email || 'N/A'}</td><td>Rs ${u.balance || 0}</td><td><span style="color:${u.status === 'blocked' ? '#e74c3c' : '#2ed573'}">${u.status || 'active'}</span></td><td><button class="btn-edit" onclick="openUserModal('${uid}')">Manage</button></td></tr>`;
         }
         if(tbody.innerHTML === '') tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No users found</td></tr>';
     }
@@ -285,15 +216,7 @@
             tbody.innerHTML = '';
             for(const [uid, u] of Object.entries(users)) {
                 if(u.username?.toLowerCase().includes(term) || u.email?.toLowerCase().includes(term)) {
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>${u.username || 'N/A'}</td>
-                            <td>${u.email || 'N/A'}</td>
-                            <td>Rs ${u.balance || 0}</td>
-                            <td><span style="color:${u.status === 'blocked' ? '#e74c3c' : '#2ed573'}">${u.status || 'active'}</span></td>
-                            <td><button class="btn-edit" onclick="openUserModal('${uid}')">Manage</button></td>
-                        </tr>
-                    `;
+                    tbody.innerHTML += `<tr><td>${u.username || 'N/A'}</td><td>${u.email || 'N/A'}</td><td>Rs ${u.balance || 0}</td><td><span style="color:${u.status === 'blocked' ? '#e74c3c' : '#2ed573'}">${u.status || 'active'}</span></td><td><button class="btn-edit" onclick="openUserModal('${uid}')">Manage</button></td></tr>`;
                 }
             }
             if(tbody.innerHTML === '') tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No users found</td></tr>';
@@ -303,21 +226,10 @@
     async function openUserModal(uid) {
         selectedUserId = uid;
         selectedUserData = (await db.ref('users/' + uid).once('value')).val();
-        document.getElementById('userDetails').innerHTML = `
-            <p><strong>Name:</strong> ${selectedUserData.username}</p>
-            <p><strong>Email:</strong> ${selectedUserData.email}</p>
-            <p><strong>Balance:</strong> Rs ${selectedUserData.balance || 0}</p>
-            <p><strong>Phone:</strong> ${selectedUserData.phone || 'N/A'}</p>
-            <p><strong>Joined:</strong> ${selectedUserData.joinedDate}</p>
-        `;
+        document.getElementById('userDetails').innerHTML = `<p><strong>Name:</strong> ${selectedUserData.username}</p><p><strong>Email:</strong> ${selectedUserData.email}</p><p><strong>Balance:</strong> Rs ${selectedUserData.balance || 0}</p><p><strong>Phone:</strong> ${selectedUserData.phone || 'N/A'}</p><p><strong>Joined:</strong> ${selectedUserData.joinedDate}</p>`;
         const btn = document.getElementById('toggleStatusBtn');
-        if(selectedUserData.status === 'blocked') {
-            btn.innerHTML = 'Unblock';
-            btn.style.background = '#2ed573';
-        } else {
-            btn.innerHTML = 'Block';
-            btn.style.background = '#e74c3c';
-        }
+        if(selectedUserData.status === 'blocked') { btn.innerHTML = 'Unblock'; btn.style.background = '#2ed573'; }
+        else { btn.innerHTML = 'Block'; btn.style.background = '#e74c3c'; }
         document.getElementById('userModal').style.display = 'flex';
     }
     
@@ -332,26 +244,21 @@
         if(newBalance < 0) newBalance = 0;
         await db.ref('users/' + selectedUserId).update({ balance: newBalance });
         showToast(`Balance updated! New: Rs ${newBalance}`);
-        closeUserModal();
-        loadUsers();
-        loadDashboard();
+        closeUserModal(); loadUsers(); loadDashboard();
     }
     
     async function toggleUserStatus() {
         const newStatus = selectedUserData.status === 'blocked' ? 'active' : 'blocked';
         await db.ref('users/' + selectedUserId).update({ status: newStatus });
         showToast(`User ${newStatus === 'blocked' ? 'blocked' : 'unblocked'}`);
-        closeUserModal();
-        loadUsers();
+        closeUserModal(); loadUsers();
     }
     
     async function deleteUser() {
         if(confirm(`Delete ${selectedUserData.username} permanently?`)) {
             await db.ref('users/' + selectedUserId).remove();
             showToast("User deleted!");
-            closeUserModal();
-            loadUsers();
-            loadDashboard();
+            closeUserModal(); loadUsers(); loadDashboard();
         }
     }
     
@@ -360,33 +267,12 @@
         const tbody = document.getElementById('productsList');
         tbody.innerHTML = '';
         for(const [pid, p] of Object.entries(products)) {
-            tbody.innerHTML += `
-                <tr>
-                    <td>${p.name}</td>
-                    <td>Rs ${p.price}</td>
-                    <td>${p.category}</td>
-                    <td>${p.sold || 0}</td>
-                    <td><button class="btn-edit" onclick="editProduct('${pid}')">Edit</button><button class="btn-delete" onclick="deleteProduct('${pid}')">Delete</button></td>
-                </tr>
-            `;
+            tbody.innerHTML += `<tr><td>${p.name}</td><td>Rs ${p.price}</td><td>${p.category}</td><td>${p.sold || 0}</td><td><button class="btn-edit" onclick="editProduct('${pid}')">Edit</button><button class="btn-delete" onclick="deleteProduct('${pid}')">Delete</button></td></tr>`;
         }
         if(tbody.innerHTML === '') tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No products found</td></tr>';
     }
     
-    function openProductModal() {
-        editingProductId = null;
-        document.getElementById('productModalTitle').innerText = "Add Product";
-        document.getElementById('productName').value = '';
-        document.getElementById('productPrice').value = '';
-        document.getElementById('productCategory').value = '';
-        document.getElementById('productIcon').value = 'fa-box';
-        document.getElementById('productIconColor').value = '#667eea';
-        document.getElementById('productOldPrice').value = '';
-        document.getElementById('productDiscount').value = '';
-        document.getElementById('productDownloadLink').value = '';
-        document.getElementById('productModal').style.display = 'flex';
-    }
-    
+    function openProductModal() { editingProductId = null; document.getElementById('productModalTitle').innerText = "Add Product"; document.getElementById('productName').value = ''; document.getElementById('productPrice').value = ''; document.getElementById('productCategory').value = ''; document.getElementById('productIcon').value = 'fa-box'; document.getElementById('productIconColor').value = '#667eea'; document.getElementById('productOldPrice').value = ''; document.getElementById('productDiscount').value = ''; document.getElementById('productDownloadLink').value = ''; document.getElementById('productModal').style.display = 'flex'; }
     function closeProductModal() { document.getElementById('productModal').style.display = 'none'; }
     
     async function editProduct(pid) {
@@ -413,78 +299,37 @@
         const oldPrice = document.getElementById('productOldPrice').value;
         const discount = document.getElementById('productDiscount').value;
         const downloadLink = document.getElementById('productDownloadLink').value;
-        
         if(!name || !price || !category) { showToast("Fill required fields"); return; }
-        
-        const productData = {
-            name, price, category, icon, iconColor, oldPrice, discount,
-            downloadLink, sold: 0, rating: 4.5
-        };
-        
-        if(editingProductId) {
-            await db.ref('products/' + editingProductId).update(productData);
-            showToast("Product updated!");
-        } else {
-            await db.ref('products').push(productData);
-            showToast("Product added!");
-        }
-        closeProductModal();
-        loadProducts();
-        loadDashboard();
+        const productData = { name, price, category, icon, iconColor, oldPrice, discount, downloadLink, sold: 0 };
+        if(editingProductId) { await db.ref('products/' + editingProductId).update(productData); showToast("Product updated!"); }
+        else { await db.ref('products').push(productData); showToast("Product added!"); }
+        closeProductModal(); loadProducts(); loadDashboard();
     }
     
-    async function deleteProduct(pid) {
-        if(confirm("Delete this product?")) {
-            await db.ref('products/' + pid).remove();
-            loadProducts();
-            showToast("Product deleted!");
-        }
-    }
+    async function deleteProduct(pid) { if(confirm("Delete product?")) { await db.ref('products/' + pid).remove(); loadProducts(); showToast("Product deleted!"); } }
     
     async function loadDeposits() {
         const deposits = (await db.ref('deposits').once('value')).val() || {};
         const tbody = document.getElementById('depositsList');
         tbody.innerHTML = '';
         for(const [did, d] of Object.entries(deposits)) {
-            const screenshotHtml = d.screenshot ? 
-                `<img src="${d.screenshot}" class="screenshot-img" onclick="showFullImage('${d.screenshot}')">` : 
-                'No image';
-            tbody.innerHTML += `
-                <tr>
-                    <td>${d.username || 'N/A'}</td>
-                    <td>Rs ${d.amount}</td>
-                    <td>${d.tid || 'N/A'}</td>
-                    <td>${screenshotHtml}</td>
-                    <td>${d.date || 'N/A'}</td>
-                    <td><span style="color:${d.status === 'pending' ? '#f59e0b' : '#2ed573'}">${d.status}</span></td>
-                    <td>${d.status === 'pending' ? 
-                        `<button class="btn-approve" onclick="approveDeposit('${did}', ${d.amount}, '${d.uid}')">Approve</button>
-                         <button class="btn-reject" onclick="rejectDeposit('${did}')">Reject</button>` : 
-                        'Done'}</td>
-                </tr>
-            `;
+            const screenshotHtml = d.screenshot ? `<img src="${d.screenshot}" class="screenshot-img" onclick="showFullImage('${d.screenshot}')">` : 'No image';
+            tbody.innerHTML += `<tr><td>${d.username}</td><td>Rs ${d.amount}</td><td>${d.tid}</td><td>${screenshotHtml}</td><td>${d.date}</td><td><span style="color:${d.status === 'pending' ? '#f59e0b' : '#2ed573'}">${d.status}</span></td><td>${d.status === 'pending' ? `<button class="btn-approve" onclick="approveDeposit('${did}', ${d.amount}, '${d.uid}')">Approve</button><button class="btn-reject" onclick="rejectDeposit('${did}')">Reject</button>` : 'Done'}</td></tr>`;
         }
         if(tbody.innerHTML === '') tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No deposits found</td></tr>';
     }
     
     async function approveDeposit(did, amount, uid) {
-        if(confirm(`Approve deposit of Rs ${amount}?`)) {
+        if(confirm(`Approve Rs ${amount} deposit?`)) {
             await db.ref('deposits/' + did).update({ status: 'approved' });
             const user = (await db.ref('users/' + uid).once('value')).val();
             await db.ref('users/' + uid).update({ balance: (user.balance || 0) + amount });
             showToast("Deposit approved!");
-            loadDeposits();
-            loadDashboard();
+            loadDeposits(); loadDashboard();
         }
     }
     
-    async function rejectDeposit(did) {
-        if(confirm("Reject this deposit?")) {
-            await db.ref('deposits/' + did).update({ status: 'rejected' });
-            loadDeposits();
-            showToast("Deposit rejected!");
-        }
-    }
+    async function rejectDeposit(did) { if(confirm("Reject deposit?")) { await db.ref('deposits/' + did).update({ status: 'rejected' }); loadDeposits(); showToast("Deposit rejected!"); } }
     
     async function loadOrders() {
         const orders = (await db.ref('orders').once('value')).val() || {};
@@ -494,27 +339,14 @@
             const user = (await db.ref('users/' + uid).once('value')).val();
             if(userOrders) {
                 for(const [oid, order] of Object.entries(userOrders)) {
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>${user?.username || uid.substring(0, 8)}</td>
-                            <td>${order.productName || 'N/A'}</td>
-                            <td>Rs ${order.amount || 0}</td>
-                            <td>${order.date || 'N/A'}</td>
-                            <td><span style="color:#2ed573">Completed</span></td>
-                        </tr>
-                    `;
+                    tbody.innerHTML += `<tr><td>${user?.username || uid.substring(0,8)}</td><td>${order.productName}</td><td>Rs ${order.amount}</td><td>${order.date}</td><td><span style="color:#2ed573">Completed</span></td></tr>`;
                 }
             }
         }
-        if(tbody.innerHTML === '') tbody.innerHTML = '<td><td colspan="5" style="text-align:center;">No orders found</td></tr>';
+        if(tbody.innerHTML === '') tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No orders found</td></tr>';
     }
     
-    // Load initial data
-    loadDashboard();
-    loadUsers();
-    loadProducts();
-    loadDeposits();
-    loadOrders();
+    loadDashboard(); loadUsers(); loadProducts(); loadDeposits(); loadOrders();
 </script>
 </body>
 </html>
